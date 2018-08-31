@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorOffWhite">
     <TextView
@@ -32,19 +33,19 @@
                 android:id="@+id/button_c01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="C01"
+                android:text="@string/c01"
                 android:background="@color/colorBronze"/>
             <Button
                 android:id="@+id/button_c02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="C02"
+                android:text="@string/c02"
                 android:background="@color/colorBronze"/>
             <Button
                 android:id="@+id/button_c03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="C03"
+                android:text="@string/c03"
                 android:background="@color/colorBronze"/>
         </ListView>
     </LinearLayout>

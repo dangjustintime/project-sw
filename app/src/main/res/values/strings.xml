@@ -11,4 +11,7 @@
     <string name="add">add</string>
     <!-- choose a template fragment -->
     <string name="choose_a_template">choose a template</string>
+    <string name="c01">c01</string>
+    <string name="c02">c02</string>
+    <string name="c03">c03</string>
 </resources>
