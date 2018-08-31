@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "anywehere", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "anywehere", Toast.LENGTH_SHORT).show();
             }
         });
         setSupportActionBar(toolbar);
