@@ -1,10 +1,14 @@
 <resources>
+    <!-- main activity -->
     <string name="app_name">storywell</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="tap_anywhere">tap anywhere</string>
     <string name="to_start_your_story">to start your story</string>
+    <!-- create new story fragment -->
     <string name="create_new_story">create new story</string>
     <string name="enter_a_name_for_this_story">enter a name for this story</string>
     <string name="cancel">cancel</string>
     <string name="add">add</string>
+    <!-- choose a template fragment -->
+    <string name="choose_a_template">choose a template</string>
 </resources>
