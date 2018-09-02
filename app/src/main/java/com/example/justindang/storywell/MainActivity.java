@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "anywehere", Toast.LENGTH_SHORT).show();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.add(R.id.frame_layout_fragment_placeholder, new CreateNewStoryFragment());
+                fragmentTransaction.addToBackStack("create new story");
                 fragmentTransaction.commit();
             }
         });
