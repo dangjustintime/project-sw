@@ -4,7 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bronze_border"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:layout_gravity="center">
     <TextView
         android:id="@+id/text_view_create_new_story"
         android:layout_width="wrap_content"

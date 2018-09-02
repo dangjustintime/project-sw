@@ -14,4 +14,15 @@
     <string name="c01">c01</string>
     <string name="c02">c02</string>
     <string name="c03">c03</string>
+    <!-- save story fragment -->
+    <string name="save">save</string>
+    <string name="individual_story">individual story</string>
+    <string name="or">or </string>
+    <string name="entire_stories">entire stories</string>
+    <string name="story">story</string>
+    <string name="stories">stories</string>
+    <string name="share_story_to_instagram">share story to instagram</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
