@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:text="@string/create_new_story"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorDarkGrey"/>
+        android:textColor="@color/colorDarkGrey"
+        android:fontFamily="@font/freight_big_w01_semibol1197125"/>
     <EditText
         android:id="@+id/edit_text_enter_a_name"
         android:layout_width="wrap_content"
@@ -20,7 +21,8 @@
         android:text="@string/enter_a_name_for_this_story"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_create_new_story"
-        android:textColor="@color/colorDarkGrey"/>
+        android:textColor="@color/colorDarkGrey"
+        android:fontFamily="@font/franklingothic_book"/>
     <Button
         android:id="@+id/button_cancel_story"
         android:layout_width="wrap_content"
@@ -28,7 +30,8 @@
         android:text="@string/cancel"
         android:layout_below="@id/edit_text_enter_a_name"
         android:layout_alignLeft="@id/edit_text_enter_a_name"
-        android:background="@drawable/bronze_border"/>
+        android:background="@drawable/bronze_border"
+        android:fontFamily="@font/franklingothic_med"/>
     <Button
         android:id="@+id/button_add_story"
         android:layout_width="wrap_content"
@@ -36,5 +39,6 @@
         android:text="@string/add"
         android:layout_below="@id/edit_text_enter_a_name"
         android:layout_alignRight="@id/edit_text_enter_a_name"
-        android:background="@drawable/bronze_border"/>
+        android:background="@drawable/bronze_border"
+        android:fontFamily="@font/franklingothic_med"/>
 </RelativeLayout>
