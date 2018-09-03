@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "anywehere", Toast.LENGTH_SHORT).show();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.add(R.id.frame_layout_fragment_placeholder, new CreateNewStoryFragment());
                 fragmentTransaction.addToBackStack("create new story");

@@ -9,6 +9,13 @@ public class Story implements Parcelable {
     private String template;
     private String photos[];
 
+    // constructor
+    public Story(String name, String template, String photos[]) {
+        this.name = name;
+        this.template = template;
+        this.photos = photos.clone();
+    }
+
     // getters and setters
     public String getName() {
         return name;
