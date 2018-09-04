@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".StoryEditorFragment"
+    android:background="@color/colorWhite">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/image_view_aa_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/aa_icon"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageView
+        android:id="@+id/image_view_square_circle_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/square_circle_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image_view_aa_icon"
+        app:layout_constraintRight_toLeftOf="@id/image_view_plus_icon"/>
+    <ImageView
+        android:id="@+id/image_view_plus_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/plus_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+    <ImageView
+        android:id="@+id/image_view_three_circle_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/three_circles_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image_view_plus_icon"
+        app:layout_constraintRight_toLeftOf="@id/image_view_angle_brackets_icon"/>
+    <ImageView
+        android:id="@+id/image_view_angle_brackets_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/angle_brackets_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</android.support.constraint.ConstraintLayout>
