@@ -1,19 +1,17 @@
-package com.example.StoryWell.model;
+package com.example.justindang.storywell.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Story implements Parcelable {
+public class Story {
     // member data
     private String name;
     private String template;
-    private String photos[];
 
     // constructor
-    public Story(String name, String template, String photos[]) {
+    public Story(String name, String template) {
         this.name = name;
         this.template = template;
-        this.photos = photos.clone();
     }
 
     // getters and setters
@@ -31,14 +29,6 @@ public class Story implements Parcelable {
 
     public void setTemplate(String template) {
         this.template = template;
-    }
-
-    public String[] getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(String[] photos) {
-        this.photos = photos;
     }
 
 }

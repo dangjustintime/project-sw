@@ -2,6 +2,7 @@ package com.example.justindang.storywell;
 
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,15 +20,27 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CreateNewStoryFragment extends Fragment {
+public class CreateNewStoryDialogFragment extends DialogFragment {
+    // fragment management
     FragmentTransaction fragmentTransaction;
     FragmentManager fragmentManager;
+
     // views
     @BindView(R.id.edit_text_enter_a_name) EditText editTextEnterAName;
     @BindView(R.id.button_add_story) Button buttonAddStory;
     @BindView(R.id.button_cancel_story) Button buttonCancelStory;
 
-    public CreateNewStoryFragment() {
+    // variables
+    private String storyName;
+
+    // input listener
+    public interface OnInputListener {
+        void sendInput(String input);
+    }
+    // instantiate OnInputListener
+    OnInputListener onInputListener;
+
+    public CreateNewStoryDialogFragment() {
         // Required empty public constructor
     }
 
@@ -40,17 +53,17 @@ public class CreateNewStoryFragment extends Fragment {
         buttonAddStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "add story", Toast.LENGTH_SHORT).show();
+                onInputListener = (OnInputListener) getActivity();
+                onInputListener.sendInput(editTextEnterAName.getText().toString());
+                dismiss();
             }
         });
         buttonCancelStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentManager = getFragmentManager();
-                fragmentManager.popBackStack();
+                dismiss();
             }
         });
-
         return view;
     }
 }
