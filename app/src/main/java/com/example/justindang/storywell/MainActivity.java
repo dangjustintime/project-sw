@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
 
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
+    ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
 
     // variables
     Story newStory = new Story("","");
@@ -40,12 +41,6 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
             @Override
             public void onClick(View view) {
                 createNewStoryDialogFragment.show(getSupportFragmentManager(), "create a new story");
-                /*
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder, new CreateNewStoryDialogFragment());
-                fragmentTransaction.addToBackStack("create new story");
-                fragmentTransaction.commit();
-                */
             }
         });
         setSupportActionBar(toolbar);
@@ -54,6 +49,6 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
     @Override
     public void sendInput(String input) {
         newStory.setName(input);
-        Toast.makeText(this, newStory.getName(), Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_fragment_placeholder, chooseATemplateFragment).commit();
     }
 }

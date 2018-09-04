@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChooseATemplateFragment"
     android:background="@color/colorOffWhite"
     android:id="@+id/constraint_layout_choose_a_template">
     <TextView
@@ -38,28 +37,28 @@
         android:src="@drawable/shopping_cart_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-    <android.support.design.button.MaterialButton
+    <Button
         android:id="@+id/button_c01"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="@string/c01"
         app:layout_constraintLeft_toRightOf="@+id/image_view_shopping_cart_icon"
         app:layout_constraintBottom_toBottomOf="parent" />
-    <android.support.design.button.MaterialButton
+    <Button
         android:id="@+id/button_c02"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="@string/c02"
         app:layout_constraintLeft_toRightOf="@+id/button_c01"
         app:layout_constraintBottom_toBottomOf="parent" />
-    <android.support.design.button.MaterialButton
+    <Button
         android:id="@+id/button_c03"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="@string/c03"
         app:layout_constraintLeft_toRightOf="@+id/button_c02"
         app:layout_constraintBottom_toBottomOf="parent" />
-    <android.support.design.button.MaterialButton
+    <Button
         android:id="@+id/button_c04"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
