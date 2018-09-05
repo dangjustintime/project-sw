@@ -2,6 +2,8 @@ package com.example.justindang.storywell;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,11 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -47,8 +54,8 @@ public class Template1Fragment extends Fragment {
             public void onClick(View view) {
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
                 File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String pictureDirectroyPath = pictureDirectory.getPath();
-                Uri data = Uri.parse(pictureDirectroyPath);
+                String pictureDirectoryPath = pictureDirectory.getPath();
+                Uri data = Uri.parse(pictureDirectoryPath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
             }
@@ -57,4 +64,23 @@ public class Template1Fragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_GALLERY_REQUEST) {
+                Uri imageUri = data.getData();
+                InputStream inputStream;
+                try {
+                    inputStream = getContext().getContentResolver().openInputStream(imageUri);
+                    Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+                    innerMediaImageView.setImageBitmap(imageBitmap);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    //Toast.makeText(this, "Unable to open image", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }
+    }
 }

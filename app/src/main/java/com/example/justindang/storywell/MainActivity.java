@@ -1,5 +1,9 @@
 package com.example.justindang.storywell;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentTransaction;
@@ -12,8 +16,13 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Story;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.justindang.storywell.Template1Fragment.IMAGE_GALLERY_REQUEST;
 
 public class MainActivity extends AppCompatActivity implements CreateNewStoryDialogFragment.OnInputListener, ChooseATemplateFragment.OnTemplateListener {
     // Fragment Transaction
@@ -57,5 +66,4 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
     public void sendTemplate(String template) {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_fragment_placeholder, template1Fragment).commit();
     }
-
 }
