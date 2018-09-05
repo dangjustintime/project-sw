@@ -24,6 +24,7 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.image_view_x_icon) ImageView xIconImageView;
     @BindView(R.id.image_view_shopping_cart_icon) ImageView shoppingCartIconImageView;
     @BindView(R.id.button_template_placeholder) Button templatePlaceholderButton;
+
     public interface OnTemplateListener {
         public void sendTemplate(String template);
     }
