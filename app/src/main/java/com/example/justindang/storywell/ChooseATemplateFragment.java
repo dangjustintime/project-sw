@@ -14,9 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ChooseATemplateFragment extends Fragment {
 
     // views

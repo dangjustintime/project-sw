@@ -22,8 +22,6 @@ import java.io.InputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.justindang.storywell.Template1Fragment.IMAGE_GALLERY_REQUEST;
-
 public class MainActivity extends AppCompatActivity implements CreateNewStoryDialogFragment.OnInputListener, ChooseATemplateFragment.OnTemplateListener {
     // Fragment Transaction
     FragmentTransaction fragmentTransaction;
@@ -36,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
     ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
-    Template1Fragment template1Fragment = new Template1Fragment();
 
     // variables
     Story newStory = new Story("","");
@@ -64,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
 
     @Override
     public void sendTemplate(String template) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_fragment_placeholder, template1Fragment).commit();
+        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        startActivity(intent);
     }
 }

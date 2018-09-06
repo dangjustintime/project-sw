@@ -4,10 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".StoryEditorFragment"
-    android:background="@color/colorWhite">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:background="@color/colorWhite"
+    tools:context=".StoryEditorActivity">
+    <FrameLayout
+        android:id="@+id/frame_layout_fragment_placeholder_story_editor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/image_view_plus_icon"></FrameLayout>
     <ImageView
         android:id="@+id/image_view_aa_icon"
         android:layout_width="40dp"

@@ -9,10 +9,14 @@
         android:id="@+id/image_view_outter_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/add_story_icon"/>
+        android:background="@color/colorBronze"/>
     <ImageView
         android:id="@+id/image_view_inner_media"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="50dp"/>
+        android:layout_width="300dp"
+        android:layout_height="450dp"
+        android:background="@color/colorPeach"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>
