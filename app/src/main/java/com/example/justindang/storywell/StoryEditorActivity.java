@@ -1,14 +1,18 @@
 package com.example.justindang.storywell;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +36,10 @@ import butterknife.ButterKnife;
 public class StoryEditorActivity extends AppCompatActivity {
     // TAG
     private static final String TAG = "StoryEditorActivity";
+
+    // request code
+    private static final int REQUEST_WRITE_PERMISSION = 200;
+
     // views
     @BindView(R.id.image_view_aa_icon) ImageView aaIconImageView;
     @BindView(R.id.image_view_square_circle_icon) ImageView squareCircleIconImageView;
@@ -58,24 +68,34 @@ public class StoryEditorActivity extends AppCompatActivity {
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // create bitmap from fragmentPlaceholderFrameLayout
-                Bitmap bitmap = Bitmap.createBitmap(
-                        fragmentPlaceholderFrameLayout.getWidth(),
-                        fragmentPlaceholderFrameLayout.getHeight(),
-                        Bitmap.Config.ARGB_8888);
-                Canvas c = new Canvas(bitmap);
-                // create file
-                String filename = "test";
-                File pictureDir = getPublicAlbumStorageDir("storywell");
-                File imageFile = new File(pictureDir,"test");
-                try {
-                    FileOutputStream outputStream = new FileOutputStream(imageFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                    outputStream.close();
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT);
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT);
-                    e.printStackTrace();
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Permission is not granted
+                    Log.e(TAG,"permission not granted");
+                    // ask for permission
+                    ActivityCompat.requestPermissions(StoryEditorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+                } else {
+
+                    // create bitmap from fragmentPlaceholderFrameLayout
+                    Bitmap bitmap = Bitmap.createBitmap(
+                            fragmentPlaceholderFrameLayout.getWidth(),
+                            fragmentPlaceholderFrameLayout.getHeight(),
+                            Bitmap.Config.ARGB_8888);
+                    Canvas c = new Canvas(bitmap);
+                    // create file
+                    String filename = "test";
+                    File pictureDir = getPublicAlbumStorageDir("storywell");
+                    File imageFile = new File(pictureDir, "test.jpg");
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(imageFile);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                        outputStream.close();
+                        Log.e(TAG, "Success");
+                    } catch (IOException e) {
+                        Log.e(TAG, "Failed");
+                        e.printStackTrace();
+                    }
                 }
 
             }
