@@ -42,5 +42,12 @@ public class StoryEditorActivity extends AppCompatActivity {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, template1Fragment);
         fragmentTransaction.commit();
+
+        plusIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }
