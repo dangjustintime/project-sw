@@ -53,8 +53,6 @@ public class StoryEditorActivity extends AppCompatActivity {
     FragmentTransaction fragmentTransaction;
     Template1Fragment template1Fragment = new Template1Fragment();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,14 +63,18 @@ public class StoryEditorActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, template1Fragment);
         fragmentTransaction.commit();
 
+        // clicklisteners
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // check if write permissions are granted
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
+
                     // Permission is not granted
                     Log.e(TAG,"permission not granted");
+
                     // ask for permission
                     ActivityCompat.requestPermissions(StoryEditorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
                 } else {
@@ -82,16 +84,21 @@ public class StoryEditorActivity extends AppCompatActivity {
                             fragmentPlaceholderFrameLayout.getWidth(),
                             fragmentPlaceholderFrameLayout.getHeight(),
                             Bitmap.Config.ARGB_8888);
-                    Canvas c = new Canvas(bitmap);
+                    Canvas canvas = new Canvas(bitmap);
+                    fragmentPlaceholderFrameLayout.draw(canvas);
+
                     // create file
-                    String filename = "test";
                     File pictureDir = getPublicAlbumStorageDir("storywell");
-                    File imageFile = new File(pictureDir, "test.jpg");
+                    File imageFile = new File(pictureDir, "test photo.jpg");
                     try {
+                        // place bitmap onto output stream
                         FileOutputStream outputStream = new FileOutputStream(imageFile);
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                         outputStream.close();
                         Log.e(TAG, "Success");
+
+                        // go back to main activity
+                        finish();
                     } catch (IOException e) {
                         Log.e(TAG, "Failed");
                         e.printStackTrace();
