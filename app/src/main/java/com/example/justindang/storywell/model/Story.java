@@ -3,18 +3,14 @@ package com.example.justindang.storywell.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 
 public class Story {
     // member data
     private String name;
-    private String template;
-    private MediaStore.Images medias;
-
-    // constructor
-    public Story(String name, String template) {
-        this.name = name;
-        this.template = template;
-    }
+    // absolute directory path for photos
+    private String[] picturePaths;
+    private Fragment template;
 
     // getters and setters
     public String getName() {
@@ -23,16 +19,16 @@ public class Story {
     public void setName(String name) {
         this.name = name;
     }
-    public String getTemplate() {
+    public String[] getPicturePaths() {
+        return picturePaths;
+    }
+    public void setPicturePaths(String[] picturePaths) {
+        this.picturePaths = picturePaths;
+    }
+    public Fragment getTemplate() {
         return template;
     }
-    public void setTemplate(String template) {
+    public void setTemplate(Fragment template) {
         this.template = template;
-    }
-    public MediaStore.Images getMedias() {
-        return medias;
-    }
-    public void setMedias(MediaStore.Images medias) {
-        this.medias = medias;
     }
 }
