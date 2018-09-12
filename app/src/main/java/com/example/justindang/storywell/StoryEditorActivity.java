@@ -42,6 +42,7 @@ public class StoryEditorActivity extends AppCompatActivity {
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
+    private static final String DIALOG_SAVE_STORY = "save story";
 
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
@@ -55,11 +56,13 @@ public class StoryEditorActivity extends AppCompatActivity {
     @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
     @BindView(R.id.image_view_back_button) ImageView backButtonImageView;
     @BindView(R.id.image_view_download_icon) ImageView downloadButtonImageView;
+    @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
 
-    // fragment
+    // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Template1Fragment template1Fragment = new Template1Fragment();
+    SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class StoryEditorActivity extends AppCompatActivity {
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                saveStoryDialogFragment.show(fragmentManager, DIALOG_SAVE_STORY);
             }
         });
         backButtonImageView.setOnClickListener(new View.OnClickListener() {

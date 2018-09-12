@@ -43,6 +43,10 @@
          android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/image_view_plus_icon"></FrameLayout>
+    <FrameLayout
+        android:id="@+id/frame_layout_fragment_placeholder_save_story"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"

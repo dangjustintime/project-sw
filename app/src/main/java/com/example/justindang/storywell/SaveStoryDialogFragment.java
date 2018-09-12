@@ -4,6 +4,7 @@ package com.example.justindang.storywell;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,8 @@ import java.io.File;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SaveStoryFragment extends Fragment {
-    public SaveStoryFragment() {
+public class SaveStoryDialogFragment extends DialogFragment {
+    public SaveStoryDialogFragment() {
         // Required empty public constructor
     }
     @Override

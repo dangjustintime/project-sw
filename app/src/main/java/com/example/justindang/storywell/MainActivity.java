@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
 
     // tags
     private static final String EXTRA_NAME = "name";
+    private static final String DIALOG_NEW_STORY = "create a new story";
 
     // Fragment Transaction
     FragmentTransaction fragmentTransaction;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewStoryDialogFragment.show(getSupportFragmentManager(), "create a new story");
+                createNewStoryDialogFragment.show(getSupportFragmentManager(), DIALOG_NEW_STORY);
             }
         });
         setSupportActionBar(toolbar);
