@@ -53,6 +53,8 @@ public class StoryEditorActivity extends AppCompatActivity {
     @BindView(R.id.image_view_three_circle_icon) ImageView threeCircleIconImageView;
     @BindView(R.id.image_view_angle_brackets_icon) ImageView angleBracketsIconImageView;
     @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
+    @BindView(R.id.image_view_back_button) ImageView backButtonImageView;
+    @BindView(R.id.image_view_download_icon) ImageView downloadButtonImageView;
 
     // fragment
     FragmentManager fragmentManager;
@@ -74,47 +76,17 @@ public class StoryEditorActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         // clicklisteners
-        plusIconImageView.setOnClickListener(new View.OnClickListener() {
+        downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // check if write permissions are granted
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    // Permission is not granted
-                    Log.e(TAG,"permission not granted");
-
-                    // ask for permission
-                    ActivityCompat.requestPermissions(StoryEditorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
-                } else {
-
-                    // create bitmap from fragmentPlaceholderFrameLayout
-                    Bitmap bitmap = Bitmap.createBitmap(
-                            fragmentPlaceholderFrameLayout.getWidth(),
-                            fragmentPlaceholderFrameLayout.getHeight(),
-                            Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(bitmap);
-                    fragmentPlaceholderFrameLayout.draw(canvas);
-
-                    // create file
-                    File pictureDir = getPublicAlbumStorageDir("storywell");
-                    File imageFile = new File(pictureDir, storyName + ".jpg");
-                    try {
-                        // place bitmap onto output stream
-                        FileOutputStream outputStream = new FileOutputStream(imageFile);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                        outputStream.close();
-                        Log.e(TAG, "Success");
-
-                        // go back to main activity
-                        finish();
-                    } catch (IOException e) {
-                        Log.e(TAG, "Failed");
-                        e.printStackTrace();
-                    }
-                }
-
+                Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
+                saveImage();
+            }
+        });
+        backButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -138,5 +110,45 @@ public class StoryEditorActivity extends AppCompatActivity {
         }
         return file;
     };
+
+    // save photo to storage
+    public void saveImage() {
+        // check if write permissions are granted
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            Log.e(TAG,"permission not granted");
+
+            // ask for permission
+            ActivityCompat.requestPermissions(StoryEditorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+        } else {
+
+            // create bitmap from fragmentPlaceholderFrameLayout
+            Bitmap bitmap = Bitmap.createBitmap(
+                    fragmentPlaceholderFrameLayout.getWidth(),
+                    fragmentPlaceholderFrameLayout.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            fragmentPlaceholderFrameLayout.draw(canvas);
+
+            // create file
+            File pictureDir = getPublicAlbumStorageDir("storywell");
+            File imageFile = new File(pictureDir, storyName + ".jpg");
+            try {
+                // place bitmap onto output stream
+                FileOutputStream outputStream = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                outputStream.close();
+                Log.e(TAG, "Success");
+
+                // go back to main activity
+                finish();
+            } catch (IOException e) {
+                Log.e(TAG, "Failed");
+                e.printStackTrace();
+            }
+        }
+    }
 }
 
