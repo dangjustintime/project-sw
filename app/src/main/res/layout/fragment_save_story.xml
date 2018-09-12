@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bronze_border"
     android:padding="10dp">
     <TextView
@@ -10,50 +11,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:textColor="@color/colorDarkGrey"/>
     <TextView
         android:id="@+id/text_view_individual_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/individual_story"
-        android:layout_below="@+id/text_view_save"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toBottomOf="@id/text_view_save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:textColor="@color/colorDarkGrey"/>
-    <TextView
-        android:id="@+id/text_view_or"
+    <LinearLayout
+        android:id="@+id/linear_layout_or_entire_stories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/or"
-        android:layout_below="@+id/text_view_individual_story"
-        android:layout_alignLeft="@+id/text_view_individual_story"
-        android:textColor="@color/colorDarkGrey"/>
-    <TextView
-        android:id="@+id/text_view_entire_stories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/entire_stories"
-        android:layout_below="@+id/text_view_individual_story"
-        android:layout_toRightOf="@+id/text_view_or"
-        android:textColor="@color/colorDarkGrey"/>
+        app:layout_constraintTop_toBottomOf="@id/text_view_individual_story"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <TextView
+            android:id="@+id/text_view_or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textColor="@color/colorDarkGrey"/>
+        <TextView
+            android:id="@+id/text_view_entire_stories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/entire_stories"
+            android:textColor="@color/colorDarkGrey"/>
+    </LinearLayout>
     <Button
         android:id="@+id/button_save_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/story"
-        android:layout_below="@id/edit_text_enter_a_name"
-        android:layout_alignStart="@+id/button_share_story_to_instagram"
-        android:layout_above="@+id/button_share_story_to_instagram"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_or_entire_stories"
+        app:layout_constraintStart_toStartOf="@id/button_share_story_to_instagram"
         android:background="@drawable/bronze_border"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="10dp"/>
     <Button
         android:id="@+id/button_save_stories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/stories"
-        android:layout_below="@id/edit_text_enter_a_name"
-        android:layout_alignEnd="@+id/button_share_story_to_instagram"
-        android:layout_above="@+id/button_share_story_to_instagram"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout_or_entire_stories"
+        app:layout_constraintEnd_toEndOf="@id/button_share_story_to_instagram"
         android:background="@drawable/bronze_border"
         android:layout_marginBottom="5dp"/>
     <Button
@@ -61,8 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/share_story_to_instagram"
-        android:layout_below="@id/edit_text_enter_a_name"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bronze_border"/>
-</RelativeLayout>
+        app:layout_constraintTop_toBottomOf="@id/button_save_story"
+        android:background="@drawable/bronze_border"
+        android:layout_marginTop="15dp"/>
+</android.support.constraint.ConstraintLayout>

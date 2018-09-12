@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bronze_border"
-    android:padding="5dp"
+    android:padding="10dp"
     android:layout_gravity="center">
     <TextView
         android:id="@+id/text_view_create_new_story"
@@ -23,7 +23,8 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_create_new_story"
         android:textColor="@color/colorDarkGrey"
-        android:fontFamily="@font/franklingothic_book"/>
+        android:fontFamily="@font/franklingothic_book"
+        android:layout_marginBottom="25dp"/>
     <Button
         android:id="@+id/button_cancel_story"
         android:layout_width="wrap_content"
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/add"
         android:layout_below="@id/edit_text_enter_a_name"
-        android:layout_toRightOf="@+id/button_cancel_story"
+        android:layout_alignEnd="@id/edit_text_enter_a_name"
         android:background="@drawable/bronze_border"
         android:fontFamily="@font/franklingothic_med"/>
 </RelativeLayout>
