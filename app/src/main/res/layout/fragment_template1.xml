@@ -9,12 +9,12 @@
         android:id="@+id/image_view_outter_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"/>
+        android:background="@color/colorGrey"/>
     <ImageView
         android:id="@+id/image_view_inner_media"
         android:layout_width="250dp"
         android:layout_height="420dp"
-        android:background="@color/colorGrey"
+        android:background="@color/colorWhite"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

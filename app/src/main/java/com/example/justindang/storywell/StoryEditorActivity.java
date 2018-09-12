@@ -79,8 +79,7 @@ public class StoryEditorActivity extends AppCompatActivity {
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
-                saveImage();
+
             }
         });
         backButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +112,9 @@ public class StoryEditorActivity extends AppCompatActivity {
 
     // save photo to storage
     public void saveImage() {
+        // toast message
+        Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
+
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
