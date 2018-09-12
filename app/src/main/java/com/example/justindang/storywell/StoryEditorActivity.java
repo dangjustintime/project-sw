@@ -33,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StoryEditorActivity extends AppCompatActivity {
+public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener {
     // intent keys
     private static final String EXTRA_NAME = "name";
 
@@ -154,6 +154,21 @@ public class StoryEditorActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void saveStory() {
+        saveImage();
+    }
+
+    @Override
+    public void saveStories() {
+        Toast.makeText(getBaseContext(), "save stories", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void shareStoryToInstagram() {
+        Toast.makeText(getBaseContext(), "share to instagram", Toast.LENGTH_SHORT).show();
     }
 }
 
