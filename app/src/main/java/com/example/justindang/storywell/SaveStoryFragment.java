@@ -43,7 +43,6 @@ public class SaveStoryFragment extends Fragment {
         share.putExtra(Intent.EXTRA_STREAM, uri);
 
         // broadcast intent
-
         startActivity(Intent.createChooser(share, "Share to"));
     }
 }

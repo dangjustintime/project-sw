@@ -34,6 +34,12 @@ import butterknife.ButterKnife;
 
 
 public class StoryEditorActivity extends AppCompatActivity {
+    // intent keys
+    private static final String EXTRA_NAME = "name";
+
+    // variables
+    private String storyName;
+
     // TAG
     private static final String TAG = "StoryEditorActivity";
 
@@ -58,6 +64,10 @@ public class StoryEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
+
+        // get data from intent
+        storyName = getIntent().getStringExtra(EXTRA_NAME);
+
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, template1Fragment);
@@ -89,7 +99,7 @@ public class StoryEditorActivity extends AppCompatActivity {
 
                     // create file
                     File pictureDir = getPublicAlbumStorageDir("storywell");
-                    File imageFile = new File(pictureDir, "test photo.jpg");
+                    File imageFile = new File(pictureDir, storyName + ".jpg");
                     try {
                         // place bitmap onto output stream
                         FileOutputStream outputStream = new FileOutputStream(imageFile);

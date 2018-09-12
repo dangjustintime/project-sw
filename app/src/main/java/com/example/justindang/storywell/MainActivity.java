@@ -23,6 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements CreateNewStoryDialogFragment.OnInputListener, ChooseATemplateFragment.OnTemplateListener {
+    // variables
+    private String newStoryName;
+
+    // tags
+    private static final String EXTRA_NAME = "name";
+
     // Fragment Transaction
     FragmentTransaction fragmentTransaction;
 
@@ -34,9 +40,6 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
     ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
-
-    // variables
-    Story newStory = new Story("","");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +58,14 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
 
     @Override
     public void sendInput(String input) {
-        newStory.setName(input);
+        newStoryName = input;
         getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_fragment_placeholder, chooseATemplateFragment).commit();
     }
 
     @Override
     public void sendTemplate(String template) {
         Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        intent.putExtra(EXTRA_NAME, newStoryName);
         startActivity(intent);
     }
 }
