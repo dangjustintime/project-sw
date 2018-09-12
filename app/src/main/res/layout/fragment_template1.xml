@@ -9,14 +9,30 @@
         android:id="@+id/image_view_outter_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBronze"/>
+        android:background="@color/colorWhite"/>
     <ImageView
         android:id="@+id/image_view_inner_media"
-        android:layout_width="300dp"
-        android:layout_height="450dp"
-        android:background="@color/colorPeach"
+        android:layout_width="250dp"
+        android:layout_height="420dp"
+        android:background="@color/colorGrey"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/add_story_icon"/>
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toRightOf="@id/image_view_inner_media"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/add_story_icon"
+        android:layout_marginLeft="15dp"/>
 </android.support.constraint.ConstraintLayout>
