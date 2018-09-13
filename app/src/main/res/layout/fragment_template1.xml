@@ -8,15 +8,15 @@
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_marginBottom="50dp">
     <ImageView
-        android:id="@+id/image_view_outter_media"
+        android:id="@+id/image_view_outer_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGrey"/>
+        android:background="@color/colorOffWhite"/>
     <ImageView
         android:id="@+id/image_view_inner_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
+        android:background="@drawable/dark_grey_border"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,6 +24,7 @@
         android:layout_marginVertical="30dp"
         android:layout_marginHorizontal="40dp" />
     <ImageView
+        android:id="@+id/image_view_add_inner_media"
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -32,6 +33,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/add_story_icon"/>
     <ImageView
+        android:id="@+id/image_view_add_outer_media"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintStart_toEndOf="@id/image_view_inner_media"

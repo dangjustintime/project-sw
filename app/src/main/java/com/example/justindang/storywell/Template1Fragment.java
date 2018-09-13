@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,9 @@ public class Template1Fragment extends Fragment {
 
     // views
     @BindView(R.id.image_view_inner_media) ImageView innerMediaImageView;
-    @BindView(R.id.image_view_outter_media) ImageView outerMediaImageView;
+    @BindView(R.id.image_view_outer_media) ImageView outerMediaImageView;
+    @BindView(R.id.image_view_add_inner_media) ImageView addInnerMediaImageView;
+    @BindView(R.id.image_view_add_outer_media) ImageView addOuterMediaImageView;
 
     public Template1Fragment() {
         // Required empty public constructor
@@ -45,7 +48,7 @@ public class Template1Fragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // get image from gallery onclick
-        outerMediaImageView.setOnClickListener(new View.OnClickListener() {
+        addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
@@ -54,10 +57,11 @@ public class Template1Fragment extends Fragment {
                 Uri data = Uri.parse(pictureDirectoryPath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
+                addOuterMediaImageView.setVisibility(View.INVISIBLE);
             }
 
         });
-        innerMediaImageView.setOnClickListener(new View.OnClickListener() {
+        addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
@@ -66,6 +70,7 @@ public class Template1Fragment extends Fragment {
                 Uri data = Uri.parse(pictureDirectoryPath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
+                addInnerMediaImageView.setVisibility(View.INVISIBLE);
             }
         });
         return view;
@@ -81,6 +86,7 @@ public class Template1Fragment extends Fragment {
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+                    outerMediaImageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     outerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -93,6 +99,7 @@ public class Template1Fragment extends Fragment {
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+                    innerMediaImageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     innerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
