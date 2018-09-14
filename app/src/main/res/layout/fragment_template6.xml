@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Template6Fragment"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_marginBottom="50dp"
+    android:background="@color/colorPeach">
+    <ImageView
+        android:id="@+id/image_view_template6_outer_media"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/colorGrey" />
+    <ImageView
+        android:id="@+id/image_view_template6_add_outer_media"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintRight_toRightOf="@id/image_view_template6_outer_media"
+        app:layout_constraintTop_toTopOf="@id/image_view_template6_outer_media"
+        android:src="@drawable/add_story_icon"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@id/image_view_template6_outer_media"/>
+    <EditText
+        android:id="@+id/edit_text_template6_add_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add title"
+        android:background="@android:color/transparent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_view_template6_add_outer_media"/>
+    <ImageView
+        android:id="@+id/image_view_template6_inner_media"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:background="@drawable/white_border"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_template6_add_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="15dp" />
+    <ImageView
+        android:id="@+id/image_view_template6_add_inner_media"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintRight_toRightOf="@id/image_view_template6_inner_media"
+        app:layout_constraintLeft_toLeftOf="@id/image_view_template6_inner_media"
+        app:layout_constraintTop_toTopOf="@id/image_view_template6_inner_media"
+        app:layout_constraintBottom_toBottomOf="@id/image_view_template6_inner_media"
+        android:src="@drawable/add_story_icon"/>
+    <EditText
+        android:id="@+id/edit_text_template6_tap_to_add"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="tap to add text to tell your story here in this space"
+        android:textSize="10dp"
+        android:textAlignment="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/image_view_template6_inner_media"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+    <EditText
+        android:id="@+id/edit_text_template6_tip"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="tip: try to stay in this box so your text doesn't overlap the IG stories footer"
+        android:textAlignment="center"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_template6_tap_to_add"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/three_circles_icon"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_template6_tip"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/colorWhite"
+        app:layout_constraintCircleRadius="50dp"
+        app:layout_constraintLeft_toRightOf="@id/image_view_template6_inner_media"/>
+</android.support.constraint.ConstraintLayout>
