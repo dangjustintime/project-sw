@@ -26,14 +26,14 @@
                 android:src="@drawable/storywell_logo"/>
             <ImageView
                 android:id="@+id/image_view_back_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="left"
                 android:src="@drawable/back_icon" />
             <ImageView
                 android:id="@+id/image_view_download_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="right"
                 android:src="@drawable/download_icon"/>
 
@@ -59,15 +59,15 @@
         android:paddingEnd="10dp">
         <ImageView
             android:id="@+id/image_view_aa_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/aa_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <ImageView
             android:id="@+id/image_view_square_circle_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/square_circle_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -75,8 +75,8 @@
             app:layout_constraintRight_toRightOf="@id/image_view_plus_icon"/>
         <ImageView
             android:id="@+id/image_view_plus_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/plus_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -84,8 +84,8 @@
             app:layout_constraintRight_toRightOf="parent"/>
         <ImageView
             android:id="@+id/image_view_three_circle_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/three_circles_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -93,8 +93,8 @@
             app:layout_constraintRight_toRightOf="@id/image_view_angle_brackets_icon"/>
         <ImageView
             android:id="@+id/image_view_angle_brackets_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/angle_brackets_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

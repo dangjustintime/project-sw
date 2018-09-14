@@ -146,9 +146,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                 outputStream.close();
                 Log.e(TAG, "Success");
-
-                // go back to main activity
-                finish();
             } catch (IOException e) {
                 Log.e(TAG, "Failed");
                 e.printStackTrace();
@@ -159,6 +156,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     @Override
     public void saveStory() {
         saveImage();
+        finish();
     }
 
     @Override

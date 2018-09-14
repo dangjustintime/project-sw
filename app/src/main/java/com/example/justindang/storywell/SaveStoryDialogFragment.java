@@ -4,6 +4,7 @@ package com.example.justindang.storywell;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class SaveStoryDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 onSaveListener.shareStoryToInstagram();
+                // createInstagramIntent();
                 dismiss();
             }
         });
@@ -74,15 +76,15 @@ public class SaveStoryDialogFragment extends DialogFragment {
     }
 
     // creates intent that launches instagram app to post story
-    void createInstagramIntent(String type, String mediaPath) {
+    void createInstagramIntent() {
         // create new intent using the 'send' action
         Intent share = new Intent(Intent.ACTION_SEND);
 
         // set MIME type
-        share.setType(type);
+        share.setType("image/*");
 
         // create URI from media
-        File media = new File(mediaPath);
+        File media = new File(Environment.getExternalStorageDirectory() +  "test photo.jpg");
         Uri uri = Uri.fromFile(media);
 
         // add URI to intent

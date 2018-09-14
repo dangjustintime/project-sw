@@ -1,45 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bronze_border"
-    android:padding="10dp"
+    android:padding="20dp"
     android:layout_gravity="center">
     <TextView
         android:id="@+id/text_view_create_new_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_new_story"
-        android:layout_centerHorizontal="true"
+        android:textSize="18dp"
         android:textColor="@color/colorDarkGrey"
-        android:fontFamily="@font/freight_big_w01_sb_italic"/>
+        android:fontFamily="@font/freight_big_w01_sb_italic"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="40dp"/>
     <EditText
         android:id="@+id/edit_text_enter_a_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/enter_a_name_for_this_story"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/text_view_create_new_story"
         android:textColor="@color/colorDarkGrey"
         android:fontFamily="@font/franklingothic_book"
-        android:layout_marginBottom="25dp"/>
+        app:layout_constraintTop_toBottomOf="@id/text_view_create_new_story"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="35dp"/>
     <Button
         android:id="@+id/button_cancel_story"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
-        android:layout_below="@id/edit_text_enter_a_name"
         android:background="@drawable/bronze_border"
-        android:fontFamily="@font/franklingothic_med"/>
+        android:fontFamily="@font/franklingothic_med"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_enter_a_name"
+        app:layout_constraintRight_toLeftOf="@id/button_add_story"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"/>
     <Button
         android:id="@+id/button_add_story"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/add"
-        android:layout_below="@id/edit_text_enter_a_name"
-        android:layout_alignEnd="@id/edit_text_enter_a_name"
         android:background="@drawable/bronze_border"
-        android:fontFamily="@font/franklingothic_med"/>
-</RelativeLayout>
+        android:fontFamily="@font/franklingothic_med"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_enter_a_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/button_cancel_story"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"/>
+</android.support.constraint.ConstraintLayout>
