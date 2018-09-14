@@ -3,6 +3,8 @@ package com.example.justindang.storywell;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +30,15 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.button_template5) Button template5Button;
     @BindView(R.id.button_template6) Button template6Button;
 
+    // interface listener
     public interface OnTemplateListener {
         public void sendTemplate(String template);
     }
     OnTemplateListener onTemplateListener;
+
+    // fragment manager
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     public ChooseATemplateFragment() {
         // Required empty public constructor
@@ -46,6 +53,15 @@ public class ChooseATemplateFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // click listeners
+        xIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(ChooseATemplateFragment.this);
+                fragmentTransaction.commit();
+            }
+        });
         template1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
