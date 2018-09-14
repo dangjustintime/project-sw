@@ -30,10 +30,10 @@ public class Template1Fragment extends Fragment {
     public static final int IMAGE_GALLERY_REQUEST_INNER = 21;
 
     // views
-    @BindView(R.id.image_view_inner_media) ImageView innerMediaImageView;
-    @BindView(R.id.image_view_outer_media) ImageView outerMediaImageView;
-    @BindView(R.id.image_view_add_inner_media) ImageView addInnerMediaImageView;
-    @BindView(R.id.image_view_add_outer_media) ImageView addOuterMediaImageView;
+    @BindView(R.id.image_view_template1_inner_media) ImageView innerMediaImageView;
+    @BindView(R.id.image_view_template1_outer_media) ImageView outerMediaImageView;
+    @BindView(R.id.image_view_template1_add_inner_media) ImageView addInnerMediaImageView;
+    @BindView(R.id.image_view_template1_add_outer_media) ImageView addOuterMediaImageView;
 
     public Template1Fragment() {
         // Required empty public constructor
