@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,8 +37,25 @@ public class Template1Fragment extends Fragment {
     @BindView(R.id.image_view_template1_add_inner_media) ImageView addInnerMediaImageView;
     @BindView(R.id.image_view_template1_add_outer_media) ImageView addOuterMediaImageView;
 
+    // ScaleGestureDetector
+    private ScaleGestureDetector scaleGestureDetector;
+    private float scaleFactor = 1.5f;
+
     public Template1Fragment() {
         // Required empty public constructor
+    }
+
+
+    // scalelistener
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+            scaleFactor *= scaleGestureDetector.getScaleFactor();
+            scaleFactor = Math.max( 0.1f, Math.min(scaleFactor, 10.0f));
+            outerMediaImageView.setScaleX(scaleFactor);
+            outerMediaImageView.setScaleY(scaleFactor);
+            return true;
+        }
     }
 
 
@@ -46,6 +65,9 @@ public class Template1Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_template1, container, false);
         ButterKnife.bind(this, view);
+
+        // gesture listener
+        scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
 
         // get image from gallery onclick
         addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +96,12 @@ public class Template1Fragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
+
+        return true;
     }
 
     // return selected image from gallery

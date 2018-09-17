@@ -1,16 +1,21 @@
 package com.example.justindang.storywell;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -22,6 +27,9 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class SaveStoryDialogFragment extends DialogFragment {
+    // TAG
+    public static final String TAG = "save story";
+
     // views
     @BindView(R.id.button_save_story) Button saveStoryButton;
     @BindView(R.id.button_save_stories) Button saveStoriesButton;
@@ -66,31 +74,30 @@ public class SaveStoryDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 onSaveListener.shareStoryToInstagram();
-                // createInstagramIntent();
+                createInstagramIntent();
                 dismiss();
             }
         });
-
-
         return view;
     }
 
     // creates intent that launches instagram app to post story
     void createInstagramIntent() {
-        // create new intent using the 'send' action
-        Intent share = new Intent(Intent.ACTION_SEND);
-
-        // set MIME type
-        share.setType("image/*");
-
         // create URI from media
-        File media = new File(Environment.getExternalStorageDirectory() +  "test photo.jpg");
-        Uri uri = Uri.fromFile(media);
+        File media = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/testing.jpg");
+       // File path = new File(getContext().getFilesDir(), "images");
+        //File newFile = new File(path, "test photo.jpg");
+        Uri uri = FileProvider.getUriForFile(getContext(), "com.example.justindang.storywell.fileprovider", media);
 
-        // add URI to intent
-        share.putExtra(Intent.EXTRA_STREAM, uri);
+        // create new intent to open instagram
+        Intent intent = new Intent("com.instagram.share.ADD_TO_STORY");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setDataAndType(uri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-        // broadcast intent
-        startActivity(Intent.createChooser(share, "Share to"));
+        Activity activity = getActivity();
+        if (activity.getPackageManager().resolveActivity(intent, 0) != null) {
+            activity.startActivityForResult(intent, 0);
+        }
     }
 }
