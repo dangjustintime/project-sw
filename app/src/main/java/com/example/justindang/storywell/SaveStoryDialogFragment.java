@@ -84,20 +84,32 @@ public class SaveStoryDialogFragment extends DialogFragment {
     // creates intent that launches instagram app to post story
     void createInstagramIntent() {
         // create URI from media
-        File media = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/testing.jpg");
-       // File path = new File(getContext().getFilesDir(), "images");
+        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/test photo.jpg");
+        Toast.makeText(getContext(), media.getPath(), Toast.LENGTH_SHORT).show();
+        // File path = new File(getContext().getFilesDir(), "images");
         //File newFile = new File(path, "test photo.jpg");
         Uri uri = FileProvider.getUriForFile(getContext(), "com.example.justindang.storywell.fileprovider", media);
 
         // create new intent to open instagram
-        Intent intent = new Intent("com.instagram.share.ADD_TO_STORY");
+        Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.setDataAndType(uri, "image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setType("image/*");
 
+        /*
+        // instantiate activity and verify it will resolve implicit intent
         Activity activity = getActivity();
         if (activity.getPackageManager().resolveActivity(intent, 0) != null) {
             activity.startActivityForResult(intent, 0);
+        }
+        */
+
+        // verify that intent will resolve to an activity
+        Activity activity = getActivity();
+        Intent intentChooser = Intent.createChooser(intent, "Share Story");
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "Share Story"));
         }
     }
 }

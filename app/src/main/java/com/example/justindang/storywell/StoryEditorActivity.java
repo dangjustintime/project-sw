@@ -168,7 +168,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     @Override
     public void shareStoryToInstagram() {
-        Toast.makeText(getBaseContext(), "share to instagram", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
     }
 }
 
