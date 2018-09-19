@@ -36,6 +36,8 @@ public class Template1Fragment extends Fragment {
     @BindView(R.id.image_view_template1_outer_media) ImageView outerMediaImageView;
     @BindView(R.id.image_view_template1_add_inner_media) ImageView addInnerMediaImageView;
     @BindView(R.id.image_view_template1_add_outer_media) ImageView addOuterMediaImageView;
+    @BindView(R.id.image_view_template1_remove_inner_media) ImageView removeInnerMediaImageView;
+    @BindView(R.id.image_view_template1_remove_outer_media) ImageView removeOuterMediaImageView;
 
     // ScaleGestureDetector
     private ScaleGestureDetector scaleGestureDetector;
@@ -66,6 +68,9 @@ public class Template1Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_template1, container, false);
         ButterKnife.bind(this, view);
 
+        removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+
         // gesture listener
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
 
@@ -73,28 +78,47 @@ public class Template1Fragment extends Fragment {
         addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addOuterMediaImageView.setVisibility(View.INVISIBLE);
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
                 File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 String pictureDirectoryPath = pictureDirectory.getPath();
                 Uri data = Uri.parse(pictureDirectoryPath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
-                addOuterMediaImageView.setVisibility(View.INVISIBLE);
+                removeOuterMediaImageView.setVisibility(View.VISIBLE);
             }
 
         });
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addInnerMediaImageView.setVisibility(View.INVISIBLE);
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
                 File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 String pictureDirectoryPath = pictureDirectory.getPath();
                 Uri data = Uri.parse(pictureDirectoryPath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
-                addInnerMediaImageView.setVisibility(View.INVISIBLE);
+                removeInnerMediaImageView.setVisibility(View.VISIBLE);
             }
         });
+        removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                innerMediaImageView.setImageBitmap(null);
+                addInnerMediaImageView.setVisibility(View.VISIBLE);
+                removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+            }
+        });
+        removeOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                outerMediaImageView.setImageBitmap(null);
+                addOuterMediaImageView.setVisibility(View.VISIBLE);
+                removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+            }
+        });
+
         return view;
     }
 

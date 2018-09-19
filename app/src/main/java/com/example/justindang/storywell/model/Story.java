@@ -23,10 +23,10 @@ public class Story {
     public void setName(String name) {
         this.name = name;
     }
-    public String[] getPicturePaths() {
+    public ArrayList<String> getPicturePaths() {
         return picturePaths;
     }
-    public void setPicturePaths(String[] picturePaths) {
+    public void setPicturePaths(ArrayList<String> picturePaths) {
         this.picturePaths = picturePaths;
     }
     public Fragment getTemplate() {
