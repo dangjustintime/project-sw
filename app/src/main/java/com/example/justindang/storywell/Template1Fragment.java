@@ -118,7 +118,6 @@ public class Template1Fragment extends Fragment {
                     outerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    //Toast.makeText(this, "Unable to open image", Toast.LENGTH_SHORT).show();
                 }
 
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
@@ -131,7 +130,6 @@ public class Template1Fragment extends Fragment {
                     innerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    //Toast.makeText(this, "Unable to open image", Toast.LENGTH_SHORT).show();
                 }
             }
         }

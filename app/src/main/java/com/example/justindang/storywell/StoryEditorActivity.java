@@ -2,10 +2,13 @@ package com.example.justindang.storywell;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -155,6 +159,26 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         }
     }
 
+    // creates intent that launches instagram app to post story
+    void createInstagramIntent() {
+        // create URI from media
+        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + storyName + ".jpg");
+        Uri uri = FileProvider.getUriForFile(StoryEditorActivity.this, "com.example.justindang.storywell.fileprovider", media);
+
+        // create new intent to open instagram
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setType("image/*");
+
+        // verify that intent will resolve to an activity
+        Intent intentChooser = Intent.createChooser(intent, "Share Story");
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "Share Story"));
+        }
+    }
+
     @Override
     public void saveStory() {
         saveImage();
@@ -169,6 +193,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     @Override
     public void shareStoryToInstagram() {
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
+        saveImage();
+        createInstagramIntent();
     }
 }
 
