@@ -73,4 +73,10 @@
         android:layout_marginTop="15dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"/>
+    <ImageView
+        android:id="@+id/image_view_x_icon_save_story"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/x_icon"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </android.support.constraint.ConstraintLayout>
