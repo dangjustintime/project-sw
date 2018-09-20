@@ -68,6 +68,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Template1Fragment template1Fragment = new Template1Fragment();
+    Template2Fragment template2Fragment = new Template2Fragment();
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
 
     @Override

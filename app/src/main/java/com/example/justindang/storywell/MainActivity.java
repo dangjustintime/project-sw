@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
 
     // tags
     private static final String EXTRA_NAME = "name";
+    private static final String EXTRA_TEMPLATE = "template";
     private static final String DIALOG_NEW_STORY = "create a new story";
 
     // Fragment Transaction
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
     public void sendTemplate(String template) {
         Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
         intent.putExtra(EXTRA_NAME, newStoryName);
+        intent.putExtra(EXTRA_TEMPLATE, template);
         startActivity(intent);
     }
 }

@@ -66,13 +66,14 @@ public class ChooseATemplateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("template 1");
+                onTemplateListener.sendTemplate("free template 1");
             }
         });
         template2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "template2", Toast.LENGTH_SHORT).show();
+                onTemplateListener = (OnTemplateListener) getActivity();
+                onTemplateListener.sendTemplate("free template 2");
             }
         });
         template3Button.setOnClickListener(new View.OnClickListener() {
