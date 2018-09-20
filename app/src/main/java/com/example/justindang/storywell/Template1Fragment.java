@@ -56,6 +56,10 @@ public class Template1Fragment extends Fragment {
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
             Log.e("TAG", "PINCHING!!!!!");
+            scaleFactor *= scaleGestureDetector.getScaleFactor();
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5f));
+            outerMediaMatrix.setScale(scaleFactor, scaleFactor);
+            outerMediaImageView.setImageMatrix(outerMediaMatrix);
             return true;
         }
     }
@@ -140,7 +144,7 @@ public class Template1Fragment extends Fragment {
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    outerMediaImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    outerMediaImageView.setScaleType(ImageView.ScaleType.MATRIX);
                     outerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -152,7 +156,7 @@ public class Template1Fragment extends Fragment {
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    innerMediaImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    innerMediaImageView.setScaleType(ImageView.ScaleType.MATRIX);
                     innerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
