@@ -4,11 +4,14 @@ package com.example.justindang.storywell;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -42,24 +45,20 @@ public class Template1Fragment extends Fragment {
     // ScaleGestureDetector
     private ScaleGestureDetector scaleGestureDetector;
     private float scaleFactor = 1.5f;
+    private Matrix outerMediaMatrix = new Matrix();
 
     public Template1Fragment() {
         // Required empty public constructor
     }
 
-
     // scalelistener
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
-            scaleFactor *= scaleGestureDetector.getScaleFactor();
-            scaleFactor = Math.max( 0.1f, Math.min(scaleFactor, 10.0f));
-            outerMediaImageView.setScaleX(scaleFactor);
-            outerMediaImageView.setScaleY(scaleFactor);
+            Log.e("TAG", "PINCHING!!!!!");
             return true;
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,23 +118,16 @@ public class Template1Fragment extends Fragment {
             }
         });
 
-        return view;
-    }
-
-    public boolean onTouchEvent(MotionEvent event) {
-        scaleGestureDetector.onTouchEvent(event);
-
-        final int action = event.getAction();
-        switch (action & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN: {
-                final float x = event.getX();
-                final float y = event.getY();
-
-
+        // touchlisteners
+        outerMediaImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                scaleGestureDetector.onTouchEvent(event);
+                return true;
             }
-        }
+        });
 
-        return true;
+        return view;
     }
 
     // return selected image from gallery
@@ -148,7 +140,7 @@ public class Template1Fragment extends Fragment {
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    outerMediaImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    outerMediaImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     outerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -160,7 +152,7 @@ public class Template1Fragment extends Fragment {
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    innerMediaImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    innerMediaImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     innerMediaImageView.setImageBitmap(imageBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

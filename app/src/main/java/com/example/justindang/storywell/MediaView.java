@@ -2,6 +2,7 @@ package com.example.justindang.storywell;
 
 import android.Manifest;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
@@ -21,6 +22,12 @@ public class MediaView extends AppCompatImageView {
   private float lastTouchX;
   private float lastTouchY;
   private int activePointerId;
+
+  // constructor
+  public MediaView(Context context) {
+    super(context);
+    scaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
+  }
 
   // scalelistener
   private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -102,17 +109,11 @@ public class MediaView extends AppCompatImageView {
   @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
-
     canvas.save();
     canvas.translate(posX, posY);
     canvas.scale(scaleFactor, scaleFactor);
     image.draw(canvas);
     canvas.restore();
-  }
-
-  // constructor
-  public MediaView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
   }
 
 }
