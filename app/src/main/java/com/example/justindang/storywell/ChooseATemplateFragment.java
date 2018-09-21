@@ -79,25 +79,29 @@ public class ChooseATemplateFragment extends Fragment {
         template3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "template3", Toast.LENGTH_SHORT).show();
+                onTemplateListener = (OnTemplateListener) getActivity();
+                onTemplateListener.sendTemplate("free template 3");
             }
         });
         template4Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "template4", Toast.LENGTH_SHORT).show();
+                onTemplateListener = (OnTemplateListener) getActivity();
+                onTemplateListener.sendTemplate("free template 4");
             }
         });
         template5Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "template5", Toast.LENGTH_SHORT).show();
+                onTemplateListener = (OnTemplateListener) getActivity();
+                onTemplateListener.sendTemplate("free template 5");
             }
         });
         template6Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "template6", Toast.LENGTH_SHORT).show();
+                onTemplateListener = (OnTemplateListener) getActivity();
+                onTemplateListener.sendTemplate("free template 6");
             }
         });
         return view;

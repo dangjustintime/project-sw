@@ -42,9 +42,11 @@ import butterknife.ButterKnife;
 public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener {
     // intent keys
     private static final String EXTRA_NAME = "name";
+    private static final String EXTRA_TEMPLATE = "template";
 
     // variables
     private String storyName;
+    private String templateKey;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -52,6 +54,9 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
+
+    // template manager
+    TemplateManager templateManager = new TemplateManager();
 
     // views
     @BindView(R.id.image_view_aa_icon) ImageView aaIconImageView;
@@ -79,10 +84,11 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
         // get data from intent
         storyName = getIntent().getStringExtra(EXTRA_NAME);
+        templateKey = getIntent().getStringExtra(EXTRA_TEMPLATE);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, template1Fragment);
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(templateKey));
         fragmentTransaction.commit();
 
         // clicklisteners
@@ -197,5 +203,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         saveImage();
         createInstagramIntent();
     }
+
+
 }
 
