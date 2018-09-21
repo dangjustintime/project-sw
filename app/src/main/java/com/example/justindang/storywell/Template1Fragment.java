@@ -37,8 +37,8 @@ public class Template1Fragment extends Fragment {
     private static final int INVALID_POINTER_ID = 0;
 
     // request codes
-    public static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
-    public static final int IMAGE_GALLERY_REQUEST_INNER = 21;
+    private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
+    private static final int IMAGE_GALLERY_REQUEST_INNER = 21;
 
     // views
     @BindView(R.id.image_view_template1_inner_media) ImageView innerMediaImageView;
@@ -148,70 +148,6 @@ public class Template1Fragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 scaleGestureDetector.onTouchEvent(event);
-
-                /*
-                final int action = MotionEventCompat.getActionMasked(event);
-
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN: {
-                        final int pointerIndex = MotionEventCompat.getActionIndex(event);
-                        final float x = MotionEventCompat.getX(event, pointerIndex);
-                        final float y = MotionEventCompat.getY(event, pointerIndex);
-
-                        // store location for where finger started
-                        lastTouchX = x;
-                        lastTouchY = y;
-
-                        // save ID of pointer
-                        activePointerId = MotionEventCompat.getPointerId(event, 0);
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        Log.d("TAG", "MOVING....");
-                        // find the index of the active pointer and fetch its position
-                        final int pointerIndex = MotionEventCompat.findPointerIndex(event, activePointerId);
-
-                        final float x = MotionEventCompat.getX(event, pointerIndex);
-                        final float y = MotionEventCompat.getY(event, pointerIndex);
-
-                        // calculate the distance moved
-                        final float dx = x - lastTouchX;
-                        final float dy = y - lastTouchY;
-
-                        posX += dx;
-                        posY += dy;
-
-                        // remember touch position for next move event
-                        lastTouchX = x;
-                        lastTouchY = y;
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        activePointerId = INVALID_POINTER_ID;
-                        break;
-                    }
-                    case MotionEvent.ACTION_CANCEL: {
-                        activePointerId = INVALID_POINTER_ID;
-                        break;
-                    }
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        final int pointerIndex = MotionEventCompat.getActionIndex(event);
-                        final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
-
-                        if (pointerId == activePointerId) {
-                            // active pointer going up
-                            // choose a new active pointer and adjust accordingly
-                            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-                            lastTouchX = MotionEventCompat.getX(event, newPointerIndex);
-                            lastTouchY = MotionEventCompat.getY(event, newPointerIndex);
-                            activePointerId = MotionEventCompat.getPointerId(event, newPointerIndex);
-                        }
-                        break;
-                    }
-                }
-                */
-
                 return true;
             }
         });

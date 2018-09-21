@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/add_story_icon"/>
     <ImageView
-        android:id="@+id/image_view_template2_add_outer_media"
+        android:id="@+id/image_view_template2_color_picker_outer_layer"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintStart_toEndOf="@id/image_view_template2_inner_media"
@@ -41,4 +41,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/three_circles_icon"/>
+    <ImageView
+        android:id="@+id/image_view_template2_remove_inner_media"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/x_icon"
+        app:layout_constraintEnd_toEndOf="@id/image_view_template2_inner_media"
+        app:layout_constraintTop_toTopOf="@id/image_view_template2_inner_media" />
 </android.support.constraint.ConstraintLayout>
