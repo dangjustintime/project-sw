@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.colorpicker.shishank.colorpicker.ColorPicker;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -34,18 +36,29 @@ public class Template2Fragment extends Fragment {
     @BindView(R.id.image_view_template2_add_inner_media) ImageView addInnerMediaImageView;
     @BindView(R.id.image_view_template2_color_picker_outer_layer) ImageView colorPickerImageView;
     @BindView(R.id.image_view_template2_remove_inner_media) ImageView removeInnerMediaImageView;
+    @BindView(R.id.color_picker_template2_outer_later) ColorPicker colorPicker;
 
     public Template2Fragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_template2, container, false);
         ButterKnife.bind(this, view);
 
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+        colorPicker.setVisibility(View.INVISIBLE);
+
+        // color picker
+        colorPicker.setGradientView(R.drawable.color_gradient);
+        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color, boolean isTapUp) {
+                    outerLayerImageView.setBackgroundColor(color);
+            }
+        });
 
         // clicklisteners
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +77,11 @@ public class Template2Fragment extends Fragment {
         colorPickerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "color picker", Toast.LENGTH_SHORT).show();
+                if (colorPicker.getVisibility() == View.INVISIBLE) {
+                    colorPicker.setVisibility(View.VISIBLE);
+                } else {
+                    colorPicker.setVisibility(View.INVISIBLE);
+                }
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +92,7 @@ public class Template2Fragment extends Fragment {
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
             }
         });
+
 
         return view;
     }

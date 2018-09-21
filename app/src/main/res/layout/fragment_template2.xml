@@ -48,4 +48,9 @@
         android:src="@drawable/x_icon"
         app:layout_constraintEnd_toEndOf="@id/image_view_template2_inner_media"
         app:layout_constraintTop_toTopOf="@id/image_view_template2_inner_media" />
+    <com.colorpicker.shishank.colorpicker.ColorPicker
+        android:id="@+id/color_picker_template2_outer_later"
+        android:layout_width="wrap_content"
+        android:layout_height="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>
