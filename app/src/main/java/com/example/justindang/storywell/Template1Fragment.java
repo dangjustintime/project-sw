@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.model.Story;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -32,7 +34,7 @@ import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class Template1Fragment extends Fragment {
+public class Template1Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
     // invalid pointer id
     private static final int INVALID_POINTER_ID = 0;
 
@@ -184,5 +186,19 @@ public class Template1Fragment extends Fragment {
                 }
             }
         }
+    }
+
+    // hide UI
+    @Override
+    public void hideUI() {
+        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+        removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+    }
+
+    // show UI
+    @Override
+    public void showUI() {
+        removeInnerMediaImageView.setVisibility(View.VISIBLE);
+        removeOuterMediaImageView.setVisibility(View.VISIBLE);
     }
 }

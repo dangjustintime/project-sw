@@ -55,6 +55,12 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
 
+    public interface OnSaveImageListener {
+        void hideUI();
+        void showUI();
+    }
+    OnSaveImageListener onSaveImageListener;
+
     // template manager
     TemplateManager templateManager = new TemplateManager();
 
@@ -72,8 +78,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    Template1Fragment template1Fragment = new Template1Fragment();
-    Template2Fragment template2Fragment = new Template2Fragment();
+    Fragment templatePlaceholderFragment;
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
 
     @Override
@@ -85,10 +90,13 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         // get data from intent
         storyName = getIntent().getStringExtra(EXTRA_NAME);
         templateKey = getIntent().getStringExtra(EXTRA_TEMPLATE);
+        templatePlaceholderFragment = templateManager.getTemplate(templateKey);
+        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
 
+        // add fragment to back stack
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(templateKey));
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.commit();
 
         // clicklisteners
@@ -134,8 +142,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
             Log.e(TAG,"permission not granted");
 
             // ask for permission
@@ -188,6 +194,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     @Override
     public void saveStory() {
+        onSaveImageListener.hideUI();
         saveImage();
         finish();
     }
@@ -200,6 +207,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     @Override
     public void shareStoryToInstagram() {
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
+        onSaveImageListener.hideUI();
         saveImage();
         createInstagramIntent();
     }

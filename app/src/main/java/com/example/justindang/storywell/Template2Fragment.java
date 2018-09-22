@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class Template2Fragment extends Fragment {
+public class Template2Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
     // request code
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
 
@@ -93,7 +93,6 @@ public class Template2Fragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -117,4 +116,15 @@ public class Template2Fragment extends Fragment {
         }
     }
 
+    @Override
+    public void hideUI() {
+        colorPicker.setVisibility(View.INVISIBLE);
+        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+        colorPickerImageView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showUI() {
+
+    }
 }
