@@ -41,13 +41,13 @@
         app:layout_constraintTop_toTopOf="@id/image_view_template4_bottom_media"
         android:src="@drawable/add_story_icon"/>
     <ImageView
-        android:id="@+id/image_View_template4_remove_top_media"
+        android:id="@+id/image_view_template4_remove_top_media"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/x_icon"
         app:layout_constraintEnd_toEndOf="@id/image_view_template4_top_media"/>
     <ImageView
-        android:id="@+id/image_View_template4_remove_bottom_media"
+        android:id="@+id/image_view_template4_remove_bottom_media"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/x_icon"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/constraint_layout_template5_container"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,6 +23,12 @@
         app:layout_constraintBottom_toBottomOf="@id/image_view_template5_media"
         app:layout_constraintTop_toTopOf="@id/image_view_template5_media"
         android:src="@drawable/add_story_icon"/>
+    <ImageView
+        android:id="@+id/image_view_template5_remove_media"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/x_icon"
+        app:layout_constraintEnd_toEndOf="@id/image_view_template5_media"/>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_template5_text_container"
         android:layout_width="250dp"
@@ -61,6 +68,7 @@
             app:layout_constraintRight_toRightOf="parent"/>
     </android.support.constraint.ConstraintLayout>
     <ImageView
+        android:id="@+id/image_view_template5_color_picker"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/three_circles_icon"
@@ -70,4 +78,9 @@
         android:layout_marginTop="25dp"
         android:background="@color/colorWhite"
         app:layout_constraintCircleRadius="50dp"/>
+    <com.colorpicker.shishank.colorpicker.ColorPicker
+        android:id="@+id/color_picker_template5"
+        android:layout_width="wrap_content"
+        android:layout_height="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>

@@ -35,8 +35,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.image_view_template3_remove_bottom_media) ImageView removeBottomMediaImageView;
     @BindView(R.id.image_view_template3_remove_top_media) ImageView removeTopMediaImageView;
 
-
-
     public Template3Fragment() {
         // Required empty public constructor
     }

@@ -38,8 +38,8 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.image_view_template4_bottom_media) ImageView bottomMediaImageView;
     @BindView(R.id.image_view_template4_add_top_media) ImageView addTopMediaImageView;
     @BindView(R.id.image_view_template4_add_bottom_media) ImageView addBottomMediaImageView;
-    @BindView(R.id.image_View_template4_remove_top_media) ImageView removeTopMediaImageView;
-    @BindView(R.id.image_View_template4_remove_bottom_media) ImageView removeBottomMediaImageView;
+    @BindView(R.id.image_view_template4_remove_top_media) ImageView removeTopMediaImageView;
+    @BindView(R.id.image_view_template4_remove_bottom_media) ImageView removeBottomMediaImageView;
 
     public Template4Fragment() {
         // Required empty public constructor
