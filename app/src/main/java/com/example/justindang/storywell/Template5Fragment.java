@@ -124,6 +124,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeMediaImageView.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
+        colorPicker.setVisibility(View.INVISIBLE);
     }
 
     @Override
