@@ -65,14 +65,14 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     TemplateManager templateManager = new TemplateManager();
 
     // views
-    @BindView(R.id.image_view_aa_icon) ImageView aaIconImageView;
-    @BindView(R.id.image_view_square_circle_icon) ImageView squareCircleIconImageView;
-    @BindView(R.id.image_view_plus_icon) ImageView plusIconImageView;
-    @BindView(R.id.image_view_three_circle_icon) ImageView threeCircleIconImageView;
-    @BindView(R.id.image_view_angle_brackets_icon) ImageView angleBracketsIconImageView;
+    @BindView(R.id.image_view_story_editor_aa_icon) ImageView aaIconImageView;
+    @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
+    @BindView(R.id.image_view_story_editor_plus_icon) ImageView plusIconImageView;
+    @BindView(R.id.image_view_story_editor_three_circle_icon) ImageView threeCircleIconImageView;
+    @BindView(R.id.image_view_story_editor_angle_brackets_icon) ImageView angleBracketsIconImageView;
     @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
-    @BindView(R.id.image_view_back_button) ImageView backButtonImageView;
-    @BindView(R.id.image_view_download_icon) ImageView downloadButtonImageView;
+    @BindView(R.id.image_view_story_editor_back_button) ImageView backButtonImageView;
+    @BindView(R.id.image_view_story_editor_download_icon) ImageView downloadButtonImageView;
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
 
     // fragments
@@ -112,6 +112,13 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
                 finish();
             }
         });
+        plusIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     // checks if external storage is available for read and write

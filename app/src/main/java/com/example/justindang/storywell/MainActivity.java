@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,7 @@ import java.io.InputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements CreateNewStoryDialogFragment.OnInputListener, ChooseATemplateFragment.OnTemplateListener {
+public class MainActivity extends AppCompatActivity implements CreateNewStoryDialogFragment.OnInputListener, TemplateGridRecyclerAdapter.OnTemplateListener {
     // variables
     private String newStoryName;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
     private static final String DIALOG_NEW_STORY = "create a new story";
 
     // Fragment Transaction
+    FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
     // views
@@ -48,11 +50,13 @@ public class MainActivity extends AppCompatActivity implements CreateNewStoryDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // set onClickListener
+
+        // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewStoryDialogFragment.show(getSupportFragmentManager(), DIALOG_NEW_STORY);
+                fragmentManager = getSupportFragmentManager();
+                createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
             }
         });
         setSupportActionBar(toolbar);

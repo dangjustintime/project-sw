@@ -1,10 +1,15 @@
 package com.example.justindang.storywell;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +17,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,12 +31,11 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.text_view_choose_a_template) TextView chooseATemplateTextView;
     @BindView(R.id.image_view_x_icon) ImageView xIconImageView;
     @BindView(R.id.image_view_shopping_cart_icon) ImageView shoppingCartIconImageView;
-    @BindView(R.id.button_template1) Button template1Button;
-    @BindView(R.id.button_template2) Button template2Button;
-    @BindView(R.id.button_template3) Button template3Button;
-    @BindView(R.id.button_template4) Button template4Button;
-    @BindView(R.id.button_template5) Button template5Button;
-    @BindView(R.id.button_template6) Button template6Button;
+
+    // recycler view
+    @BindView(R.id.recycler_view_templates) RecyclerView templatesRecyclerView;
+    private TemplateGridRecyclerAdapter templateGridRecyclerAdapter;
+    private List<String> templateNames;
 
     // interface listener
     public interface OnTemplateListener {
@@ -52,6 +59,16 @@ public class ChooseATemplateFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_choose_atemplate, container, false);
         ButterKnife.bind(this, view);
 
+        // create recycler view
+        templatesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
+        templateNames = new ArrayList<>();
+        for (int i = 1; i < 7; i++) {
+            templateNames.add("free template " + String.valueOf(i));
+        }
+        templateGridRecyclerAdapter= new TemplateGridRecyclerAdapter(getContext(), templateNames);
+        templatesRecyclerView.setAdapter(templateGridRecyclerAdapter);
+
+        /*
         // click listeners
         xIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +121,8 @@ public class ChooseATemplateFragment extends Fragment {
                 onTemplateListener.sendTemplate("free template 6");
             }
         });
+        */
+
         return view;
     }
 

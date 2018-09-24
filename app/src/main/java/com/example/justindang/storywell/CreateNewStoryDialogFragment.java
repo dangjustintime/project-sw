@@ -56,7 +56,7 @@ public class CreateNewStoryDialogFragment extends DialogFragment {
                 storyName = editTextEnterAName.getText().toString();
                 onInputListener = (OnInputListener) getActivity();
                 if (storyName.equals("")) {
-                    Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT).show();
                 } else {
                     onInputListener.sendInput(storyName);
                     dismiss();
@@ -66,6 +66,8 @@ public class CreateNewStoryDialogFragment extends DialogFragment {
         buttonCancelStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                storyName = "";
+                editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
                 dismiss();
             }
         });

@@ -25,54 +25,6 @@
         android:src="@drawable/x_icon"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="15dp" />
-    <Button
-        android:id="@+id/button_template1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="template1 placeholder"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_choose_a_template"/>
-    <Button
-        android:id="@+id/button_template2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="template2 placeholder"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_template1"/>
-    <Button
-        android:id="@+id/button_template3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="template3 placeholder"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_template2"/>
-    <Button
-        android:id="@+id/button_template4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="template4 placeholder"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_template3"/>
-    <Button
-        android:id="@+id/button_template5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="template5 placeholder"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_template4"/>
-    <Button
-        android:id="@+id/button_template6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="template6 placeholder"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_template5"/>
     <ImageView
         android:id="@+id/image_view_shopping_cart_icon"
         android:layout_width="40dp"
@@ -112,4 +64,11 @@
         android:text="@string/c04"
         app:layout_constraintLeft_toRightOf="@+id/button_c03"
         app:layout_constraintBottom_toBottomOf="parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_templates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_choose_a_template"
+        android:layout_gravity="center"/>
 </android.support.constraint.ConstraintLayout>
