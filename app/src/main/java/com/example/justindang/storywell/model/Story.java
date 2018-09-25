@@ -14,7 +14,7 @@ public class Story {
     private String name;
     // absolute directory path for photos
     private ArrayList<String> picturePaths;
-    private Fragment template;
+    private String templateName;
 
     // getters and setters
     public String getName() {
@@ -29,11 +29,11 @@ public class Story {
     public void setPicturePaths(ArrayList<String> picturePaths) {
         this.picturePaths = picturePaths;
     }
-    public Fragment getTemplate() {
-        return template;
+    public String getTemplate() {
+        return templateName;
     }
-    public void setTemplate(Fragment template) {
-        this.template = template;
+    public void setTemplate(String templateName) {
+        this.templateName = templateName;
     }
 
     private void addImage(String imagePath) {

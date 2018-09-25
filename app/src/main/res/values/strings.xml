@@ -4,17 +4,20 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="tap_anywhere">tap anywhere</string>
     <string name="to_start_your_story">to start your story</string>
+
     <!-- create new story fragment -->
     <string name="create_new_story">create new story</string>
     <string name="enter_a_name_for_this_story">enter a name for this story</string>
     <string name="cancel">cancel</string>
     <string name="add">add</string>
+
     <!-- choose a template fragment -->
     <string name="choose_a_template">choose a template</string>
     <string name="c01">c01</string>
     <string name="c02">c02</string>
     <string name="c03">c03</string>
     <string name="c04">c04</string>
+
     <!-- save story fragment -->
     <string name="save">save</string>
     <string name="individual_story">individual story</string>
@@ -23,6 +26,7 @@
     <string name="story">story</string>
     <string name="stories">stories</string>
     <string name="share_story_to_instagram">share story to instagram</string>
+
     <!-- template fragments -->
     <string name="add_title">add title</string>
     <string name="tap_to_add_text">tap to add text to tell your story here in this space</string>
