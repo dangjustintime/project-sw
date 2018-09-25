@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CreateNewStoryDialogFragment extends DialogFragment {
+public class CreateNewStoryDialogFragment extends DialogFragment implements ChooseATemplateFragment.OnCancelListener {
     // fragment management
     FragmentTransaction fragmentTransaction;
     FragmentManager fragmentManager;
@@ -72,5 +72,11 @@ public class CreateNewStoryDialogFragment extends DialogFragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void cancelStory() {
+        storyName = "";
+        editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
     }
 }

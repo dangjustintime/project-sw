@@ -1,5 +1,7 @@
 package com.example.justindang.storywell.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -15,6 +17,14 @@ public class Story {
     // absolute directory path for photos
     private ArrayList<String> picturePaths;
     private String templateName;
+    private String key;
+
+    // constructor
+    public Story(String name, String templateName) {
+        this.name = name;
+        this.templateName = templateName;
+    }
+
 
     // getters and setters
     public String getName() {
@@ -34,6 +44,13 @@ public class Story {
     }
     public void setTemplate(String templateName) {
         this.templateName = templateName;
+    }
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     private void addImage(String imagePath) {

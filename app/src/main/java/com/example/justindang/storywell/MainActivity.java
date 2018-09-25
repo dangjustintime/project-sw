@@ -23,7 +23,9 @@ import java.io.InputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements CreateNewStoryDialogFragment.OnInputListener, TemplateGridRecyclerAdapter.OnTemplateListener {
+public class MainActivity extends AppCompatActivity
+        implements CreateNewStoryDialogFragment.OnInputListener,
+        TemplateGridRecyclerAdapter.OnTemplateListener {
     // variables
     private String newStoryName;
 

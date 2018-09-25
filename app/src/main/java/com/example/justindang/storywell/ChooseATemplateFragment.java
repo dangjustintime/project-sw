@@ -1,6 +1,7 @@
 package com.example.justindang.storywell;
 
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -32,16 +33,17 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.image_view_x_icon) ImageView xIconImageView;
     @BindView(R.id.image_view_shopping_cart_icon) ImageView shoppingCartIconImageView;
 
+
     // recycler view
     @BindView(R.id.recycler_view_templates) RecyclerView templatesRecyclerView;
     private TemplateGridRecyclerAdapter templateGridRecyclerAdapter;
     private List<String> templateNames;
 
     // interface listener
-    public interface OnTemplateListener {
-        public void sendTemplate(String template);
+    public interface OnCancelListener {
+        public void cancelStory();
     }
-    OnTemplateListener onTemplateListener;
+    OnCancelListener onCancelListener;
 
     // fragment manager
     FragmentManager fragmentManager;
@@ -68,7 +70,6 @@ public class ChooseATemplateFragment extends Fragment {
         templateGridRecyclerAdapter= new TemplateGridRecyclerAdapter(getContext(), templateNames);
         templatesRecyclerView.setAdapter(templateGridRecyclerAdapter);
 
-        /*
         // click listeners
         xIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,49 +80,6 @@ public class ChooseATemplateFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-        template1Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("free template 1");
-            }
-        });
-        template2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("free template 2");
-            }
-        });
-        template3Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("free template 3");
-            }
-        });
-        template4Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("free template 4");
-            }
-        });
-        template5Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("free template 5");
-            }
-        });
-        template6Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTemplateListener = (OnTemplateListener) getActivity();
-                onTemplateListener.sendTemplate("free template 6");
-            }
-        });
-        */
 
         return view;
     }

@@ -1,4 +1,8 @@
 <resources>
+    <!-- shared preferences keys -->
+    <string name="saved_num_stories_keys">number of stories</string>
+
+    
     <!-- main activity -->
     <string name="app_name">storywell</string>
     <string name="title_activity_main">MainActivity</string>
