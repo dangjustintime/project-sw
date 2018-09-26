@@ -11,11 +11,16 @@ public class Story {
     private ArrayList<String> picturePaths;
     private String templateName;
     private String key;
+    private int color;
 
     // constructor
+    public Story() {
+        this.picturePaths = new ArrayList<>();
+    }
     public Story(String name, String templateName) {
         this.name = name;
         this.templateName = templateName;
+        this.picturePaths = new ArrayList<>();
     }
 
 
@@ -52,11 +57,19 @@ public class Story {
         this.key = key;
     }
 
-    private void addImage(String imagePath) {
+    public void addImage(String imagePath) {
         picturePaths.add(imagePath);
     }
 
-    private void removeImage(String imagePath) {
+    public void removeImage(String imagePath) {
         picturePaths.remove(imagePath);
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

@@ -2,6 +2,7 @@ package com.example.justindang.storywell;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ImageReader;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,11 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_TOP = 40;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 48;
+
+    // file paths
+    ArrayList<String> filePaths;
+    String bottomMediaFilePath;
+    String topMediaFilePath;
 
     // views
     @BindView(R.id.image_view_template4_top_media) ImageView topMediaImageView;
@@ -110,6 +117,14 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_TOP) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                topMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(topMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -122,6 +137,14 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
             } else if (requestCode == IMAGE_GALLERY_REQUEST_BOTTOM) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                bottomMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(bottomMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);

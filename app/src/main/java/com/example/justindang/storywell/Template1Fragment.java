@@ -105,7 +105,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         removeOuterMediaImageView.setVisibility(View.INVISIBLE);
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
 
-        // initialize array
+        // initialize filePaths
         filePaths = new ArrayList<String>();
 
         // gesture listener
@@ -199,7 +199,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 InputStream inputStream;
 
                 // get absolute path for image
-                Cursor cursor = getContext().getContentResolver().query(imageUri, null, null, null, null);
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
                 int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                 cursor.moveToFirst();
                 innerMediaFilePath = cursor.getString(nameIndex);

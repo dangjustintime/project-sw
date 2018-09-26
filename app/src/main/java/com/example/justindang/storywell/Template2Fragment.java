@@ -2,12 +2,14 @@ package com.example.justindang.storywell;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,10 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     // request code
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
 
+    // file paths
+    ArrayList<String> filePaths;
+    String innerMediaFilePath;
+
     // views
     @BindView(R.id.image_view_template2_inner_media) ImageView innerMediaImageView;
     @BindView(R.id.image_view_template2_outer_layer) ImageView outerLayerImageView;
@@ -48,6 +54,9 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_template2, container, false);
         ButterKnife.bind(this, view);
+
+        // initailize filePaths
+        filePaths = new ArrayList<>();
 
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         colorPicker.setVisibility(View.INVISIBLE);
@@ -104,6 +113,14 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                innerMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(innerMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -131,6 +148,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> getFilePaths() {
-        return new ArrayList<String>();
+        return filePaths;
     }
 }

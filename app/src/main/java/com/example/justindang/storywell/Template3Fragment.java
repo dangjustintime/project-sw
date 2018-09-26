@@ -2,11 +2,13 @@ package com.example.justindang.storywell;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,12 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
 
+    // file paths
+    ArrayList<String> filePaths;
+    String bottomMediaFilePath;
+    String topMediaFilePath;
+
+
     // views
     @BindView(R.id.image_view_template3_add_bottom_media) ImageView addBottomMediaImageView;
     @BindView(R.id.image_view_template3_add_top_media) ImageView addTopMediaImageView;
@@ -46,6 +54,9 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_template3, container, false);
         ButterKnife.bind(this, view);
+
+        // initialize filePaths
+        filePaths = new ArrayList<>();
 
         removeTopMediaImageView.setVisibility(View.INVISIBLE);
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
@@ -104,6 +115,14 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_TOP) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                topMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(topMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -116,6 +135,14 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             } else if (requestCode == IMAGE_GALLERY_REQUEST_BOTTOM) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                bottomMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(bottomMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -142,6 +169,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> getFilePaths() {
-        return new ArrayList<String>();
+        return filePaths;
     }
 }
