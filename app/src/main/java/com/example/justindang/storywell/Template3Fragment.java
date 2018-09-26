@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -137,5 +138,10 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public void showUI() {
 
+    }
+
+    @Override
+    public ArrayList<String> getFilePaths() {
+        return new ArrayList<String>();
     }
 }

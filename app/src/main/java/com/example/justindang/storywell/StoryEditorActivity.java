@@ -2,8 +2,6 @@ package com.example.justindang.storywell;
 
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,23 +17,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Story;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +40,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // model of story
     private Story newStory;
+    private ArrayList<String> filePaths;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -59,6 +52,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     public interface OnSaveImageListener {
         void hideUI();
         void showUI();
+        ArrayList<String> getFilePaths();
     }
     OnSaveImageListener onSaveImageListener;
 
@@ -92,6 +86,9 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         newStory = new Story(getIntent().getStringExtra(EXTRA_NAME), getIntent().getStringExtra(EXTRA_TEMPLATE));
         templatePlaceholderFragment = templateManager.getTemplate(newStory.getTemplate());
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
+
+        // initialize list
+        filePaths = new ArrayList<String>();
 
         // add fragment to back stack
         fragmentManager = getSupportFragmentManager();
@@ -144,7 +141,9 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // save photo to storage
     public void saveImage() {
         // toast message
+        filePaths = onSaveImageListener.getFilePaths();
         Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), filePaths.get(0), Toast.LENGTH_SHORT).show();
 
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
