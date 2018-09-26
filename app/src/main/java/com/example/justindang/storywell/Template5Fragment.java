@@ -2,12 +2,14 @@ package com.example.justindang.storywell;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,13 +34,17 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     // request code
     private static final int IMAGE_GALLERY_REQUEST_MEDIA = 13;
 
+    // file paths
+    ArrayList<String> filePaths;
+    String mediaFilePath;
+
     // views
     @BindView(R.id.image_view_template5_media) ImageView mediaImageView;
     @BindView(R.id.image_view_template5_add_media) ImageView addMediaImageView;
     @BindView(R.id.image_view_template5_remove_media) ImageView removeMediaImageView;
     @BindView(R.id.edit_text_template5_add_title) EditText addTitleEditText;
     @BindView(R.id.edit_text_template5_tap_to_add) EditText tapToAddEditText;
-    @BindView(R.id.edit_text_template5_tip) EditText tipEditeText;
+    @BindView(R.id.edit_text_template5_tip) EditText tipEditText;
     @BindView(R.id.image_view_template5_color_picker) ImageView colorPickerImageView;
     @BindView(R.id.color_picker_template5) ColorPicker colorPicker;
     @BindView(R.id.constraint_layout_template5_container) ConstraintLayout containerConstraintLayout;
@@ -55,6 +61,9 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
         colorPicker.setVisibility(View.INVISIBLE);
         removeMediaImageView.setVisibility(View.INVISIBLE);
+
+        // initialize filePath
+        filePaths = new ArrayList<>();
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -108,6 +117,14 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_MEDIA) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                mediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(mediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -135,6 +152,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> getFilePaths() {
-        return new ArrayList<String>();
+        return filePaths;
     }
 }

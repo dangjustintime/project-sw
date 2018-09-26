@@ -63,6 +63,9 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
         removeTopMediaImageView.setVisibility(View.INVISIBLE);
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
 
+        // initalize filePaths
+        filePaths = new ArrayList<>();
+
         // clicklisteners
         addTopMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +174,6 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> getFilePaths() {
-        return new ArrayList<String>();
+        return filePaths;
     }
 }

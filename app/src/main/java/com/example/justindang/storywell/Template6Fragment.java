@@ -2,6 +2,7 @@ package com.example.justindang.storywell;
 
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.OpenableColumns;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -34,6 +36,11 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 19;
     private static final int IMAGE_GALLERY_REQUEST_INNER = 25;
+
+    // file paths
+    ArrayList<String> filePaths;
+    String innerMediaFilePath;
+    String outerMediaFilePath;
 
     // views
     @BindView(R.id.edit_text_template6_add_title) EditText addTitleEditText;
@@ -63,6 +70,9 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         removeOuterMediaImageView.setVisibility(View.INVISIBLE);
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         colorPicker.setVisibility(View.INVISIBLE);
+
+        // initialize filePaths
+        filePaths = new ArrayList<>();
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -137,6 +147,14 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                outerMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(outerMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -149,6 +167,14 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
+
+                // get absolute path for image
+                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                cursor.moveToFirst();
+                innerMediaFilePath = cursor.getString(nameIndex);
+                filePaths.add(innerMediaFilePath);
+
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -176,6 +202,6 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> getFilePaths() {
-        return new ArrayList<String>();
+        return filePaths;
     }
 }

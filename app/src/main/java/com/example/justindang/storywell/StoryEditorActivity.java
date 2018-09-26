@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Story;
+import com.example.justindang.storywell.presenter.StoryPresenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,6 +42,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // model of story
     private Story newStory;
     private ArrayList<String> filePaths;
+    private StoryPresenter storyPresenter;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
