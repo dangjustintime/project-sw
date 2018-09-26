@@ -28,6 +28,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.model.Story;
+
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -44,9 +46,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     private static final String EXTRA_NAME = "name";
     private static final String EXTRA_TEMPLATE = "template";
 
-    // variables
-    private String storyName;
-    private String templateKey;
+    // model of story
+    private Story newStory;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -88,9 +89,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         ButterKnife.bind(this);
 
         // get data from intent
-        storyName = getIntent().getStringExtra(EXTRA_NAME);
-        templateKey = getIntent().getStringExtra(EXTRA_TEMPLATE);
-        templatePlaceholderFragment = templateManager.getTemplate(templateKey);
+        newStory = new Story(getIntent().getStringExtra(EXTRA_NAME), getIntent().getStringExtra(EXTRA_TEMPLATE));
+        templatePlaceholderFragment = templateManager.getTemplate(newStory.getTemplate());
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
 
         // add fragment to back stack
@@ -165,7 +165,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
             // create file
             File pictureDir = getPublicAlbumStorageDir("storywell");
-            File imageFile = new File(pictureDir, storyName + ".jpg");
+            File imageFile = new File(pictureDir, newStory.getName() + ".jpg");
             try {
                 // place bitmap onto output stream
                 FileOutputStream outputStream = new FileOutputStream(imageFile);
@@ -182,7 +182,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // creates intent that launches instagram app to post story
     void createInstagramIntent() {
         // create URI from media
-        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + storyName + ".jpg");
+        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + newStory.getName() + ".jpg");
         Uri uri = FileProvider.getUriForFile(StoryEditorActivity.this, "com.example.justindang.storywell.fileprovider", media);
 
         // create new intent to open instagram

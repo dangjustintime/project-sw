@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     // variables
     private String newStoryName;
 
+
     // tags
     private static final String EXTRA_NAME = "name";
     private static final String EXTRA_TEMPLATE = "template";
