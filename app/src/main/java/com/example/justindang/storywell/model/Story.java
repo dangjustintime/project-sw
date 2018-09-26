@@ -10,7 +10,7 @@ public class Story {
     // absolute directory path for photos
     private ArrayList<String> picturePaths;
     private String templateName;
-    private String key;
+    private String SHARED_PREF_KEY;
     private int color;
 
     // constructor
@@ -22,7 +22,6 @@ public class Story {
         this.templateName = templateName;
         this.picturePaths = new ArrayList<>();
     }
-
 
     // getters and setters
     public String getName() {
@@ -40,7 +39,6 @@ public class Story {
     public void setPicturePaths(ArrayList<String> picturePaths) {
         this.picturePaths = picturePaths;
     }
-
     public String getTemplate() {
         return templateName;
     }
@@ -49,12 +47,12 @@ public class Story {
         this.templateName = templateName;
     }
 
-    public String getKey() {
-        return key;
+    public String getSharedPrefKey() {
+        return SHARED_PREF_KEY;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSharedPrefKey(String key) {
+        this.SHARED_PREF_KEY = key;
     }
 
     public void addImage(String imagePath) {

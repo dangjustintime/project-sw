@@ -84,6 +84,9 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
+        // initialize presenter
+        storyPresenter = new StoryPresenter(this);
+
         // get data from intent
         newStory = new Story(getIntent().getStringExtra(EXTRA_NAME), getIntent().getStringExtra(EXTRA_TEMPLATE));
         templatePlaceholderFragment = templateManager.getTemplate(newStory.getTemplate());
@@ -223,12 +226,10 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // StoryPresenter interface
     @Override
-    public void updateView(Story story) {
-
-    }
+    public void updateView(Story story) { }
 
     @Override
-    public String getFilePath(Uri imageUri) {
+    public ArrayList<String> getFilePaths(Uri imageUri) {
         return null;
     }
 
