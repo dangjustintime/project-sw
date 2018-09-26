@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.justindang.storywell.model.Story;
+import com.example.justindang.storywell.model.StoryViewModel;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity
         TemplateGridRecyclerAdapter.OnTemplateListener {
     // variables
     private String newStoryName;
+
+    // ViewModel
+    private static final String SID_KEY = "sid";
+    private StoryViewModel newStory;
 
 
     // tags
