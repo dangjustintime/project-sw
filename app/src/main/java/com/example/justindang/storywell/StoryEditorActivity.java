@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener {
+public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.View {
     // intent keys
     private static final String EXTRA_NAME = "name";
     private static final String EXTRA_TEMPLATE = "template";
@@ -200,6 +200,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         }
     }
 
+    // SaveStoryDialog interface
     @Override
     public void saveStory() {
         onSaveImageListener.hideUI();
@@ -220,6 +221,16 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         createInstagramIntent();
     }
 
+    // StoryPresenter interface
+    @Override
+    public void updateView(Story story) {
+
+    }
+
+    @Override
+    public String getFilePath(Uri imageUri) {
+        return null;
+    }
 
 }
 
