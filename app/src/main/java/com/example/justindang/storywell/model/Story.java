@@ -13,7 +13,7 @@ public class Story {
     private ArrayList<String> picturePaths;
     private String templateName;
     private String SHARED_PREF_KEY;
-    private int color;
+    private ArrayList<Integer> colors;
     private Date date;
     private String title;
     private String text;
@@ -69,12 +69,12 @@ public class Story {
         picturePaths.remove(imagePath);
     }
 
-    public int getColor() {
-        return color;
+    public ArrayList<Integer> getColors() {
+        return colors;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setColors(ArrayList<Integer> colors) {
+        this.colors = colors;
     }
 
     public Date getCreatedDate() {
@@ -99,19 +99,5 @@ public class Story {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    @Override
-    public String toString() {
-        String string = "name: " + name
-                + " template: " + templateName
-                + " color: " + color
-                + " file names: ";
-        for (String picturePath : picturePaths) {
-            string += picturePath + ", ";
-        }
-
-        // remove trailing comma and whitespace and return value
-        return string.substring(0, string.length() - 3);
     }
 }
