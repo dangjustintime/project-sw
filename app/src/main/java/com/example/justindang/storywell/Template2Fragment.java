@@ -36,7 +36,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     // file paths
     ArrayList<String> filePaths;
     String innerMediaFilePath;
-    int outerLayerColor;
+    Integer outerLayerColor;
 
     // views
     @BindView(R.id.image_view_template2_inner_media) ImageView innerMediaImageView;
@@ -56,7 +56,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template2, container, false);
         ButterKnife.bind(this, view);
 
-        // initailize filePaths
+        // initialize filePaths
         filePaths = new ArrayList<>();
 
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
@@ -156,7 +156,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public ArrayList<Integer> sendColors() {
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(0);
+        colors.add(outerLayerColor);
         return colors;
     }
 }

@@ -41,6 +41,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     ArrayList<String> filePaths;
     String innerMediaFilePath;
     String outerMediaFilePath;
+    Integer backgroundColor;
 
     // views
     @BindView(R.id.edit_text_template6_add_title) EditText addTitleEditText;
@@ -79,7 +80,8 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
             @Override
             public void onColorSelected(int color, boolean isTapUp) {
-                containerConstraintLayout.setBackgroundColor(color);
+                backgroundColor = color;
+                containerConstraintLayout.setBackgroundColor(backgroundColor);
             }
         });
 
@@ -208,7 +210,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public ArrayList<Integer> sendColors() {
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(0);
+        colors.add(backgroundColor);
         return colors;
     }
 }
