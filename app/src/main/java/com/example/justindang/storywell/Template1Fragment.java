@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Story;
+import com.example.justindang.storywell.presenter.StoryPresenter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,6 +72,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
     // active pointer for moving image
     private int activePointerId = INVALID_POINTER_ID;
+
+    // Uri
+    Uri imageUri;
 
     public Template1Fragment() {
         // Required empty public constructor
@@ -175,7 +179,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
-                Uri imageUri = data.getData();
+                imageUri = data.getData();
                 InputStream inputStream;
 
                 // get absolute path for image
@@ -195,7 +199,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 }
 
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                Uri imageUri = data.getData();
+                imageUri = data.getData();
                 InputStream inputStream;
 
                 // get absolute path for image
@@ -232,7 +236,12 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public ArrayList<String> getFilePaths() {
+    public ArrayList<String> sendFilePaths() {
         return filePaths;
+    }
+
+    @Override
+    public int sendColor() {
+        return 0;
     }
 }

@@ -201,7 +201,12 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public ArrayList<String> getFilePaths() {
+    public ArrayList<String> sendFilePaths() {
         return filePaths;
+    }
+
+    @Override
+    public int sendColor() {
+        return 0;
     }
 }

@@ -36,6 +36,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     // file paths
     ArrayList<String> filePaths;
     String innerMediaFilePath;
+    int outerLayerColor;
 
     // views
     @BindView(R.id.image_view_template2_inner_media) ImageView innerMediaImageView;
@@ -66,7 +67,8 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
             @Override
             public void onColorSelected(int color, boolean isTapUp) {
-                    outerLayerImageView.setBackgroundColor(color);
+                    outerLayerColor = color;
+                    outerLayerImageView.setBackgroundColor(outerLayerColor);
             }
         });
 
@@ -147,7 +149,12 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public ArrayList<String> getFilePaths() {
+    public ArrayList<String> sendFilePaths() {
         return filePaths;
+    }
+
+    @Override
+    public int sendColor() {
+        return outerLayerColor;
     }
 }

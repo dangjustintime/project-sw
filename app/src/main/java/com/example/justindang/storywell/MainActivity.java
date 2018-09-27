@@ -1,6 +1,8 @@
 package com.example.justindang.storywell;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +48,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        // get values from SharedPreferences
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+        String storyName = sharedPreferences.getString("story_0_name", "doo doo");
+        Toast.makeText(this, storyName, Toast.LENGTH_SHORT).show();
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {

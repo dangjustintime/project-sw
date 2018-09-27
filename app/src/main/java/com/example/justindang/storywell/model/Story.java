@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.model;
 
 import android.arch.lifecycle.LiveData;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public class Story {
     private String SHARED_PREF_KEY;
     private int color;
 
-    // constructor
+    // constructors
     public Story() {
         this.picturePaths = new ArrayList<>();
     }
@@ -39,11 +40,11 @@ public class Story {
     public void setPicturePaths(ArrayList<String> picturePaths) {
         this.picturePaths = picturePaths;
     }
-    public String getTemplate() {
+    public String getTemplateName() {
         return templateName;
     }
 
-    public void setTemplate(String templateName) {
+    public void setTemplateName(String templateName) {
         this.templateName = templateName;
     }
 
@@ -66,7 +67,6 @@ public class Story {
     public int getColor() {
         return color;
     }
-
     public void setColor(int color) {
         this.color = color;
     }

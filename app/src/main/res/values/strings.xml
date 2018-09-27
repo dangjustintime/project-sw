@@ -1,7 +1,7 @@
 <resources>
     <!-- shared preferences keys -->
     <string name="saved_num_stories_keys">number of stories</string>
-
+    <string name="saved_stories">SAVED_STORIES</string>
     
     <!-- main activity -->
     <string name="app_name">storywell</string>

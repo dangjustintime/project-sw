@@ -2,7 +2,9 @@ package com.example.justindang.storywell;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -40,7 +42,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     private static final String EXTRA_TEMPLATE = "template";
 
     // model of story
-    private Story newStory;
     private ArrayList<String> filePaths;
     private StoryPresenter storyPresenter;
 
@@ -54,7 +55,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     public interface OnSaveImageListener {
         void hideUI();
         void showUI();
-        ArrayList<String> getFilePaths();
+        ArrayList<String> sendFilePaths();
+        int sendColor();
     }
     OnSaveImageListener onSaveImageListener;
 
@@ -88,8 +90,9 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         storyPresenter = new StoryPresenter(this);
 
         // get data from intent
-        newStory = new Story(getIntent().getStringExtra(EXTRA_NAME), getIntent().getStringExtra(EXTRA_TEMPLATE));
-        templatePlaceholderFragment = templateManager.getTemplate(newStory.getTemplate());
+        storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
+        storyPresenter.updateTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
+        templatePlaceholderFragment = templateManager.getTemplate(storyPresenter.getStory().getTemplateName());
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
 
         // initialize list
@@ -145,10 +148,11 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // save photo to storage
     public void saveImage() {
-        // toast message
-        filePaths = onSaveImageListener.getFilePaths();
+        // get values from templates
+        storyPresenter.updateImagePaths(onSaveImageListener.sendFilePaths());
+        storyPresenter.updateColor(onSaveImageListener.sendColor());
+
         Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getBaseContext(), filePaths.get(0), Toast.LENGTH_SHORT).show();
 
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -169,7 +173,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
             // create file
             File pictureDir = getPublicAlbumStorageDir("storywell");
-            File imageFile = new File(pictureDir, newStory.getName() + ".jpg");
+            File imageFile = new File(pictureDir, storyPresenter.getStory().getName() + ".jpg");
             try {
                 // place bitmap onto output stream
                 FileOutputStream outputStream = new FileOutputStream(imageFile);
@@ -181,12 +185,25 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
                 e.printStackTrace();
             }
         }
+
+        // put values in shared preferences
+        // generate key
+        int numStories = 0;
+        storyPresenter.generateSharedPrefKey(numStories);
+        String key = storyPresenter.getStory().getSharedPrefKey() + "_name";
+        Toast.makeText(StoryEditorActivity.this, key, Toast.LENGTH_SHORT).show();
+
+        // put values in shared preferences
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(key, storyPresenter.getStory().getName());
+        sharedPreferencesEditor.apply();
     }
 
     // creates intent that launches instagram app to post story
     void createInstagramIntent() {
         // create URI from media
-        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + newStory.getName() + ".jpg");
+        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + storyPresenter.getStory().getName() + ".jpg");
         Uri uri = FileProvider.getUriForFile(StoryEditorActivity.this, "com.example.justindang.storywell.fileprovider", media);
 
         // create new intent to open instagram
@@ -227,11 +244,5 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // StoryPresenter interface
     @Override
     public void updateView(Story story) { }
-
-    @Override
-    public ArrayList<String> getFilePaths(Uri imageUri) {
-        return null;
-    }
-
 }
 

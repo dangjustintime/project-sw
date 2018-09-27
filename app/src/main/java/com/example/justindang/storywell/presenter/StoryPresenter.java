@@ -1,5 +1,7 @@
 package com.example.justindang.storywell.presenter;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 
@@ -19,28 +21,28 @@ public class StoryPresenter {
 
     // update values
     public void updateStory(Story story) {
-        this.story = story;
+         this.story = story;
         view.updateView(story);
     }
     public void updateName(String name) {
         story.setName(name);
         view.updateView(story);
     }
-    public void updateStoryPath(Uri imageUri) {
-        ArrayList<String> imagePaths = view.getFilePaths(imageUri);
+    public void updateImagePaths(ArrayList<String> imagePaths) {
         story.setPicturePaths(imagePaths);
         view.updateView(story);
     }
     public void updateTemplateName(String templateName) {
-        story.setTemplate(templateName);
+        story.setTemplateName(templateName);
         view.updateView(story);
     }
-    public void updateSharedPrefKey(String key) {
+    public void generateSharedPrefKey(int numStories) {
+        String key = "story_" + String.valueOf(numStories);
         story.setSharedPrefKey(key);
         view.updateView(story);
     }
-    public void updateStoryColor(int color) {
-        story.setColor(view.getColor(color));
+    public void updateColor(int color) {
+        story.setColor(color);
     }
 
     public Story getStory() {
@@ -49,7 +51,5 @@ public class StoryPresenter {
 
     public interface View {
         void updateView(Story story);
-        ArrayList<String> getFilePaths(Uri imageUri);
-        int getColor(int color);
     }
 }
