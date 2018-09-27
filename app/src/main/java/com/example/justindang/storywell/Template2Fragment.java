@@ -159,4 +159,14 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         colors.add(outerLayerColor);
         return colors;
     }
+
+    @Override
+    public String sendTitle() {
+        return null;
+    }
+
+    @Override
+    public String sendText() {
+        return null;
+    }
 }

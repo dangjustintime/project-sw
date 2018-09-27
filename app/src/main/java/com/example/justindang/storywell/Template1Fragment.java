@@ -246,4 +246,14 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         colors.add(0);
         return colors;
     }
+
+    @Override
+    public String sendTitle() {
+        return null;
+    }
+
+    @Override
+    public String sendText() {
+        return null;
+    }
 }

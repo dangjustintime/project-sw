@@ -163,4 +163,14 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         colors.add(backgroundColor);
         return colors;
     }
+
+    @Override
+    public String sendTitle() {
+        return addTitleEditText.getText().toString();
+    }
+
+    @Override
+    public String sendText() {
+        return tapToAddEditText.getText().toString();
+    }
 }

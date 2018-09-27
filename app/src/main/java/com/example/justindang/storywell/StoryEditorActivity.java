@@ -62,6 +62,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         void showUI();
         ArrayList<String> sendFilePaths();
         ArrayList<Integer> sendColors();
+        String sendTitle();
+        String sendText();
     }
     OnSaveImageListener onSaveImageListener;
 
@@ -153,10 +155,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // save photo to storage
     public void saveImage() {
-        // get values from templates
-        storyPresenter.updateImagePaths(onSaveImageListener.sendFilePaths());
-        //storyPresenter.updateColor(onSaveImageListener.sendColor());
-
         Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
 
         // check if write permissions are granted
@@ -191,6 +189,12 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
             }
         }
 
+        // get values from template fragments
+        storyPresenter.updateImagePaths(onSaveImageListener.sendFilePaths());
+        storyPresenter.updateColors(onSaveImageListener.sendColors());
+        storyPresenter.updateTitle(onSaveImageListener.sendTitle());
+        storyPresenter.updateText(onSaveImageListener.sendText());
+
         // put values in shared preferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
@@ -199,14 +203,22 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         storyPresenter.generateSharedPrefKey(numStories);
         String key = storyPresenter.getStory().getSharedPrefKey();
 
+        // convert Arraylists to HashSets
+        HashSet<String> filePathsHashSet = new HashSet<String>(storyPresenter.getStory().getPicturePaths());
+        ArrayList<String> colorsArrayList = new ArrayList<String>();
+        ArrayList<Integer> integerColors = storyPresenter.getStory().getColors();
+        for (Integer integer : integerColors) {
+            colorsArrayList.add(integer.toString());
+        }
+        HashSet<String> colorsHashSet = new HashSet<String>(colorsArrayList);
+
         // put values in shared preferences
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key + "_name", storyPresenter.getStory().getName());
         sharedPreferencesEditor.putString(key + "_template", storyPresenter.getStory().getTemplateName());
-        //sharedPreferencesEditor.putInt(key + "_color", storyPresenter.getStory().getColor());
-
-        // convert Arraylist to HashSet and put values in shared preferences
-        HashSet<String> filePathsHashSet = new HashSet<String>(storyPresenter.getStory().getPicturePaths());
+        sharedPreferencesEditor.putString(key + "_title", storyPresenter.getStory().getTitle());
+        sharedPreferencesEditor.putString(key + "_text", storyPresenter.getStory().getText());
+        sharedPreferencesEditor.putStringSet(key + "_colors", colorsHashSet);
         sharedPreferencesEditor.putStringSet(key + "_file_paths", filePathsHashSet);
 
         // increment number of stories

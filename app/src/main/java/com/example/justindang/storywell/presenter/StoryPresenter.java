@@ -44,18 +44,22 @@ public class StoryPresenter {
     }
     public void updateColors(ArrayList<Integer> colors) {
         story.setColors(colors);
+        view.updateView(story);
     }
 
     public void updateTitle(String title) {
         story.setTitle(title);
+        view.updateView(story);
     }
 
     public void updateText(String text) {
         story.setText(text);
+        view.updateView(story);
     }
 
     public void updateDate(Date date) {
         story.setDate(date);
+        view.updateView(story);
     }
 
     public Story getStory() {
