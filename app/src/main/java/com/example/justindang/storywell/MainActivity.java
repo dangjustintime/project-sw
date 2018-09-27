@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.constraint_layout_anywhere) ConstraintLayout constraintLayoutAnywhere;
     @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
+    @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
 
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
@@ -51,8 +55,8 @@ public class MainActivity extends AppCompatActivity
 
         // get values from SharedPreferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        String storyName = sharedPreferences.getString("story_0_name", "doo doo");
-        Toast.makeText(this, storyName, Toast.LENGTH_SHORT).show();
+        Map<String, ?> map = sharedPreferences.getAll();
+        sharedPreferencesTextView.setText(map.toString());
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {

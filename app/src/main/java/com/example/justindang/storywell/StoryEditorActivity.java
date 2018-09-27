@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -187,16 +192,25 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         }
 
         // put values in shared preferences
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+        int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+
         // generate key
-        int numStories = 0;
         storyPresenter.generateSharedPrefKey(numStories);
-        String key = storyPresenter.getStory().getSharedPrefKey() + "_name";
-        Toast.makeText(StoryEditorActivity.this, key, Toast.LENGTH_SHORT).show();
+        String key = storyPresenter.getStory().getSharedPrefKey();
 
         // put values in shared preferences
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString(key, storyPresenter.getStory().getName());
+        sharedPreferencesEditor.putString(key + "_name", storyPresenter.getStory().getName());
+        sharedPreferencesEditor.putString(key + "_template", storyPresenter.getStory().getTemplateName());
+        sharedPreferencesEditor.putInt(key + "_color", storyPresenter.getStory().getColor());
+
+        // convert Arraylist to HashSet and put values in shared preferences
+        HashSet<String> filePathsHashSet = new HashSet<String>(storyPresenter.getStory().getPicturePaths());
+        sharedPreferencesEditor.putStringSet(key + "_file_paths", filePathsHashSet);
+
+        // increment number of stories
+        sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
         sharedPreferencesEditor.apply();
     }
 

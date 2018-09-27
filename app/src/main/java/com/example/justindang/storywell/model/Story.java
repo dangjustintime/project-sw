@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Story {
     // member data
@@ -13,6 +14,9 @@ public class Story {
     private String templateName;
     private String SHARED_PREF_KEY;
     private int color;
+    private Date date;
+    private String title;
+    private String text;
 
     // constructors
     public Story() {
@@ -40,6 +44,7 @@ public class Story {
     public void setPicturePaths(ArrayList<String> picturePaths) {
         this.picturePaths = picturePaths;
     }
+
     public String getTemplateName() {
         return templateName;
     }
@@ -67,7 +72,46 @@ public class Story {
     public int getColor() {
         return color;
     }
+
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public Date getCreatedDate() {
+        return date;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.date = createdDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        String string = "name: " + name
+                + " template: " + templateName
+                + " color: " + color
+                + " file names: ";
+        for (String picturePath : picturePaths) {
+            string += picturePath + ", ";
+        }
+
+        // remove trailing comma and whitespace and return value
+        return string.substring(0, string.length() - 3);
     }
 }
