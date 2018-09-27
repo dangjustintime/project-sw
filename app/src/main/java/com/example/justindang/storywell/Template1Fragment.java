@@ -241,7 +241,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public int sendColor() {
-        return 0;
+    public ArrayList<Integer> sendColors() {
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+        colors.add(0);
+        return colors;
     }
 }

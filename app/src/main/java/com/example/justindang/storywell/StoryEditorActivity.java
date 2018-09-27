@@ -61,7 +61,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         void hideUI();
         void showUI();
         ArrayList<String> sendFilePaths();
-        int sendColor();
+        ArrayList<Integer> sendColors();
     }
     OnSaveImageListener onSaveImageListener;
 
