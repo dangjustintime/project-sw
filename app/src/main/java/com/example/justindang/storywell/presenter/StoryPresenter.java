@@ -8,6 +8,7 @@ import android.view.View;
 import com.example.justindang.storywell.model.Story;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class StoryPresenter {
     private Story story;
@@ -41,8 +42,20 @@ public class StoryPresenter {
         story.setSharedPrefKey(key);
         view.updateView(story);
     }
-    public void updateColor(int color) {
-        story.setColor(color);
+    public void updateColors(ArrayList<Integer> colors) {
+        story.setColors(colors);
+    }
+
+    public void updateTitle(String title) {
+        story.setTitle(title);
+    }
+
+    public void updateText(String text) {
+        story.setText(text);
+    }
+
+    public void updateDate(Date date) {
+        story.setDate(date);
     }
 
     public Story getStory() {

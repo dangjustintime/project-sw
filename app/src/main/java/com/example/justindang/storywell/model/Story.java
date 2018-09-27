@@ -2,6 +2,7 @@ package com.example.justindang.storywell.model;
 
 import android.arch.lifecycle.LiveData;
 import android.graphics.Bitmap;
+import android.icu.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,11 +22,14 @@ public class Story {
     // constructors
     public Story() {
         this.picturePaths = new ArrayList<>();
+        // get instance of current date
+        this.date = java.util.Calendar.getInstance().getTime();
     }
     public Story(String name, String templateName) {
         this.name = name;
         this.templateName = templateName;
         this.picturePaths = new ArrayList<>();
+
     }
 
     // getters and setters
@@ -77,12 +81,20 @@ public class Story {
         this.colors = colors;
     }
 
-    public Date getCreatedDate() {
+    public void addColor(Integer color) {
+        colors.add(color);
+    }
+
+    public void removeColor(Integer color) {
+        colors.remove(color);
+    }
+
+    public Date getDate() {
         return date;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.date = createdDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getTitle() {

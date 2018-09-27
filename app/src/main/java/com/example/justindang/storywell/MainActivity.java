@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         Map<String, ?> map = sharedPreferences.getAll();
         sharedPreferencesTextView.setText(map.toString());
+
+        Toast.makeText(this, Calendar.getInstance().getTime().toString(), Toast.LENGTH_LONG).show();
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {

@@ -155,7 +155,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     public void saveImage() {
         // get values from templates
         storyPresenter.updateImagePaths(onSaveImageListener.sendFilePaths());
-        storyPresenter.updateColor(onSaveImageListener.sendColor());
+        //storyPresenter.updateColor(onSaveImageListener.sendColor());
 
         Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
 
@@ -203,7 +203,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key + "_name", storyPresenter.getStory().getName());
         sharedPreferencesEditor.putString(key + "_template", storyPresenter.getStory().getTemplateName());
-        sharedPreferencesEditor.putInt(key + "_color", storyPresenter.getStory().getColor());
+        //sharedPreferencesEditor.putInt(key + "_color", storyPresenter.getStory().getColor());
 
         // convert Arraylist to HashSet and put values in shared preferences
         HashSet<String> filePathsHashSet = new HashSet<String>(storyPresenter.getStory().getPicturePaths());
