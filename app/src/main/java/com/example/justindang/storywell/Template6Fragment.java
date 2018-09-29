@@ -68,9 +68,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template6, container, false);
         ButterKnife.bind(this, view);
 
-        removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-        colorPicker.setVisibility(View.INVISIBLE);
+        hideUI();
 
         // initialize filePaths
         filePaths = new ArrayList<>();

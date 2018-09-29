@@ -31,8 +31,11 @@ import com.example.justindang.storywell.presenter.StoryPresenter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -42,6 +45,7 @@ import butterknife.ButterKnife;
 
 
 public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.View {
+
     // intent keys
     private static final String EXTRA_NAME = "name";
     private static final String EXTRA_TEMPLATE = "template";
@@ -86,52 +90,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     FragmentTransaction fragmentTransaction;
     Fragment templatePlaceholderFragment;
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_story_editor);
-        ButterKnife.bind(this);
-
-        // initialize presenter
-        storyPresenter = new StoryPresenter(this);
-
-        // get data from intent
-        storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
-        storyPresenter.updateTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
-        templatePlaceholderFragment = templateManager.getTemplate(storyPresenter.getStory().getTemplateName());
-        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-
-        // initialize list
-        filePaths = new ArrayList<String>();
-
-        // add fragment to back stack
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
-        fragmentTransaction.commit();
-
-        // clicklisteners
-        downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveStoryDialogFragment.show(fragmentManager, DIALOG_SAVE_STORY);
-            }
-        });
-        backButtonImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        plusIconImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-    }
 
     // checks if external storage is available for read and write
     public boolean isExternalStorageWritable() {
@@ -219,7 +177,12 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         sharedPreferencesEditor.putString(key + "_title", storyPresenter.getStory().getTitle());
         sharedPreferencesEditor.putString(key + "_text", storyPresenter.getStory().getText());
         sharedPreferencesEditor.putStringSet(key + "_colors", colorsHashSet);
-        sharedPreferencesEditor.putStringSet(key + "_file_paths", filePathsHashSet);
+
+        // format the current time.
+        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
+        Date currentTime = new Date();
+        String currentTimeString = formatter.format(currentTime);
+        sharedPreferencesEditor.putString(key + "_date", currentTimeString);
 
         // increment number of stories
         sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
@@ -244,6 +207,52 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         if (intent.resolveActivity(this.getPackageManager()) != null) {
             startActivity(Intent.createChooser(intent, "Share Story"));
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_story_editor);
+        ButterKnife.bind(this);
+
+        // initialize presenter
+        storyPresenter = new StoryPresenter(this);
+
+        // get data from intent
+        storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
+        storyPresenter.updateTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
+        templatePlaceholderFragment = templateManager.getTemplate(storyPresenter.getStory().getTemplateName());
+        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
+
+        // initialize list
+        filePaths = new ArrayList<String>();
+
+        // add fragment to back stack
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
+        fragmentTransaction.commit();
+
+        // clicklisteners
+        downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveStoryDialogFragment.show(fragmentManager, DIALOG_SAVE_STORY);
+            }
+        });
+        backButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        plusIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     // SaveStoryDialog interface

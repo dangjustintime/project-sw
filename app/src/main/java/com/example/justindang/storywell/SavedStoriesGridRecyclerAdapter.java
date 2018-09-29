@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.List;
 
 public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder> {
+
     // member data
     Context context;
     List<Story> savedStoriesList;
@@ -28,6 +29,28 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
     public SavedStoriesGridRecyclerAdapter(Context context, List<Story> savedStoriesList) {
         this.context = context;
         this.savedStoriesList = savedStoriesList;
+    }
+
+    public interface OnStoryListener {
+        public void sendStory();
+    }
+    OnStoryListener onStoryListener;
+
+    // view holder
+    public static class SavedStoryViewHolder extends RecyclerView.ViewHolder {
+        public TextView savedStoryNameTextView;
+        public TextView savedStoryDateTextView;
+        public ImageView savedStoryImageView;
+        public ImageView savedStoryEditNameImageView;
+
+        public SavedStoryViewHolder(@NonNull View itemView) {
+            super(itemView);
+            savedStoryNameTextView = (TextView) itemView.findViewById(R.id.text_view_template_name);
+            savedStoryDateTextView = (TextView) itemView.findViewById(R.id.text_view_saved_story_date);
+            savedStoryImageView = (ImageView) itemView.findViewById(R.id.image_view_saved_story);
+            savedStoryEditNameImageView = (ImageView) itemView.findViewById(R.id.image_view_edit_saved_story_name);
+        }
+
     }
 
     // inflater
@@ -66,25 +89,5 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
             return 0;
         }
         return savedStoriesList.size();
-    }
-
-    public interface OnStoryListener {
-        public void sendStory();
-    }
-    OnStoryListener onStoryListener;
-
-    // view holder
-    public static class SavedStoryViewHolder extends RecyclerView.ViewHolder {
-        public TextView savedStoryNameTextView;
-        public TextView savedStoryDateTextView;
-        public ImageView savedStoryImageView;
-
-        public SavedStoryViewHolder(@NonNull View itemView) {
-            super(itemView);
-            savedStoryNameTextView = (TextView) itemView.findViewById(R.id.text_view_template_name);
-            savedStoryDateTextView = (TextView) itemView.findViewById(R.id.text_view_saved_story_date);
-            savedStoryImageView = (ImageView) itemView.findViewById(R.id.image_view_saved_story);
-        }
-
     }
 }

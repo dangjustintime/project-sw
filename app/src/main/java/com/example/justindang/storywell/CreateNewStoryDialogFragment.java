@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class CreateNewStoryDialogFragment extends DialogFragment implements ChooseATemplateFragment.OnCancelListener {
+
     // fragment management
     FragmentTransaction fragmentTransaction;
     FragmentManager fragmentManager;
@@ -40,6 +41,7 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
     // instantiate OnInputListener
     OnInputListener onInputListener;
 
+    // constructor
     public CreateNewStoryDialogFragment() {
         // Required empty public constructor
     }

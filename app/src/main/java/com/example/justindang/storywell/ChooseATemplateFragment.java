@@ -33,7 +33,6 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.image_view_x_icon) ImageView xIconImageView;
     @BindView(R.id.image_view_shopping_cart_icon) ImageView shoppingCartIconImageView;
 
-
     // recycler view
     @BindView(R.id.recycler_view_templates) RecyclerView templatesRecyclerView;
     private TemplateGridRecyclerAdapter templateGridRecyclerAdapter;
@@ -49,10 +48,10 @@ public class ChooseATemplateFragment extends Fragment {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+    // constructor
     public ChooseATemplateFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,5 +82,4 @@ public class ChooseATemplateFragment extends Fragment {
 
         return view;
     }
-
 }

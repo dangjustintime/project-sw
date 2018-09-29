@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class Template3Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
+
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
@@ -34,7 +35,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     ArrayList<String> filePaths;
     String bottomMediaFilePath;
     String topMediaFilePath;
-
 
     // views
     @BindView(R.id.image_view_template3_add_bottom_media) ImageView addBottomMediaImageView;
@@ -48,7 +48,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,8 +57,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         // initialize filePaths
         filePaths = new ArrayList<>();
 
-        removeTopMediaImageView.setVisibility(View.INVISIBLE);
-        removeBottomMediaImageView.setVisibility(View.INVISIBLE);
+        hideUI();
 
         // clicklisteners
         addTopMediaImageView.setOnClickListener(new View.OnClickListener() {

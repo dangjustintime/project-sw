@@ -39,6 +39,7 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class Template1Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
+
     // invalid pointer id
     private static final int INVALID_POINTER_ID = 0;
 
@@ -106,8 +107,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template1, container, false);
         ButterKnife.bind(this, view);
 
-        removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+        hideUI();
 
         // initialize filePaths
         filePaths = new ArrayList<String>();

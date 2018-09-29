@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class SaveStoryDialogFragment extends DialogFragment {
+
     // TAG
     public static final String TAG = "save story";
 

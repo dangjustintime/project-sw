@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class Template2Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
+
     // request code
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
 
@@ -59,8 +60,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         // initialize filePaths
         filePaths = new ArrayList<>();
 
-        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-        colorPicker.setVisibility(View.INVISIBLE);
+        hideUI();
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);

@@ -8,14 +8,20 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.model.Story;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,8 +29,12 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements CreateNewStoryDialogFragment.OnInputListener,
         TemplateGridRecyclerAdapter.OnTemplateListener {
+
     // variables
     private String newStoryName;
+    private ArrayList<Story> savedStoriesList;
+    private int numSavedStories;
+    private Map<String, ?> sharedPrefMap;
 
     // ViewModel
     private static final String SID_KEY = "sid";
@@ -39,10 +49,11 @@ public class MainActivity extends AppCompatActivity
     FragmentTransaction fragmentTransaction;
 
     // views
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar_main_activity) Toolbar toolbar;
     @BindView(R.id.constraint_layout_anywhere) ConstraintLayout constraintLayoutAnywhere;
     @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
     @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
+    @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
 
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
@@ -55,11 +66,31 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         // get values from SharedPreferences
+        // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        Map<String, ?> map = sharedPreferences.getAll();
-        sharedPreferencesTextView.setText(map.toString());
+        numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        if (numSavedStories == 0) {
+            hideSavedStoriesRecyclerView();
+        } else {
+            showSavedStoriesRecyclerView();
 
-        Toast.makeText(this, Calendar.getInstance().getTime().toString(), Toast.LENGTH_LONG).show();
+            // get map of shared preferences
+            sharedPrefMap = sharedPreferences.getAll();
+            sharedPreferencesTextView.setText(sharedPrefMap.toString());
+
+            // place stories into an array
+            for (int i = 0; i < numSavedStories; i++) {
+                Story newStory = new Story();
+                String newStoryKey = "story_" + String.valueOf(numSavedStories);
+                newStory.setName(sharedPreferences.getString(newStoryKey + "_name", "NOT FOUND"));
+                newStory.setTemplateName(sharedPreferences.getString(newStoryKey + "_template", "NOT FOUND"));
+                newStory.setTitle(sharedPreferences.getString(newStoryKey + "_title", "NOT FOUND"));
+                newStory.setText(sharedPreferences.getString(newStoryKey + "_text", "NOT FOUND"));
+                String newStoryDate = sharedPreferences.getString(newStoryKey + "_date", "NOT FOUND");
+                Set<String> newStoryFilePathsSet = sharedPreferences.getStringSet(newStoryKey + "_file_paths", new HashSet<String>());
+                Set<String> newStoryColors = sharedPreferences.getStringSet(newStoryKey + "_colors", new HashSet<String>());
+            }
+        }
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +101,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
         setSupportActionBar(toolbar);
+    }
+
+    public void showSavedStoriesRecyclerView() {
+        constraintLayoutAnywhere.setVisibility(View.INVISIBLE);
+        savedStoriesRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideSavedStoriesRecyclerView() {
+        constraintLayoutAnywhere.setVisibility(View.VISIBLE);
+        savedStoriesRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
