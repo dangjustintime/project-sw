@@ -179,7 +179,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         sharedPreferencesEditor.putStringSet(key + "_colors", colorsHashSet);
 
         // format the current time.
-        SimpleDateFormat formatter = new SimpleDateFormat ("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
+        SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
         Date currentTime = new Date();
         String currentTimeString = formatter.format(currentTime);
         sharedPreferencesEditor.putString(key + "_date", currentTimeString);

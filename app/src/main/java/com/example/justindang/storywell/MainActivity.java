@@ -37,9 +37,6 @@ public class MainActivity extends AppCompatActivity
     private int numSavedStories;
     private Map<String, ?> sharedPrefMap;
 
-    // ViewModel
-    private static final String SID_KEY = "sid";
-
     // tags
     private static final String EXTRA_NAME = "name";
     private static final String EXTRA_TEMPLATE = "template";
