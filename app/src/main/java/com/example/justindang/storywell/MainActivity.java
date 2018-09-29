@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
     @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
+    @BindView(R.id.constraint_layout_bottom_bar) ConstraintLayout bottomBarConstraintLayout;
+    @BindView(R.id.image_view_main_activity_pencil_icon) ImageView pencilIconImageView;
+    @BindView(R.id.image_view_main_activity_plus_icon) ImageView plusIconImageView;
+    @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
 
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
@@ -100,17 +105,27 @@ public class MainActivity extends AppCompatActivity
                 createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
             }
         });
+        plusIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager = getSupportFragmentManager();
+                createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
+            }
+        });
         setSupportActionBar(toolbar);
     }
 
     public void showSavedStoriesRecyclerView() {
         constraintLayoutAnywhere.setVisibility(View.INVISIBLE);
         savedStoriesRecyclerView.setVisibility(View.VISIBLE);
+        bottomBarConstraintLayout.setVisibility(View.VISIBLE);
+
     }
 
     public void hideSavedStoriesRecyclerView() {
         constraintLayoutAnywhere.setVisibility(View.VISIBLE);
         savedStoriesRecyclerView.setVisibility(View.INVISIBLE);
+        bottomBarConstraintLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override

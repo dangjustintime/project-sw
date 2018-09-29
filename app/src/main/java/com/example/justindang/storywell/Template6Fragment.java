@@ -69,6 +69,8 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         ButterKnife.bind(this, view);
 
         hideUI();
+        colorPickerImageView.setVisibility(View.VISIBLE);
+
 
         // initialize filePaths
         filePaths = new ArrayList<>();

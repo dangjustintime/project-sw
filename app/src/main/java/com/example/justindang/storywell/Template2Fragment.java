@@ -61,6 +61,8 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         filePaths = new ArrayList<>();
 
         hideUI();
+        colorPickerImageView.setVisibility(View.VISIBLE);
+
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
