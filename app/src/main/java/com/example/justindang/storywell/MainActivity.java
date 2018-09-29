@@ -81,7 +81,9 @@ public class MainActivity extends AppCompatActivity
 
             // get map of shared preferences
             sharedPrefMap = sharedPreferences.getAll();
-            sharedPreferencesTextView.setText(sharedPrefMap.toString());
+            String sharedPrefString = sharedPrefMap.toString().replace(",",",\n");
+            sharedPreferencesTextView.setText(sharedPrefString);
+            sharedPreferencesTextView.setTextSize(20.f);
 
             // place stories into an array
             for (int i = 0; i < numSavedStories; i++) {
