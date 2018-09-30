@@ -176,13 +176,14 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         sharedPreferencesEditor.putString(key + "_template", storyPresenter.getStory().getTemplateName());
         sharedPreferencesEditor.putString(key + "_title", storyPresenter.getStory().getTitle());
         sharedPreferencesEditor.putString(key + "_text", storyPresenter.getStory().getText());
+        sharedPreferencesEditor.putString(key + "_date", storyPresenter.getStory().getDate());
         sharedPreferencesEditor.putStringSet(key + "_colors", colorsHashSet);
+        sharedPreferencesEditor.putStringSet(key + "_file_paths", filePathsHashSet);
 
         // format the current time.
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
         Date currentTime = new Date();
         String currentTimeString = formatter.format(currentTime);
-        sharedPreferencesEditor.putString(key + "_date", currentTimeString);
 
         // increment number of stories
         sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);

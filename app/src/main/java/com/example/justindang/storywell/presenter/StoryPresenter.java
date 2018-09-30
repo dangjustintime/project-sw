@@ -57,7 +57,7 @@ public class StoryPresenter {
         view.updateView(story);
     }
 
-    public void updateDate(Date date) {
+    public void updateDate(String date) {
         story.setDate(date);
         view.updateView(story);
     }

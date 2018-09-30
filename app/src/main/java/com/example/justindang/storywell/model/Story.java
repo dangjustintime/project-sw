@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,21 +16,28 @@ public class Story {
     private String templateName;
     private String SHARED_PREF_KEY;
     private ArrayList<Integer> colors;
-    private Date date;
+    private String date;    // format: MM.DD.YY
     private String title;
     private String text;
 
     // constructors
     public Story() {
         this.picturePaths = new ArrayList<>();
-        // get instance of current date
-        this.date = java.util.Calendar.getInstance().getTime();
+        this.colors = new ArrayList<>();
+        // format the current date
+        SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
+        Date currentTime = new Date();
+        this.date = formatter.format(currentTime);
     }
     public Story(String name, String templateName) {
         this.name = name;
         this.templateName = templateName;
         this.picturePaths = new ArrayList<>();
-
+        this.colors = new ArrayList<>();
+        // format the current date
+        SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
+        Date currentTime = new Date();
+        this.date = formatter.format(currentTime);
     }
 
     // getters and setters
@@ -89,11 +97,11 @@ public class Story {
         colors.remove(color);
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

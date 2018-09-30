@@ -66,7 +66,7 @@ public class ChooseATemplateFragment extends Fragment {
         for (int i = 1; i < 7; i++) {
             templateNames.add("free template " + String.valueOf(i));
         }
-        templateGridRecyclerAdapter= new TemplateGridRecyclerAdapter(getContext(), templateNames);
+        templateGridRecyclerAdapter = new TemplateGridRecyclerAdapter(getContext(), templateNames);
         templatesRecyclerView.setAdapter(templateGridRecyclerAdapter);
 
         // click listeners

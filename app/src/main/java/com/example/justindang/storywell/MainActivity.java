@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.justindang.storywell.model.Story;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity
 
     // variables
     private String newStoryName;
-    private ArrayList<Story> savedStoriesList;
     private int numSavedStories;
     private Map<String, ?> sharedPrefMap;
 
@@ -51,11 +52,15 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.constraint_layout_anywhere) ConstraintLayout constraintLayoutAnywhere;
     @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
     @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
-    @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
     @BindView(R.id.constraint_layout_bottom_bar) ConstraintLayout bottomBarConstraintLayout;
     @BindView(R.id.image_view_main_activity_pencil_icon) ImageView pencilIconImageView;
     @BindView(R.id.image_view_main_activity_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
+
+    // recycler view
+    @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
+    SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
+    private ArrayList<Story> savedStoriesList;
 
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
@@ -71,29 +76,47 @@ public class MainActivity extends AppCompatActivity
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        savedStoriesList = new ArrayList<>();
+        // get map of shared preferences
+        sharedPrefMap = sharedPreferences.getAll();
+        String sharedPrefString = sharedPrefMap.toString().replace(",",",\n");
+        sharedPreferencesTextView.setText(sharedPrefString);
+        sharedPreferencesTextView.setTextSize(20.f);
         if (numSavedStories == 0) {
             hideSavedStoriesRecyclerView();
         } else {
             showSavedStoriesRecyclerView();
 
-            // get map of shared preferences
-            sharedPrefMap = sharedPreferences.getAll();
-            String sharedPrefString = sharedPrefMap.toString().replace(",",",\n");
-            sharedPreferencesTextView.setText(sharedPrefString);
-            sharedPreferencesTextView.setTextSize(20.f);
-
             // place stories into an array
             for (int i = 0; i < numSavedStories; i++) {
+                // get values from shared preferences
                 Story newStory = new Story();
-                String newStoryKey = "story_" + String.valueOf(numSavedStories);
+                String newStoryKey = "story_" + String.valueOf(i);
                 newStory.setName(sharedPreferences.getString(newStoryKey + "_name", "NOT FOUND"));
                 newStory.setTemplateName(sharedPreferences.getString(newStoryKey + "_template", "NOT FOUND"));
                 newStory.setTitle(sharedPreferences.getString(newStoryKey + "_title", "NOT FOUND"));
                 newStory.setText(sharedPreferences.getString(newStoryKey + "_text", "NOT FOUND"));
-                String newStoryDate = sharedPreferences.getString(newStoryKey + "_date", "NOT FOUND");
+                newStory.setDate(sharedPreferences.getString(newStoryKey + "_date", "NOT FOUND"));
                 Set<String> newStoryFilePathsSet = sharedPreferences.getStringSet(newStoryKey + "_file_paths", new HashSet<String>());
+                for (String filePath : newStoryFilePathsSet) {
+                    newStory.addImage(filePath);
+                }
                 Set<String> newStoryColors = sharedPreferences.getStringSet(newStoryKey + "_colors", new HashSet<String>());
+                if (newStoryColors.size() > 0) {
+                    for (String color : newStoryColors) {
+                        newStory.addColor(Integer.valueOf(color));
+                    }
+                }
+                // Toast.makeText(this, newStory.getName(), Toast.LENGTH_SHORT).show();
+
+                // push to savedStories list
+                savedStoriesList.add(newStory);
             }
+
+            // create recycler view
+            savedStoriesRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false));
+            savedStoriesGridRecyclerAdapter = new SavedStoriesGridRecyclerAdapter(MainActivity.this, savedStoriesList);
+            savedStoriesRecyclerView.setAdapter(savedStoriesGridRecyclerAdapter);
         }
 
         // clickListeners
@@ -109,6 +132,16 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 fragmentManager = getSupportFragmentManager();
                 createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
+            }
+        });
+        trashIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
             }
         });
         setSupportActionBar(toolbar);

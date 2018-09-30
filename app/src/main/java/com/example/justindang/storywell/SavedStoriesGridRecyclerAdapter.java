@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 import com.example.justindang.storywell.model.Story;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder> {
@@ -45,12 +49,11 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
 
         public SavedStoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            savedStoryNameTextView = (TextView) itemView.findViewById(R.id.text_view_template_name);
-            savedStoryDateTextView = (TextView) itemView.findViewById(R.id.text_view_saved_story_date);
-            savedStoryImageView = (ImageView) itemView.findViewById(R.id.image_view_saved_story);
-            savedStoryEditNameImageView = (ImageView) itemView.findViewById(R.id.image_view_edit_saved_story_name);
+            savedStoryNameTextView = (TextView) itemView.findViewById(R.id.text_view_recycler_view_saved_story_name);
+            savedStoryDateTextView = (TextView) itemView.findViewById(R.id.text_view_recycler_view_saved_story_date);
+            savedStoryImageView = (ImageView) itemView.findViewById(R.id.image_view_recycler_view_saved_story_image);
+            savedStoryEditNameImageView = (ImageView) itemView.findViewById(R.id.image_view_recycler_view_edit_saved_story_name);
         }
-
     }
 
     // inflater
@@ -67,20 +70,24 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
     public void onBindViewHolder(@NonNull SavedStoryViewHolder savedStoryViewHolder, int i) {
         final Story savedStory = savedStoriesList.get(i);
         savedStoryViewHolder.savedStoryNameTextView.setText(savedStory.getName());
-        savedStoryViewHolder.savedStoryDateTextView.setText(savedStory.getDate().toString());
+        savedStoryViewHolder.savedStoryDateTextView.setText(savedStory.getDate());
 
         // get directory for the user's public pictures directory
         File pictureDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "storywell");
 
         // get image file
-        File imageFile = new File(pictureDir, savedStory.getPicturePaths().get(i));
-
-        // create bitmap
-        if(imageFile.exists()){
-            Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            savedStoryViewHolder.savedStoryImageView.setImageBitmap(myBitmap);
+        File imageFile = new File(pictureDir, savedStory.getPicturePaths().get(0));
+        Uri imageUri = Uri.fromFile(imageFile);
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+            // create bitmap
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
+            savedStoryViewHolder.savedStoryImageView.setImageBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
