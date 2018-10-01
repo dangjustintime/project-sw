@@ -40,4 +40,7 @@
     <string name="starter_kit_for">starter kit for brands and businesses</string>
     <string name="preview">PREVIEW</string>
     <string name="buy">BUY $1.99</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

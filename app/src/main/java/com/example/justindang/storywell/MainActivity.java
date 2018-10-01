@@ -77,11 +77,15 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
         savedStoriesList = new ArrayList<>();
+
+        /*
         // get map of shared preferences
         sharedPrefMap = sharedPreferences.getAll();
         String sharedPrefString = sharedPrefMap.toString().replace(",",",\n");
         sharedPreferencesTextView.setText(sharedPrefString);
         sharedPreferencesTextView.setTextSize(20.f);
+        */
+
         if (numSavedStories == 0) {
             hideSavedStoriesRecyclerView();
         } else {
@@ -107,8 +111,6 @@ public class MainActivity extends AppCompatActivity
                         newStory.addColor(Integer.valueOf(color));
                     }
                 }
-                // Toast.makeText(this, newStory.getName(), Toast.LENGTH_SHORT).show();
-
                 // push to savedStories list
                 savedStoriesList.add(newStory);
             }
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 fragmentManager = getSupportFragmentManager();
                 createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
+                hideSavedStoriesRecyclerView();
             }
         });
         trashIconImageView.setOnClickListener(new View.OnClickListener() {

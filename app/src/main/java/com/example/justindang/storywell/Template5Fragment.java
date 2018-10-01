@@ -119,13 +119,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_MEDIA) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
-
-                // get absolute path for image
-                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                cursor.moveToFirst();
-                mediaFilePath = cursor.getString(nameIndex);
-                filePaths.add(mediaFilePath);
+                filePaths.add(imageUri.toString());
 
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);

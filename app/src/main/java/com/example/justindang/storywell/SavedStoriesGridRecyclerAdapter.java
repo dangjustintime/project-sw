@@ -72,22 +72,16 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryNameTextView.setText(savedStory.getName());
         savedStoryViewHolder.savedStoryDateTextView.setText(savedStory.getDate());
 
-        // get directory for the user's public pictures directory
-        File pictureDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "storywell");
-
-        // get image file
-        File imageFile = new File(pictureDir, savedStory.getPicturePaths().get(0));
-        Uri imageUri = Uri.fromFile(imageFile);
+        Uri imageUri = Uri.parse(savedStory.getPicturePaths().get(0));
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
-            // create bitmap
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
-            savedStoryViewHolder.savedStoryImageView.setImageBitmap(bitmap);
+            inputStream = context.getContentResolver().openInputStream(imageUri);
+            Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+            savedStoryViewHolder.savedStoryImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            savedStoryViewHolder.savedStoryImageView.setImageBitmap(imageBitmap);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Story {
     // member data
     private String name;
     // absolute directory path for photos
-    private ArrayList<String> picturePaths;
+    private ArrayList<String> imageUris;
     private String templateName;
     private String SHARED_PREF_KEY;
     private ArrayList<Integer> colors;
@@ -22,7 +22,7 @@ public class Story {
 
     // constructors
     public Story() {
-        this.picturePaths = new ArrayList<>();
+        this.imageUris = new ArrayList<>();
         this.colors = new ArrayList<>();
         // format the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
@@ -32,7 +32,7 @@ public class Story {
     public Story(String name, String templateName) {
         this.name = name;
         this.templateName = templateName;
-        this.picturePaths = new ArrayList<>();
+        this.imageUris = new ArrayList<>();
         this.colors = new ArrayList<>();
         // format the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
@@ -50,11 +50,11 @@ public class Story {
     }
 
     public ArrayList<String> getPicturePaths() {
-        return picturePaths;
+        return imageUris;
     }
 
     public void setPicturePaths(ArrayList<String> picturePaths) {
-        this.picturePaths = picturePaths;
+        this.imageUris = picturePaths;
     }
 
     public String getTemplateName() {
@@ -74,11 +74,11 @@ public class Story {
     }
 
     public void addImage(String imagePath) {
-        picturePaths.add(imagePath);
+        imageUris.add(imagePath);
     }
 
     public void removeImage(String imagePath) {
-        picturePaths.remove(imagePath);
+        imageUris.remove(imagePath);
     }
 
     public ArrayList<Integer> getColors() {

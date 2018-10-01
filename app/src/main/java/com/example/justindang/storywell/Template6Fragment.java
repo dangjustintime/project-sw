@@ -149,14 +149,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
-
-                // get absolute path for image
-                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                cursor.moveToFirst();
-                outerMediaFilePath = cursor.getString(nameIndex);
-                filePaths.add(outerMediaFilePath);
-
+                filePaths.add(imageUri.toString());
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -169,14 +162,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 Uri imageUri = data.getData();
                 InputStream inputStream;
-
-                // get absolute path for image
-                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                cursor.moveToFirst();
-                innerMediaFilePath = cursor.getString(nameIndex);
-                filePaths.add(innerMediaFilePath);
-
+                filePaths.add(imageUri.toString());
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);

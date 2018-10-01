@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.PathUtils;
 import android.support.v4.view.MotionEventCompat;
 import android.text.Layout;
 import android.util.Log;
@@ -180,15 +181,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
                 imageUri = data.getData();
+                Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
                 InputStream inputStream;
-
-                // get absolute path for image
-                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                cursor.moveToFirst();
-                outerMediaFilePath = cursor.getString(nameIndex);
-                filePaths.add(outerMediaFilePath);
-
+                filePaths.add(imageUri.toString());
                 try {
                     inputStream = getContext().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
@@ -201,14 +196,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 imageUri = data.getData();
                 InputStream inputStream;
-
-                // get absolute path for image
-                Cursor cursor = getActivity().getContentResolver().query(imageUri, null, null, null, null);
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                cursor.moveToFirst();
-                innerMediaFilePath = cursor.getString(nameIndex);
-                filePaths.add(innerMediaFilePath);
-
+                filePaths.add(imageUri.toString());
                 try {
                     inputStream = getActivity().getContentResolver().openInputStream(imageUri);
                     Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);

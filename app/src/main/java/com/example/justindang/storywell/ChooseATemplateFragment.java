@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.text_view_choose_a_template) TextView chooseATemplateTextView;
     @BindView(R.id.image_view_x_icon) ImageView xIconImageView;
     @BindView(R.id.image_view_shopping_cart_icon) ImageView shoppingCartIconImageView;
+    @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderFrameLayout;
 
     // recycler view
     @BindView(R.id.recycler_view_templates) RecyclerView templatesRecyclerView;
@@ -47,6 +49,7 @@ public class ChooseATemplateFragment extends Fragment {
     // fragment manager
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    StarterKitsFragment starterKitsFragment;
 
     // constructor
     public ChooseATemplateFragment() {
@@ -76,6 +79,14 @@ public class ChooseATemplateFragment extends Fragment {
                 fragmentManager = getFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ChooseATemplateFragment.this);
+                fragmentTransaction.commit();
+            }
+        });
+        shoppingCartIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction().add(R.id.frame_layout_fragment_placeholder_choose, starterKitsFragment);
                 fragmentTransaction.commit();
             }
         });
