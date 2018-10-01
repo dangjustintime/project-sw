@@ -54,6 +54,10 @@ public class Stories {
         this.SHARED_PREF_KEY = key;
     }
 
+    public void setStory(int index, Story story) {
+        this.storiesList.set(index, story);
+    }
+
     public void addStory(Story story) {
         this.storiesList.add(story);
     }

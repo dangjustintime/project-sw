@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Story;
+import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.presenter.StoryPresenter;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // model of story
     private ArrayList<String> filePaths;
     private StoryPresenter storyPresenter;
+    private StoriesPresenter storiesPresenter;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -217,7 +219,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         ButterKnife.bind(this);
 
         // initialize presenter
-        storyPresenter = new StoryPresenter(this);
+        storyPresenter = new StoryPresenter(StoryEditorActivity.this);
+        storiesPresenter = new StoriesPresenter(StoryEditorActivity.this);
 
         // get data from intent
         storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));

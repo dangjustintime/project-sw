@@ -1,6 +1,6 @@
 package com.example.justindang.storywell.presenter;
 
-import android.view.View;
+import android.content.Context;
 
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.model.Story;
@@ -8,39 +8,46 @@ import com.example.justindang.storywell.model.Story;
 import java.util.ArrayList;
 
 public class StoriesPresenter {
+
+    // member data
     private Stories stories;
-    private View view;
+    private Context context;
+    private OnUpdateListener onUpdateListener;
 
     // constructor
-    public StoriesPresenter(View view) {
-        this.view = view;
+    public StoriesPresenter(Context context) {
+        this.context = context;
         this.stories = new Stories();
     }
 
     // update values
     public void updateName(String name) {
         stories.setName(name);
-        view.updateView(stories);
+        onUpdateListener.updateView(stories);
     }
 
     public void updateDate(String date) {
         stories.setDate(date);
-        view.updateView(stories);
+        onUpdateListener.updateView(stories);
     }
 
     public void generateSharedPrefKey(int numStories) {
         String key = "story_" + String.valueOf(numStories);
         stories.setSharedPrefKey(key);
-        view.updateView(stories);
+        onUpdateListener.updateView(stories);
     }
 
-    public void updateStoires(Stories stories) {
+    public void updateStories(Stories stories) {
         this.stories = stories;
-        view.updateView(stories);
+        onUpdateListener.updateView(stories);
     }
 
+    public void updateStory(int index, Story story) {
+        this.stories.setStory(index, story);
+        onUpdateListener.updateView(stories);
+    }
 
-    public interface View {
+    public interface OnUpdateListener {
         void updateView(Stories stories);
     }
 }
