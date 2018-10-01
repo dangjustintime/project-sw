@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Story {
+
     // member data
     private String name;
     // absolute directory path for photos

@@ -18,11 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
             <ImageView
-                android:id="@+id/toolbar_text_view_storywell_title"
+                android:id="@+id/toolbar_text_view_main_activity_storywell_title"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:src="@drawable/storywell_logo"/>
+            <ImageView
+                android:id="@+id/image_view_main_activity_shopping_cart"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="left"
+                android:src="@drawable/shopping_cart_icon" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
     <android.support.constraint.ConstraintLayout
@@ -69,9 +75,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_saved_stories"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_main_activity"/>
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_main_activity" />
     <TextView
         android:id="@+id/text_view_shared_preferences"
         android:layout_width="wrap_content"

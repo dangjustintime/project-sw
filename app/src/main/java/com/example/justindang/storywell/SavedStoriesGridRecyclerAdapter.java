@@ -2,11 +2,13 @@ package com.example.justindang.storywell;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         public TextView savedStoryDateTextView;
         public ImageView savedStoryImageView;
         public ImageView savedStoryEditNameImageView;
+        public ConstraintLayout savedStoryContainerConstraintLayout;
 
         public SavedStoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,6 +56,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
             savedStoryDateTextView = (TextView) itemView.findViewById(R.id.text_view_recycler_view_saved_story_date);
             savedStoryImageView = (ImageView) itemView.findViewById(R.id.image_view_recycler_view_saved_story_image);
             savedStoryEditNameImageView = (ImageView) itemView.findViewById(R.id.image_view_recycler_view_edit_saved_story_name);
+            savedStoryContainerConstraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraint_layout_recycler_view_saved_story_container);
         }
     }
 
@@ -82,6 +86,17 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        // clicklisteners
+        savedStoryViewHolder.savedStoryContainerConstraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, savedStory.getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, StoryEditorActivity.class);
+
+            }
+        });
+
     }
 
     @Override

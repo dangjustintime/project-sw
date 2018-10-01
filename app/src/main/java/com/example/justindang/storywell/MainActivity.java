@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.image_view_main_activity_pencil_icon) ImageView pencilIconImageView;
     @BindView(R.id.image_view_main_activity_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
+    @BindView(R.id.image_view_main_activity_shopping_cart) ImageView shoppingCartImageView;
 
     // recycler view
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
@@ -77,14 +78,6 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
         savedStoriesList = new ArrayList<>();
-
-        /*
-        // get map of shared preferences
-        sharedPrefMap = sharedPreferences.getAll();
-        String sharedPrefString = sharedPrefMap.toString().replace(",",",\n");
-        sharedPreferencesTextView.setText(sharedPrefString);
-        sharedPreferencesTextView.setTextSize(20.f);
-        */
 
         if (numSavedStories == 0) {
             hideSavedStoriesRecyclerView();
@@ -147,6 +140,14 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
             }
         });
+        shoppingCartImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, StarterKitsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         setSupportActionBar(toolbar);
     }
 
@@ -154,13 +155,14 @@ public class MainActivity extends AppCompatActivity
         constraintLayoutAnywhere.setVisibility(View.INVISIBLE);
         savedStoriesRecyclerView.setVisibility(View.VISIBLE);
         bottomBarConstraintLayout.setVisibility(View.VISIBLE);
-
+        shoppingCartImageView.setVisibility(View.VISIBLE);
     }
 
     public void hideSavedStoriesRecyclerView() {
         constraintLayoutAnywhere.setVisibility(View.VISIBLE);
         savedStoriesRecyclerView.setVisibility(View.INVISIBLE);
         bottomBarConstraintLayout.setVisibility(View.INVISIBLE);
+        shoppingCartImageView.setVisibility(View.INVISIBLE);
     }
 
     @Override
