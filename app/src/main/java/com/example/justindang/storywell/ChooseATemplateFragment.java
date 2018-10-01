@@ -2,6 +2,7 @@ package com.example.justindang.storywell;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -49,7 +50,6 @@ public class ChooseATemplateFragment extends Fragment {
     // fragment manager
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    StarterKitsFragment starterKitsFragment;
 
     // constructor
     public ChooseATemplateFragment() {
@@ -85,9 +85,8 @@ public class ChooseATemplateFragment extends Fragment {
         shoppingCartIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction().add(R.id.frame_layout_fragment_placeholder_choose, starterKitsFragment);
-                fragmentTransaction.commit();
+                Intent intent = new Intent(getActivity(), StarterKitsActivity.class);
+                startActivity(intent);
             }
         });
 
