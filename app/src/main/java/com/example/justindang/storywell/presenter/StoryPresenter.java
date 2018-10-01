@@ -22,26 +22,31 @@ public class StoryPresenter {
 
     // update values
     public void updateStory(Story story) {
-         this.story = story;
+        this.story = story;
         view.updateView(story);
     }
+
     public void updateName(String name) {
         story.setName(name);
         view.updateView(story);
     }
+
     public void updateImagePaths(ArrayList<String> imagePaths) {
         story.setPicturePaths(imagePaths);
         view.updateView(story);
     }
+
     public void updateTemplateName(String templateName) {
         story.setTemplateName(templateName);
         view.updateView(story);
     }
+
     public void generateSharedPrefKey(int numStories) {
         String key = "story_" + String.valueOf(numStories);
         story.setSharedPrefKey(key);
         view.updateView(story);
     }
+
     public void updateColors(ArrayList<Integer> colors) {
         story.setColors(colors);
         view.updateView(story);

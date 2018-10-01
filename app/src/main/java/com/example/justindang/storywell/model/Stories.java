@@ -46,13 +46,19 @@ public class Stories {
         storiesList = storiesList;
     }
 
-    public String getSHARED_PREF_KEY() {
+    public String getSharedPrefKey() {
         return SHARED_PREF_KEY;
     }
 
-    public void setSHARED_PREF_KEY(String SHARED_PREF_KEY) {
-        this.SHARED_PREF_KEY = SHARED_PREF_KEY;
+    public void setSharedPrefKey(String key) {
+        this.SHARED_PREF_KEY = key;
     }
 
+    public void addStory(Story story) {
+        this.storiesList.add(story);
+    }
 
+    public void removeStory(Story story) {
+        this.storiesList.remove(story);
+    }
 }
