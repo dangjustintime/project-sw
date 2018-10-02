@@ -43,7 +43,7 @@ public class Stories {
     }
 
     public void setStoriesList(ArrayList<Story> storiesList) {
-        storiesList = storiesList;
+        this.storiesList = storiesList;
     }
 
     public String getSharedPrefKey() {
@@ -60,5 +60,71 @@ public class Stories {
 
     public void removeStory(Story story) {
         this.storiesList.remove(story);
+    }
+
+
+    // getters and setters for story values
+    public Story getStory(int index) {
+        return storiesList.get(index);
+    }
+
+    public void setStory(int index, Story story) {
+        this.storiesList.set(index, story);
+    }
+
+    public ArrayList<String> getPicturePaths(int index) {
+        return storiesList.get(index).getPicturePaths();
+    }
+
+    public void setPicturePaths(int index, ArrayList<String> picturePaths) {
+        this.storiesList.get(index).setPicturePaths(picturePaths);
+    }
+
+    public String getTemplateName(int index) {
+        return storiesList.get(index).getTemplateName();
+    }
+
+    public void setTemplateName(int index, String templateName) {
+        this.storiesList.get(index).setTemplateName(templateName);
+    }
+
+    public void addImage(int index, String imagePath) {
+        this.storiesList.get(index).addImage(imagePath);
+    }
+
+    public void removeImage(int index, String imagePath) {
+        this.storiesList.get(index).removeImage(imagePath);
+    }
+
+    public ArrayList<Integer> getColors(int index) {
+        return this.storiesList.get(index).getColors();
+    }
+
+    public void setColors(int index, ArrayList<Integer> colors) {
+        this.storiesList.get(index).setColors(colors);
+    }
+
+    public void addColor(int index, Integer color) {
+        this.storiesList.get(index).addColor(color);
+    }
+
+    public void removeColor(int index, Integer color) {
+        this.storiesList.get(index).removeColor(color);
+    }
+
+    public String getTitle(int index) {
+        return this.storiesList.get(index).getTitle();
+    }
+
+    public void setTitle(int index, String title) {
+        this.storiesList.get(index).setTitle(title);
+    }
+
+    public String getText(int index) {
+        return this.storiesList.get(index).getText();
+    }
+
+    public void setText(int index, String text) {
+        this.storiesList.get(index).setText(text);
     }
 }

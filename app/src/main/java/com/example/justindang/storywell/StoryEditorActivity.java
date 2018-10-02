@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Story;
+import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.presenter.StoryPresenter;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // model of story
     private ArrayList<String> filePaths;
     private StoryPresenter storyPresenter;
+    private StoriesPresenter storiesPresenter;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -218,12 +220,18 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
         // initialize presenter
         storyPresenter = new StoryPresenter(this);
+        storiesPresenter = new StoriesPresenter((StoriesPresenter.View) this);
 
         // get data from intent
         storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
         storyPresenter.updateTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
         templatePlaceholderFragment = templateManager.getTemplate(storyPresenter.getStory().getTemplateName());
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
+
+        // data for storiesPresenter
+        storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
+        storiesPresenter.addStory(new Story());
+        storiesPresenter.getStory(0).setTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
 
         // initialize list
         filePaths = new ArrayList<String>();
