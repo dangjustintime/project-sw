@@ -16,67 +16,71 @@ public class StoryPresenter {
 
     // member data
     private Story story;
-    private Context context;
-    OnUpdateListener onUpdateListener;
+    private View view;
+
+    public interface View {
+        void updateView();
+    }
 
     // constructor
-    public StoryPresenter(Context context) {
+    public StoryPresenter(View view) {
         this.story = new Story();
-        this.context = context;
+        this.view = view;
+    }
+    public StoryPresenter(View view, Story story) {
+        this.story = story;
+        this.view = view;
     }
 
     // update values
     public void updateStory(Story story) {
         this.story = story;
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateName(String name) {
         story.setName(name);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateImagePaths(ArrayList<String> imagePaths) {
         story.setPicturePaths(imagePaths);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateTemplateName(String templateName) {
         story.setTemplateName(templateName);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void generateSharedPrefKey(int numStories) {
         String key = "story_" + String.valueOf(numStories);
         story.setSharedPrefKey(key);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateColors(ArrayList<Integer> colors) {
         story.setColors(colors);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateTitle(String title) {
         story.setTitle(title);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateText(String text) {
         story.setText(text);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public void updateDate(String date) {
         story.setDate(date);
-        onUpdateListener.updateView(context);
+        view.updateView();
     }
 
     public Story getStory() {
         return this.story;
     }
 
-    public interface OnUpdateListener {
-        void updateView(Context context);
-    }
 }

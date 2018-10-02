@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.OnUpdateListener {
+public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.View {
 
     // intent keys
     private static final String EXTRA_NAME = "name";
@@ -54,7 +54,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // model of story
     private ArrayList<String> filePaths;
     private StoryPresenter storyPresenter;
-    private StoriesPresenter storiesPresenter;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -220,18 +219,12 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
         // initialize presenter
         storyPresenter = new StoryPresenter(this);
-        storiesPresenter = new StoriesPresenter(this);
 
         // get data from intent
         storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
         storyPresenter.updateTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
         templatePlaceholderFragment = templateManager.getTemplate(storyPresenter.getStory().getTemplateName());
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-
-        // data for storiesPresenter
-        storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
-        storiesPresenter.addStory(new Story());
-        storiesPresenter.getStory(0).setTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
 
         // initialize list
         filePaths = new ArrayList<String>();
@@ -287,6 +280,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // StoryPresenter interface
     @Override
-    public void updateView(Context context) { }
+    public void updateView() { }
 }
 
