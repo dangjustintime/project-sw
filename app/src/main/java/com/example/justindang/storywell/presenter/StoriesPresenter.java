@@ -1,52 +1,57 @@
 package com.example.justindang.storywell.presenter;
 
+import android.content.Context;
 import android.view.View;
 
+import com.example.justindang.storywell.StoryEditorActivity;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.model.Story;
 
 import java.util.ArrayList;
 
 public class StoriesPresenter {
+
+    // member data
     private Stories stories;
-    private View view;
+    private Context context;
+    private OnUpdateListener onUpdateListener;
 
     // constructor
-    public StoriesPresenter(View view) {
-        this.view = view;
+    public StoriesPresenter(Context context) {
+        this.context = context;
         this.stories = new Stories();
     }
 
     // update values
     public void updateName(String name) {
         stories.setName(name);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void updateDate(String date) {
         stories.setDate(date);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void generateSharedPrefKey(int numStories) {
         String key = "story_" + String.valueOf(numStories);
         stories.setSharedPrefKey(key);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
-    public void updateStoires(Stories stories) {
+    public void updateStories(Stories stories) {
         this.stories = stories;
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void addStory(Story story) {
         this.stories.addStory(story);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void removeStory(Story story) {
         this.stories.removeStory(story);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public Stories getStories() {
@@ -60,35 +65,35 @@ public class StoriesPresenter {
     // update story values
     public void updateStory(int index, Story story) {
         this.stories.setStory(index, story);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void updateImagePaths(int index, ArrayList<String> imagePaths) {
         stories.setPicturePaths(index, imagePaths);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void updateTemplateName(int index, String templateName) {
         stories.setTemplateName(index, templateName);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void updateColors(int index, ArrayList<Integer> colors) {
         stories.setColors(index, colors);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void updateTitle(int index, String title) {
         stories.setTitle(index, title);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
     public void updateText(int index, String text) {
         stories.setText(index, text);
-        view.updateView(stories);
+        onUpdateListener.updateView(context);
     }
 
-    public interface View {
-        void updateView(Stories stories);
+    public interface OnUpdateListener {
+        void updateView(Context context);
     }
 }

@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.View {
+public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.OnUpdateListener {
 
     // intent keys
     private static final String EXTRA_NAME = "name";
@@ -220,7 +220,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
         // initialize presenter
         storyPresenter = new StoryPresenter(this);
-        storiesPresenter = new StoriesPresenter((StoriesPresenter.View) this);
+        storiesPresenter = new StoriesPresenter(this);
 
         // get data from intent
         storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
@@ -287,6 +287,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // StoryPresenter interface
     @Override
-    public void updateView(Story story) { }
+    public void updateView(Context context) { }
 }
 
