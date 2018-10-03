@@ -1,6 +1,13 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.utilities;
 
 import android.support.v4.app.Fragment;
+
+import com.example.justindang.storywell.Template1Fragment;
+import com.example.justindang.storywell.Template2Fragment;
+import com.example.justindang.storywell.Template3Fragment;
+import com.example.justindang.storywell.Template4Fragment;
+import com.example.justindang.storywell.Template5Fragment;
+import com.example.justindang.storywell.Template6Fragment;
 
 import java.util.HashMap;
 

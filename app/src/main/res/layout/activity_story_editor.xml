@@ -43,13 +43,13 @@
     <FrameLayout
         android:id="@+id/frame_layout_fragment_placeholder_story_editor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         app:layout_constraintBottom_toTopOf="@id/constraint_layout_icon_container"
-        app:layout_constraintTop_toBottomOf="@+id/appbar"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_story_editor_activity"/>
     <FrameLayout
         android:id="@+id/frame_layout_fragment_placeholder_save_story"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent"/>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_icon_container"
         android:layout_width="match_parent"

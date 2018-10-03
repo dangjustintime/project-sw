@@ -1,46 +1,32 @@
 package com.example.justindang.storywell;
 
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.model.Stories;
-import com.example.justindang.storywell.model.Story;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
-import com.example.justindang.storywell.presenter.StoryPresenter;
+import com.example.justindang.storywell.utilities.ImageSaver;
+import com.example.justindang.storywell.utilities.TemplateManager;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,14 +44,10 @@ public class StoryEditorActivity extends AppCompatActivity
     // model of story
     private ArrayList<String> filePaths;
     private StoriesPresenter storiesPresenter;
-    private int currentStory;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
     private static final String DIALOG_SAVE_STORY = "save story";
-
-    // request code
-    private static final int REQUEST_WRITE_PERMISSION = 200;
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -90,6 +72,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.image_view_story_editor_back_button) ImageView backButtonImageView;
     @BindView(R.id.image_view_story_editor_download_icon) ImageView downloadButtonImageView;
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
+    @BindView(R.id.constraint_layout_icon_container) ConstraintLayout iconContainerConstraintLayout;
 
     // fragments
     FragmentManager fragmentManager;
@@ -97,61 +80,11 @@ public class StoryEditorActivity extends AppCompatActivity
     Fragment templatePlaceholderFragment;
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
 
-    // checks if external storage is available for read and write
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    // returns File object representing Pictures directory
-    public File getPublicAlbumStorageDir(String albumName) {
-        // get directory for the user's public pictures directory
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), albumName);
-        if (!file.mkdirs()) {
-            Log.e(TAG, "Directory not created");
-        }
-        return file;
-    };
-
     // save photo to storage
     public void saveImage() {
         Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
 
-        // check if write permissions are granted
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG,"permission not granted");
-
-            // ask for permission
-            ActivityCompat.requestPermissions(StoryEditorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
-        } else {
-
-            // create bitmap from fragmentPlaceholderFrameLayout
-            Bitmap bitmap = Bitmap.createBitmap(
-                    fragmentPlaceholderFrameLayout.getWidth(),
-                    fragmentPlaceholderFrameLayout.getHeight(),
-                    Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            fragmentPlaceholderFrameLayout.draw(canvas);
-
-            // create file
-            File pictureDir = getPublicAlbumStorageDir("storywell");
-            File imageFile = new File(pictureDir, storiesPresenter.getPages().getName() + ".jpg");
-            try {
-                // place bitmap onto output stream
-                FileOutputStream outputStream = new FileOutputStream(imageFile);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-                outputStream.close();
-                Log.e(TAG, "Success");
-            } catch (IOException e) {
-                Log.e(TAG, "Failed");
-                e.printStackTrace();
-            }
-        }
+        ImageSaver.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
 
         // get values from template fragments
         storiesPresenter.updateImageUris(0, onSaveImageListener.sendFilePaths());
@@ -186,11 +119,6 @@ public class StoryEditorActivity extends AppCompatActivity
         sharedPreferencesEditor.putStringSet(key + "_0_colors", colorsHashSet);
         sharedPreferencesEditor.putStringSet(key + "_0_file_paths", filePathsHashSet);
 
-        // format the current time.
-        SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
-        Date currentTime = new Date();
-        String currentTimeString = formatter.format(currentTime);
-
         // increment number of stories
         sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
         sharedPreferencesEditor.apply();
@@ -210,7 +138,6 @@ public class StoryEditorActivity extends AppCompatActivity
         intent.setType("image/*");
 
         // verify that intent will resolve to an activity
-        Intent intentChooser = Intent.createChooser(intent, "Share Story");
         if (intent.resolveActivity(this.getPackageManager()) != null) {
             startActivity(Intent.createChooser(intent, "Share Story"));
         }
@@ -222,20 +149,20 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
+        // hide bottom bar
+        iconContainerConstraintLayout.setVisibility(View.INVISIBLE);
+
         // initialize presenter
         storiesPresenter = new StoriesPresenter(this);
-
-        // get data from intent
-        storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
-        storiesPresenter.addPage(new Stories.Page());
-        storiesPresenter.updateTemplateName(0, getIntent().getStringExtra(EXTRA_TEMPLATE));
-        templatePlaceholderFragment = templateManager.getTemplate(storiesPresenter.getPage(0).getTemplateName());
-        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
 
         // initialize list
         filePaths = new ArrayList<String>();
 
-        // add fragment to back stack
+        // get data from intent
+        storiesPresenter.addPage(new Stories.Page());
+        storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
+
+        // add Choose a template fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, new ChooseATemplateFragment());
@@ -299,8 +226,11 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
+        iconContainerConstraintLayout.setVisibility(View.VISIBLE);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
+        templatePlaceholderFragment = templateManager.getTemplate(template);
+        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
