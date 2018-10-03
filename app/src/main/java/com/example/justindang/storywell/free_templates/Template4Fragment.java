@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,8 +72,8 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
                 addTopMediaImageView.setVisibility(View.INVISIBLE);
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
                 File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String pictureDirectoryPath = pictureDirectory.getPath();
-                Uri data = Uri.parse(pictureDirectoryPath);
+                topMediaFilePath = pictureDirectory.getPath();
+                Uri data = Uri.parse(topMediaFilePath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_TOP);
                 removeTopMediaImageView.setVisibility(View.VISIBLE);
@@ -84,8 +85,8 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
                 addBottomMediaImageView.setVisibility(View.INVISIBLE);
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
                 File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String pictureDirectoryPath = pictureDirectory.getPath();
-                Uri data = Uri.parse(pictureDirectoryPath);
+                bottomMediaFilePath = pictureDirectory.getPath();
+                Uri data = Uri.parse(bottomMediaFilePath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_BOTTOM);
                 removeBottomMediaImageView.setVisibility(View.VISIBLE);
@@ -97,6 +98,7 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
                 topMediaImageView.setImageBitmap(null);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
                 addTopMediaImageView.setVisibility(View.VISIBLE);
+                filePaths.remove(topMediaFilePath);
             }
         });
         removeBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +107,7 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaImageView.setImageBitmap(null);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
+                filePaths.remove(bottomMediaFilePath);
             }
         });
 
@@ -116,31 +119,11 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_TOP) {
-                Uri imageUri = data.getData();
-                InputStream inputStream;
-                filePaths.add(imageUri.toString());
-                try {
-                    inputStream = getContext().getContentResolver().openInputStream(imageUri);
-                    Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    topMediaImageView.setScaleType(ImageView.ScaleType.MATRIX);
-                    topMediaImageView.setImageBitmap(imageBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
+                    filePaths.add(data.getData().toString());
+                ImageHandler.setImageToImageView(getContext(), data, topMediaImageView, ImageView.ScaleType.MATRIX);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_BOTTOM) {
-                Uri imageUri = data.getData();
-                InputStream inputStream;
-                filePaths.add(imageUri.toString());
-                try {
-                    inputStream = getContext().getContentResolver().openInputStream(imageUri);
-                    Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    bottomMediaImageView.setScaleType(ImageView.ScaleType.MATRIX);
-                    bottomMediaImageView.setImageBitmap(imageBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
+                filePaths.add(data.getData().toString());
+                ImageHandler.setImageToImageView(getContext(), data, bottomMediaImageView, ImageView.ScaleType.MATRIX);
             }
         }
     }

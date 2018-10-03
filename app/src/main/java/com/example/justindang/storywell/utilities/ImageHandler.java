@@ -2,27 +2,34 @@ package com.example.justindang.storywell.utilities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
-public class ImageSaver {
+public class ImageHandler {
     // TAG
     private static final String TAG = "PERMISSION NOT GRANTED";
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
 
     // empty constructor
-    private ImageSaver() { }
+    private ImageHandler() { }
 
     // returns File object representing Pictures directory
     private static File getPublicAlbumStorageDir(String albumName) {
@@ -69,6 +76,19 @@ public class ImageSaver {
                 e.printStackTrace();
             }
             return true;
+        }
+    }
+
+    public static void setImageToImageView(Context context, Intent intent, ImageView imageView, ImageView.ScaleType scaleType) {
+        Uri imageUri = intent.getData();
+        InputStream inputStream;
+        try {
+            inputStream = context.getContentResolver().openInputStream(imageUri);
+            Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+            imageView.setScaleType(scaleType);
+            imageView.setImageBitmap(imageBitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

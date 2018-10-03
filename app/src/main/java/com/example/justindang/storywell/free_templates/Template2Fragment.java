@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -79,8 +80,8 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
                 Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
                 File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String pictureDirectoryPath = pictureDirectory.getPath();
-                Uri data = Uri.parse(pictureDirectoryPath);
+                innerMediaFilePath = pictureDirectory.getPath();
+                Uri data = Uri.parse(innerMediaFilePath);
                 photoGalleryIntent.setDataAndType(data, "image/*");
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
@@ -102,6 +103,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaImageView.setImageBitmap(null);
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+                filePaths.remove(innerMediaFilePath);
             }
         });
 
@@ -113,18 +115,8 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                Uri imageUri = data.getData();
-                InputStream inputStream;
-                filePaths.add(imageUri.toString());
-                try {
-                    inputStream = getContext().getContentResolver().openInputStream(imageUri);
-                    Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    innerMediaImageView.setScaleType(ImageView.ScaleType.MATRIX);
-                    innerMediaImageView.setImageBitmap(imageBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
+                filePaths.add(data.getData().toString());
+                ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.FIT_CENTER);
             }
         }
     }

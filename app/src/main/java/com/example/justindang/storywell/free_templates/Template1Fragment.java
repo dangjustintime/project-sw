@@ -17,10 +17,10 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -173,31 +173,11 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
-                imageUri = data.getData();
-                Toast.makeText(getContext(), imageUri.toString(), Toast.LENGTH_LONG).show();
-                InputStream inputStream;
-                filePaths.add(imageUri.toString());
-                try {
-                    inputStream = getContext().getContentResolver().openInputStream(imageUri);
-                    Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    outerMediaImageView.setScaleType(ImageView.ScaleType.MATRIX);
-                    outerMediaImageView.setImageBitmap(imageBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
+                filePaths.add(data.getData().toString());
+                ImageHandler.setImageToImageView(getContext(), data, outerMediaImageView, ImageView.ScaleType.MATRIX);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                imageUri = data.getData();
-                InputStream inputStream;
-                filePaths.add(imageUri.toString());
-                try {
-                    inputStream = getActivity().getContentResolver().openInputStream(imageUri);
-                    Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-                    innerMediaImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    innerMediaImageView.setImageBitmap(imageBitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                filePaths.add(data.getData().toString());
+                ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }

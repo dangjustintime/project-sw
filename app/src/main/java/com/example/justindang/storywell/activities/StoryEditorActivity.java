@@ -23,7 +23,7 @@ import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
 import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
-import com.example.justindang.storywell.utilities.ImageSaver;
+import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 
 import java.io.File;
@@ -85,7 +85,7 @@ public class StoryEditorActivity extends AppCompatActivity
     public void saveImage() {
         Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
 
-        ImageSaver.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
+        ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
 
         // get values from template fragments
         storiesPresenter.updateImageUris(0, onSaveImageListener.sendFilePaths());
