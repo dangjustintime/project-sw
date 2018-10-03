@@ -94,7 +94,6 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
             public void onClick(View v) {
                 Toast.makeText(context, savedStories.getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, StoryEditorActivity.class);
-
             }
         });
 

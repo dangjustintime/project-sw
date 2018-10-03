@@ -6,12 +6,6 @@ import java.util.Date;
 
 public class Stories {
 
-    // member data
-    private String name;
-    private String date;    // format: MM.DD.YY
-    private ArrayList<Page> pagesList;
-    private String SHARED_PREF_KEY;
-
     public static class Page {
         // member data
         // absolute directory path for photos
@@ -78,6 +72,14 @@ public class Stories {
             this.text = text;
         }
     }
+
+    // member data
+    private String name;
+    private String date;    // format: MM.DD.YY
+    private ArrayList<Page> pagesList;
+    private String SHARED_PREF_KEY;
+
+
 
     // constructor
     public Stories() {

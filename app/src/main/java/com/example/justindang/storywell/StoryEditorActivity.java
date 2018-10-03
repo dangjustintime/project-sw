@@ -46,7 +46,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoriesPresenter.View, TemplateGridRecyclerAdapter.OnTemplateListener {
+public class StoryEditorActivity extends AppCompatActivity
+        implements SaveStoryDialogFragment.OnSaveListener,
+        StoriesPresenter.View,
+        TemplateGridRecyclerAdapter.OnTemplateListener {
 
     // intent keys
     private static final String EXTRA_NAME = "name";
@@ -63,11 +66,6 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
-
-    @Override
-    public void sendTemplate(String template) {
-
-    }
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -253,7 +251,10 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         backButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                fragmentManager.popBackStack();
+                if (fragmentManager.getBackStackEntryCount() == 0) {
+                    finish();
+                }
             }
         });
 
@@ -272,6 +273,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // SaveStoryDialog interface
     @Override
     public void saveStory() {
+        Toast.makeText(StoryEditorActivity.this, "HERE", Toast.LENGTH_SHORT).show();
         onSaveImageListener.hideUI();
         saveImage();
         finish();
@@ -293,5 +295,15 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // StoryPresenter interface
     @Override
     public void updateView() { }
+
+    // OnTemplateListener
+    @Override
+    public void sendTemplate(String template) {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 }
 

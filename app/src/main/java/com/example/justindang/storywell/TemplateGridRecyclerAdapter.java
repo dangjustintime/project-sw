@@ -43,6 +43,7 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
     public void onBindViewHolder(TemplateViewHolder viewHolder, int index) {
         final String templateName = templateNames.get(index);
         viewHolder.templateName.setText(templateName);
+
         // bind clicklistener
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

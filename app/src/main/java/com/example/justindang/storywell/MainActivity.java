@@ -31,8 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements CreateNewStoryDialogFragment.OnInputListener,
-        TemplateGridRecyclerAdapter.OnTemplateListener {
+        implements CreateNewStoryDialogFragment.OnInputListener {
 
     // variables
     private String newStoryName;
@@ -180,13 +179,5 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(EXTRA_NAME, newStoryName);
         startActivity(intent);
         // getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_fragment_placeholder, chooseATemplateFragment).commit();
-    }
-
-    @Override
-    public void sendTemplate(String template) {
-        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        intent.putExtra(EXTRA_NAME, newStoryName);
-        intent.putExtra(EXTRA_TEMPLATE, template);
-        startActivity(intent);
     }
 }
