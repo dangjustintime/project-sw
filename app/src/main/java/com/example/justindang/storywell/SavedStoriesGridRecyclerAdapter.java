@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.model.Story;
 
 import java.io.File;
@@ -29,10 +30,10 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
 
     // member data
     Context context;
-    List<Story> savedStoriesList;
+    List<Stories> savedStoriesList;
 
     // constructor
-    public SavedStoriesGridRecyclerAdapter(Context context, List<Story> savedStoriesList) {
+    public SavedStoriesGridRecyclerAdapter(Context context, List<Stories> savedStoriesList) {
         this.context = context;
         this.savedStoriesList = savedStoriesList;
     }
@@ -72,11 +73,11 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
     // binder
     @Override
     public void onBindViewHolder(@NonNull SavedStoryViewHolder savedStoryViewHolder, int i) {
-        final Story savedStory = savedStoriesList.get(i);
-        savedStoryViewHolder.savedStoryNameTextView.setText(savedStory.getName());
-        savedStoryViewHolder.savedStoryDateTextView.setText(savedStory.getDate());
+        final Stories savedStories = savedStoriesList.get(i);
+        savedStoryViewHolder.savedStoryNameTextView.setText(savedStories.getName());
+        savedStoryViewHolder.savedStoryDateTextView.setText(savedStories.getDate());
 
-        Uri imageUri = Uri.parse(savedStory.getPicturePaths().get(0));
+        Uri imageUri = Uri.parse(savedStories.getImageUris(0).get(0));
         InputStream inputStream = null;
         try {
             inputStream = context.getContentResolver().openInputStream(imageUri);
@@ -91,7 +92,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryContainerConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, savedStory.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, savedStories.getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, StoryEditorActivity.class);
 
             }

@@ -9,12 +9,79 @@ public class Stories {
     // member data
     private String name;
     private String date;    // format: MM.DD.YY
-    private ArrayList<Story> storiesList;
+    private ArrayList<Page> pagesList;
     private String SHARED_PREF_KEY;
+
+    public static class Page {
+        // member data
+        // absolute directory path for photos
+        private ArrayList<String> imageUris;
+        private String templateName;
+        private ArrayList<Integer> colors;
+        private String title;
+        private String text;
+
+        public void addImage(String imagePath) {
+            imageUris.add(imagePath);
+        }
+
+        public void removeImage(String imagePath) {
+            imageUris.remove(imagePath);
+        }
+
+        public void addColor(Integer color) {
+            colors.add(color);
+        }
+
+        public void removeColor(Integer color) {
+            colors.remove(color);
+        }
+
+        // getters and setters
+        public ArrayList<String> getImageUris() {
+            return imageUris;
+        }
+
+        public void setImageUris(ArrayList<String> imageUris) {
+            this.imageUris = imageUris;
+        }
+
+        public String getTemplateName() {
+            return templateName;
+        }
+
+        public void setTemplateName(String templateName) {
+            this.templateName = templateName;
+        }
+
+        public ArrayList<Integer> getColors() {
+            return colors;
+        }
+
+        public void setColors(ArrayList<Integer> colors) {
+            this.colors = colors;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+    }
 
     // constructor
     public Stories() {
-        this.storiesList = new ArrayList<>();
+        this.pagesList = new ArrayList<>();
         // format the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
         Date currentTime = new Date();
@@ -38,12 +105,16 @@ public class Stories {
         this.date = date;
     }
 
-    public ArrayList<Story> getStoriesList() {
-        return storiesList;
+    public ArrayList<Page> getPagesList() {
+        return pagesList;
     }
 
-    public void setStoriesList(ArrayList<Story> storiesList) {
-        this.storiesList = storiesList;
+    public void setPagesList(ArrayList<Page> pagesList) {
+        this.pagesList = pagesList;
+    }
+
+    public int getNumPages() {
+        return this.pagesList.size();
     }
 
     public String getSharedPrefKey() {
@@ -54,77 +125,76 @@ public class Stories {
         this.SHARED_PREF_KEY = key;
     }
 
-    public void addStory(Story story) {
-        this.storiesList.add(story);
-    }
-
-    public void removeStory(Story story) {
-        this.storiesList.remove(story);
-    }
-
-
     // getters and setters for story values
-    public Story getStory(int index) {
-        return storiesList.get(index);
+    public void addPage(Page page) {
+        this.pagesList.add(page);
     }
 
-    public void setStory(int index, Story story) {
-        this.storiesList.set(index, story);
+    public void removePage(Page page) {
+        this.pagesList.remove(page);
     }
 
-    public ArrayList<String> getPicturePaths(int index) {
-        return storiesList.get(index).getPicturePaths();
+    public Page getPage(int index) {
+        return pagesList.get(index);
     }
 
-    public void setPicturePaths(int index, ArrayList<String> picturePaths) {
-        this.storiesList.get(index).setPicturePaths(picturePaths);
+    public void setPage(int index, Page page) {
+        this.pagesList.set(index, page);
+    }
+
+    public ArrayList<String> getImageUris(int index) {
+        return pagesList.get(index).getImageUris();
+    }
+
+    public void setImageUris(int index, ArrayList<String> imageUris) {
+        this.pagesList.get(index).setImageUris(imageUris);
     }
 
     public String getTemplateName(int index) {
-        return storiesList.get(index).getTemplateName();
+        return pagesList.get(index).getTemplateName();
     }
 
     public void setTemplateName(int index, String templateName) {
-        this.storiesList.get(index).setTemplateName(templateName);
+        this.pagesList.get(index).setTemplateName(templateName);
     }
 
     public void addImage(int index, String imagePath) {
-        this.storiesList.get(index).addImage(imagePath);
+        this.pagesList.get(index).addImage(imagePath);
     }
 
     public void removeImage(int index, String imagePath) {
-        this.storiesList.get(index).removeImage(imagePath);
+        this.pagesList.get(index).removeImage(imagePath);
     }
 
     public ArrayList<Integer> getColors(int index) {
-        return this.storiesList.get(index).getColors();
+        return this.pagesList.get(index).getColors();
     }
 
     public void setColors(int index, ArrayList<Integer> colors) {
-        this.storiesList.get(index).setColors(colors);
+        this.pagesList.get(index).setColors(colors);
     }
 
     public void addColor(int index, Integer color) {
-        this.storiesList.get(index).addColor(color);
+        this.pagesList.get(index).addColor(color);
     }
 
     public void removeColor(int index, Integer color) {
-        this.storiesList.get(index).removeColor(color);
+        this.pagesList.get(index).removeColor(color);
     }
 
     public String getTitle(int index) {
-        return this.storiesList.get(index).getTitle();
+        return this.pagesList.get(index).getTitle();
     }
 
     public void setTitle(int index, String title) {
-        this.storiesList.get(index).setTitle(title);
+        this.pagesList.get(index).setTitle(title);
     }
 
     public String getText(int index) {
-        return this.storiesList.get(index).getText();
+        return this.pagesList.get(index).getText();
     }
 
     public void setText(int index, String text) {
-        this.storiesList.get(index).setText(text);
+        this.pagesList.get(index).setText(text);
     }
 }

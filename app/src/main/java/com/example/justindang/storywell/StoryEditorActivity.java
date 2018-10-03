@@ -25,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.model.Story;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.presenter.StoryPresenter;
@@ -45,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoryPresenter.View {
+public class StoryEditorActivity extends AppCompatActivity implements SaveStoryDialogFragment.OnSaveListener, StoriesPresenter.View, TemplateGridRecyclerAdapter.OnTemplateListener {
 
     // intent keys
     private static final String EXTRA_NAME = "name";
@@ -53,7 +54,8 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // model of story
     private ArrayList<String> filePaths;
-    private StoryPresenter storyPresenter;
+    private StoriesPresenter storiesPresenter;
+    private int currentStory;
 
     // TAG
     private static final String TAG = "StoryEditorActivity";
@@ -61,6 +63,11 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
+
+    @Override
+    public void sendTemplate(String template) {
+
+    }
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -135,7 +142,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
             // create file
             File pictureDir = getPublicAlbumStorageDir("storywell");
-            File imageFile = new File(pictureDir, storyPresenter.getStory().getName() + ".jpg");
+            File imageFile = new File(pictureDir, storiesPresenter.getPages().getName() + ".jpg");
             try {
                 // place bitmap onto output stream
                 FileOutputStream outputStream = new FileOutputStream(imageFile);
@@ -149,23 +156,23 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         }
 
         // get values from template fragments
-        storyPresenter.updateImagePaths(onSaveImageListener.sendFilePaths());
-        storyPresenter.updateColors(onSaveImageListener.sendColors());
-        storyPresenter.updateTitle(onSaveImageListener.sendTitle());
-        storyPresenter.updateText(onSaveImageListener.sendText());
+        storiesPresenter.updateImageUris(0, onSaveImageListener.sendFilePaths());
+        storiesPresenter.updateColors(0, onSaveImageListener.sendColors());
+        storiesPresenter.updateTitle(0, onSaveImageListener.sendTitle());
+        storiesPresenter.updateText(0, onSaveImageListener.sendText());
 
         // put values in shared preferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
 
         // generate key
-        storyPresenter.generateSharedPrefKey(numStories);
-        String key = storyPresenter.getStory().getSharedPrefKey();
+        storiesPresenter.generateSharedPrefKey(numStories);
+        String key = storiesPresenter.getPages().getSharedPrefKey();
 
         // convert Arraylists to HashSets
-        HashSet<String> filePathsHashSet = new HashSet<String>(storyPresenter.getStory().getPicturePaths());
+        HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getImageUris());
         ArrayList<String> colorsArrayList = new ArrayList<String>();
-        ArrayList<Integer> integerColors = storyPresenter.getStory().getColors();
+        ArrayList<Integer> integerColors = storiesPresenter.getPage(0).getColors();
         for (Integer integer : integerColors) {
             colorsArrayList.add(integer.toString());
         }
@@ -173,13 +180,13 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
 
         // put values in shared preferences
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString(key + "_name", storyPresenter.getStory().getName());
-        sharedPreferencesEditor.putString(key + "_template", storyPresenter.getStory().getTemplateName());
-        sharedPreferencesEditor.putString(key + "_title", storyPresenter.getStory().getTitle());
-        sharedPreferencesEditor.putString(key + "_text", storyPresenter.getStory().getText());
-        sharedPreferencesEditor.putString(key + "_date", storyPresenter.getStory().getDate());
-        sharedPreferencesEditor.putStringSet(key + "_colors", colorsHashSet);
-        sharedPreferencesEditor.putStringSet(key + "_file_paths", filePathsHashSet);
+        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
+        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
+        sharedPreferencesEditor.putString(key + "_0_template", storiesPresenter.getPage(0).getTemplateName());
+        sharedPreferencesEditor.putString(key + "_0_title", storiesPresenter.getPage(0).getTitle());
+        sharedPreferencesEditor.putString(key + "_0_text", storiesPresenter.getPage(0).getText());
+        sharedPreferencesEditor.putStringSet(key + "_0_colors", colorsHashSet);
+        sharedPreferencesEditor.putStringSet(key + "_0_file_paths", filePathsHashSet);
 
         // format the current time.
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
@@ -194,7 +201,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
     // creates intent that launches instagram app to post story
     void createInstagramIntent() {
         // create URI from media
-        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + storyPresenter.getStory().getName() + ".jpg");
+        File media = new File(Environment.getExternalStorageDirectory() + "/Pictures/storywell/" + storiesPresenter.getPages().getName() + ".jpg");
         Uri uri = FileProvider.getUriForFile(StoryEditorActivity.this, "com.example.justindang.storywell.fileprovider", media);
 
         // create new intent to open instagram
@@ -218,12 +225,13 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         ButterKnife.bind(this);
 
         // initialize presenter
-        storyPresenter = new StoryPresenter(this);
+        storiesPresenter = new StoriesPresenter(this);
 
         // get data from intent
-        storyPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
-        storyPresenter.updateTemplateName(getIntent().getStringExtra(EXTRA_TEMPLATE));
-        templatePlaceholderFragment = templateManager.getTemplate(storyPresenter.getStory().getTemplateName());
+        storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
+        storiesPresenter.addPage(new Stories.Page());
+        storiesPresenter.updateTemplateName(0, getIntent().getStringExtra(EXTRA_TEMPLATE));
+        templatePlaceholderFragment = templateManager.getTemplate(storiesPresenter.getPage(0).getTemplateName());
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
 
         // initialize list
@@ -232,7 +240,7 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
         // add fragment to back stack
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, new ChooseATemplateFragment());
         fragmentTransaction.commit();
 
         // clicklisteners
@@ -248,13 +256,17 @@ public class StoryEditorActivity extends AppCompatActivity implements SaveStoryD
                 finish();
             }
         });
+
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
+                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, chooseATemplateFragment);
+                fragmentTransaction.commit();
             }
         });
-
     }
 
     // SaveStoryDialog interface

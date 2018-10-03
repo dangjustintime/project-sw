@@ -47,32 +47,32 @@ public class StoriesPresenter {
         view.updateView();
     }
 
-    public void addStory(Story story) {
-        this.stories.addStory(story);
+    public void addPage(Stories.Page page) {
+        this.stories.addPage(page);
         view.updateView();
     }
 
-    public void removeStory(Story story) {
-        this.stories.removeStory(story);
+    public void removePage(Stories.Page page) {
+        this.stories.removePage(page);
         view.updateView();
     }
 
-    public Stories getStories() {
+    public Stories getPages() {
         return this.stories;
     }
 
-    public Story getStory(int index) {
-        return this.stories.getStory(index);
+    public Stories.Page getPage(int index) {
+        return this.stories.getPage(index);
     }
 
     // update story values
-    public void updateStory(int index, Story story) {
-        this.stories.setStory(index, story);
+    public void updatePage(int index, Stories.Page page) {
+        this.stories.setPage(index, page);
         view.updateView();
     }
 
-    public void updateImagePaths(int index, ArrayList<String> imagePaths) {
-        stories.setPicturePaths(index, imagePaths);
+    public void updateImageUris(int index, ArrayList<String> imagePaths) {
+        stories.setImageUris(index, imagePaths);
         view.updateView();
     }
 

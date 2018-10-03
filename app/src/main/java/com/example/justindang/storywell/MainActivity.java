@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.model.Story;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     // recycler view
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
     SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
-    private ArrayList<Story> savedStoriesList;
+    private ArrayList<Stories> savedStoriesList;
 
     // fragments
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
@@ -78,7 +79,10 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
         savedStoriesList = new ArrayList<>();
+        sharedPrefMap = sharedPreferences.getAll();
+        sharedPreferencesTextView.setText(sharedPrefMap.toString());
 
+        /*
         if (numSavedStories == 0) {
             hideSavedStoriesRecyclerView();
         } else {
@@ -87,32 +91,36 @@ public class MainActivity extends AppCompatActivity
             // place stories into an array
             for (int i = 0; i < numSavedStories; i++) {
                 // get values from shared preferences
-                Story newStory = new Story();
-                String newStoryKey = "story_" + String.valueOf(i);
-                newStory.setName(sharedPreferences.getString(newStoryKey + "_name", "NOT FOUND"));
-                newStory.setTemplateName(sharedPreferences.getString(newStoryKey + "_template", "NOT FOUND"));
-                newStory.setTitle(sharedPreferences.getString(newStoryKey + "_title", "NOT FOUND"));
-                newStory.setText(sharedPreferences.getString(newStoryKey + "_text", "NOT FOUND"));
-                newStory.setDate(sharedPreferences.getString(newStoryKey + "_date", "NOT FOUND"));
-                Set<String> newStoryFilePathsSet = sharedPreferences.getStringSet(newStoryKey + "_file_paths", new HashSet<String>());
+                Stories newStories = new Stories();
+                String newStoryKey = "stories_" + String.valueOf(i);
+                newStories.setName(sharedPreferences.getString(newStoryKey + "_name", "NOT FOUND"));
+                newStories.setDate(sharedPreferences.getString(newStoryKey + "_date", "NOT FOUND"));
+                // get values of each story
+                newStories.addStory(new Story());
+                newStories.setTemplateName(0, sharedPreferences.getString(newStoryKey + "_0_template", "NOT FOUND"));
+                newStories.setTitle(0, sharedPreferences.getString(newStoryKey + "_0_title", "NOT FOUND"));
+                newStories.setText(0, sharedPreferences.getString(newStoryKey + "_0_text", "NOT FOUND"));
+                Set<String> newStoryFilePathsSet = sharedPreferences.getStringSet(newStoryKey + "_0_file_paths", new HashSet<String>());
                 for (String filePath : newStoryFilePathsSet) {
-                    newStory.addImage(filePath);
+                    newStories.addImage(0, filePath);
                 }
-                Set<String> newStoryColors = sharedPreferences.getStringSet(newStoryKey + "_colors", new HashSet<String>());
+                Set<String> newStoryColors = sharedPreferences.getStringSet(newStoryKey + "_0_colors", new HashSet<String>());
                 if (newStoryColors.size() > 0) {
                     for (String color : newStoryColors) {
-                        newStory.addColor(Integer.valueOf(color));
+                        newStories.addColor(0, Integer.valueOf(color));
                     }
                 }
                 // push to savedStories list
-                savedStoriesList.add(newStory);
+                savedStoriesList.add(newStories);
             }
 
             // create recycler view
             savedStoriesRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false));
             savedStoriesGridRecyclerAdapter = new SavedStoriesGridRecyclerAdapter(MainActivity.this, savedStoriesList);
             savedStoriesRecyclerView.setAdapter(savedStoriesGridRecyclerAdapter);
+
         }
+        */
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +176,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendInput(String input) {
         newStoryName = input;
-        getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_fragment_placeholder, chooseATemplateFragment).commit();
+        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        intent.putExtra(EXTRA_NAME, newStoryName);
+        startActivity(intent);
+        // getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_fragment_placeholder, chooseATemplateFragment).commit();
     }
 
     @Override
