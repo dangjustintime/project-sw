@@ -1,14 +1,11 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,15 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.fragments.CreateNewStoryDialogFragment;
+import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.adapters.SavedStoriesGridRecyclerAdapter;
 import com.example.justindang.storywell.model.Stories;
-import com.example.justindang.storywell.model.Story;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,17 +28,12 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements CreateNewStoryDialogFragment.OnInputListener {
 
-    // variables
-    private int numSavedStories;
-    private Map<String, ?> sharedPrefMap;
-
     // tags
     private static final String EXTRA_NAME = "name";
     private static final String DIALOG_NEW_STORY = "create a new story";
 
     // Fragments
     FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
 
     // views
@@ -68,13 +58,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         // get values from SharedPreferences
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        int numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
         savedStoriesList = new ArrayList<>();
-        sharedPrefMap = sharedPreferences.getAll();
+        Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
         sharedPreferencesTextView.setText(sharedPrefMap.toString());
 
         /*

@@ -1,9 +1,8 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.free_templates;
 
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -11,13 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
-import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.PathUtils;
-import android.support.v4.view.MotionEventCompat;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -26,8 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.justindang.storywell.model.Story;
-import com.example.justindang.storywell.presenter.StoryPresenter;
+import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

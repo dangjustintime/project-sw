@@ -1,16 +1,8 @@
 package com.example.justindang.storywell.presenter;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.view.View;
-
-import com.example.justindang.storywell.StoryEditorActivity;
 import com.example.justindang.storywell.model.Story;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class StoryPresenter {
 

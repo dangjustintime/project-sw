@@ -1,4 +1,4 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.fragments;
 
 
 import android.app.Activity;
@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.justindang.storywell.R;
 
 import java.io.File;
 
@@ -48,7 +50,6 @@ public class SaveStoryDialogFragment extends DialogFragment {
         void saveStories();
         void shareStoryToInstagram();
     }
-    OnSaveListener onSaveListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +58,7 @@ public class SaveStoryDialogFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_save_story, container, false);
         ButterKnife.bind(this, view);
-        onSaveListener = (OnSaveListener) getActivity();
+        final OnSaveListener onSaveListener = (OnSaveListener) getActivity();
 
         // clicklisteners
         saveStoryButton.setOnClickListener(new View.OnClickListener() {

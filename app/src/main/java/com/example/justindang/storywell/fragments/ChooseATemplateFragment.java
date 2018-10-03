@@ -1,12 +1,8 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.fragments;
 
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
+import com.example.justindang.storywell.activities.StarterKitsActivity;
 
 import java.util.ArrayList;
 import java.util.List;

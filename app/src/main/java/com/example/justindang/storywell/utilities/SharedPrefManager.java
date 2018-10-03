@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPrefManager {
+    private Context context;
     private SharedPreferences sharedPreferences;
     public SharedPrefManager(Context context) {
-        context.getSharedPreferences("dfsd", 0);
     }
 }

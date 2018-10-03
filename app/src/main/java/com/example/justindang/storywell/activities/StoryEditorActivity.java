@@ -1,4 +1,4 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.activities;
 
 
 import android.content.Intent;
@@ -17,15 +17,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
+import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
+import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.utilities.ImageSaver;
 import com.example.justindang.storywell.utilities.TemplateManager;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 
 import butterknife.BindView;
@@ -46,7 +48,6 @@ public class StoryEditorActivity extends AppCompatActivity
     private StoriesPresenter storiesPresenter;
 
     // TAG
-    private static final String TAG = "StoryEditorActivity";
     private static final String DIALOG_SAVE_STORY = "save story";
 
     public interface OnSaveImageListener {
@@ -149,9 +150,6 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-        // hide bottom bar
-        iconContainerConstraintLayout.setVisibility(View.INVISIBLE);
-
         // initialize presenter
         storiesPresenter = new StoriesPresenter(this);
 
@@ -226,7 +224,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
-        iconContainerConstraintLayout.setVisibility(View.VISIBLE);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);

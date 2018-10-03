@@ -1,11 +1,6 @@
 package com.example.justindang.storywell.presenter;
 
-import android.content.Context;
-import android.view.View;
-
-import com.example.justindang.storywell.StoryEditorActivity;
 import com.example.justindang.storywell.model.Stories;
-import com.example.justindang.storywell.model.Story;
 
 import java.util.ArrayList;
 

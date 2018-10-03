@@ -1,4 +1,4 @@
-package com.example.justindang.storywell;
+package com.example.justindang.storywell.activities;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.justindang.storywell.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
