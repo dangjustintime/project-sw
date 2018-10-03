@@ -22,24 +22,15 @@ import butterknife.ButterKnife;
  */
 public class CreateNewStoryDialogFragment extends DialogFragment implements ChooseATemplateFragment.OnCancelListener {
 
-    // fragment management
-    FragmentTransaction fragmentTransaction;
-    FragmentManager fragmentManager;
-
     // views
     @BindView(R.id.edit_text_enter_a_name) EditText editTextEnterAName;
     @BindView(R.id.button_add_story) Button buttonAddStory;
     @BindView(R.id.button_cancel_story) Button buttonCancelStory;
 
-    // variables
-    private String storyName;
-
     // input listener
     public interface OnInputListener {
         void sendInput(String input);
     }
-    // instantiate OnInputListener
-    OnInputListener onInputListener;
 
     // constructor
     public CreateNewStoryDialogFragment() {
@@ -55,8 +46,11 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
         buttonAddStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                storyName = editTextEnterAName.getText().toString();
-                onInputListener = (OnInputListener) getActivity();
+                // instantiate OnInputListener
+                OnInputListener onInputListener = (OnInputListener) getActivity();
+
+                // make toast if no input
+                String storyName = editTextEnterAName.getText().toString();
                 if (storyName.equals("")) {
                     Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT).show();
                 } else {
@@ -68,7 +62,6 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
         buttonCancelStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                storyName = "";
                 editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
                 dismiss();
             }
@@ -78,7 +71,6 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
 
     @Override
     public void cancelStory() {
-        storyName = "";
         editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
     }
 }

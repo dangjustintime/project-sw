@@ -34,18 +34,17 @@ public class MainActivity extends AppCompatActivity
         implements CreateNewStoryDialogFragment.OnInputListener {
 
     // variables
-    private String newStoryName;
     private int numSavedStories;
     private Map<String, ?> sharedPrefMap;
 
     // tags
     private static final String EXTRA_NAME = "name";
-    private static final String EXTRA_TEMPLATE = "template";
     private static final String DIALOG_NEW_STORY = "create a new story";
 
-    // Fragment Transaction
+    // Fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
 
     // views
     @BindView(R.id.toolbar_main_activity) Toolbar toolbar;
@@ -63,15 +62,12 @@ public class MainActivity extends AppCompatActivity
     SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
     private ArrayList<Stories> savedStoriesList;
 
-    // fragments
-    CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
-    ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
 
         // get values from SharedPreferences
         // if there are not stories, hide recycler view
@@ -174,10 +170,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void sendInput(String input) {
-        newStoryName = input;
         Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        intent.putExtra(EXTRA_NAME, newStoryName);
+        intent.putExtra(EXTRA_NAME, input);
         startActivity(intent);
-        // getSupportFragmentManager().beginTransaction().add(R.id.frame_layout_fragment_placeholder, chooseATemplateFragment).commit();
     }
 }
