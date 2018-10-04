@@ -111,7 +111,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                innerMediaUriString = data.getData().toString();
+                innerMediaUriString = data.getDataString();
                 imageUriStrings.add(innerMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.FIT_CENTER);
             }

@@ -33,10 +33,10 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
 
-    // file paths
-    ArrayList<String> filePaths;
-    String bottomMediaFilePath;
-    String topMediaFilePath;
+    // image uri strings
+    ArrayList<String> imageUriStrings;
+    String bottomMediaUriString;
+    String topMediaUriString;
 
     // views
     @BindView(R.id.image_view_template3_add_bottom_media) ImageView addBottomMediaImageView;
@@ -57,7 +57,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         ButterKnife.bind(this, view);
 
         // initialize filePaths
-        filePaths = new ArrayList<>();
+        imageUriStrings = new ArrayList<>();
 
         hideUI();
 
@@ -66,26 +66,18 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 addTopMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                topMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(topMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_TOP);
                 removeTopMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_TOP);
             }
         });
         addBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addBottomMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                bottomMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(bottomMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_BOTTOM);
                 removeBottomMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_BOTTOM);
             }
         });
         removeTopMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +86,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 topMediaImageView.setImageBitmap(null);
                 addTopMediaImageView.setVisibility(View.VISIBLE);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(topMediaFilePath);
+                imageUriStrings.remove(topMediaUriString);
             }
         });
         removeBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +95,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaImageView.setImageBitmap(null);
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(bottomMediaFilePath);
+                imageUriStrings.remove(bottomMediaUriString);
             }
         });
 
@@ -115,11 +107,13 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_TOP) {
-                filePaths.add(data.getData().toString());
-                ImageHandler.setImageToImageView(getContext(), data, topMediaImageView, ImageView.ScaleType.MATRIX);
+                topMediaUriString = data.getDataString();
+                imageUriStrings.add(topMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), data, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_BOTTOM) {
-                filePaths.add(data.getData().toString());
-                ImageHandler.setImageToImageView(getContext(), data, bottomMediaImageView, ImageView.ScaleType.MATRIX);
+                bottomMediaUriString = data.getDataString();
+                imageUriStrings.add(bottomMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), data, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }
@@ -132,7 +126,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
-        return filePaths;
+        return imageUriStrings;
     }
 
     @Override
