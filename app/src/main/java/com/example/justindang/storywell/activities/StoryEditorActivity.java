@@ -41,14 +41,16 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // intent keys
     private static final String EXTRA_NAME = "name";
-    private static final String EXTRA_TEMPLATE = "template";
+
+    private int currentPageIndex;
 
     // model of story
-    private ArrayList<String> filePaths;
     private StoriesPresenter storiesPresenter;
 
     // TAG
     private static final String DIALOG_SAVE_STORY = "save story";
+
+
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -82,15 +84,15 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // save photo to storage
     public void saveImage() {
-        Toast.makeText(getBaseContext(), "saving image to device....", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "saving image to device...", Toast.LENGTH_SHORT).show();
 
         ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
 
         // get values from template fragments
-        storiesPresenter.updateImageUris(0, onSaveImageListener.sendFilePaths());
-        storiesPresenter.updateColors(0, onSaveImageListener.sendColors());
-        storiesPresenter.updateTitle(0, onSaveImageListener.sendTitle());
-        storiesPresenter.updateText(0, onSaveImageListener.sendText());
+        storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
+        storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
+        storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
+        storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
 
         // put values in shared preferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
@@ -99,6 +101,11 @@ public class StoryEditorActivity extends AppCompatActivity
         // generate key
         storiesPresenter.generateSharedPrefKey(numStories);
         String key = storiesPresenter.getPages().getSharedPrefKey();
+
+        // put values in shared preferences
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
+        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
 
         // convert Arraylists to HashSets
         HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getImageUris());
@@ -109,15 +116,11 @@ public class StoryEditorActivity extends AppCompatActivity
         }
         HashSet<String> colorsHashSet = new HashSet<String>(colorsArrayList);
 
-        // put values in shared preferences
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
-        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
-        sharedPreferencesEditor.putString(key + "_0_template", storiesPresenter.getPage(0).getTemplateName());
-        sharedPreferencesEditor.putString(key + "_0_title", storiesPresenter.getPage(0).getTitle());
-        sharedPreferencesEditor.putString(key + "_0_text", storiesPresenter.getPage(0).getText());
-        sharedPreferencesEditor.putStringSet(key + "_0_colors", colorsHashSet);
-        sharedPreferencesEditor.putStringSet(key + "_0_file_paths", filePathsHashSet);
+        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_template", storiesPresenter.getPage(0).getTemplateName());
+        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_title", storiesPresenter.getPage(0).getTitle());
+        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_text", storiesPresenter.getPage(0).getText());
+        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex +"_colors", colorsHashSet);
+        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex + "_image_uris", filePathsHashSet);
 
         // increment number of stories
         sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
@@ -152,10 +155,8 @@ public class StoryEditorActivity extends AppCompatActivity
         // initialize presenter
         storiesPresenter = new StoriesPresenter(this);
 
-        // initialize list
-        filePaths = new ArrayList<String>();
-
         // get data from intent
+        currentPageIndex = 0;
         storiesPresenter.addPage(new Stories.Page());
         storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
 
@@ -185,6 +186,18 @@ public class StoryEditorActivity extends AppCompatActivity
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // get values from template fragments
+                storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
+                storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
+                storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
+                storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
+
+                // add new page to stories
+                currentPageIndex++;
+                storiesPresenter.addPage(new Stories.Page());
+
+                // start new template fragment
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
@@ -197,7 +210,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // SaveStoryDialog interface
     @Override
     public void saveStory() {
-        Toast.makeText(StoryEditorActivity.this, "HERE", Toast.LENGTH_SHORT).show();
         onSaveImageListener.hideUI();
         saveImage();
         finish();
@@ -205,7 +217,49 @@ public class StoryEditorActivity extends AppCompatActivity
 
     @Override
     public void saveStories() {
-        Toast.makeText(getBaseContext(), "save stories", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "saving stories...", Toast.LENGTH_SHORT).show();
+        // get values from template fragments
+        storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
+        storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
+        storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
+        storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
+
+        // put values in shared preferences
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+        int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+
+        // generate key
+        storiesPresenter.generateSharedPrefKey(numStories);
+        String key = storiesPresenter.getPages().getSharedPrefKey();
+
+        // put values in shared preferences
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
+        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
+
+        // put values of each page
+        for (int i = 0; i <= currentPageIndex; i++) {
+
+            // convert Arraylists to HashSets
+            HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(i).getImageUris());
+            ArrayList<String> colorsArrayList = new ArrayList<String>();
+            ArrayList<Integer> integerColors = storiesPresenter.getPage(i).getColors();
+            for (Integer integer : integerColors) {
+                colorsArrayList.add(integer.toString());
+            }
+            HashSet<String> colorsHashSet = new HashSet<String>(colorsArrayList);
+
+            sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_template", storiesPresenter.getPage(i).getTemplateName());
+            sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_title", storiesPresenter.getPage(i).getTitle());
+            sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_text", storiesPresenter.getPage(i).getText());
+            sharedPreferencesEditor.putStringSet(key + "_" + String.valueOf(i) + "_colors", colorsHashSet);
+            sharedPreferencesEditor.putStringSet(key + "_" + String.valueOf(i) + "_image_uris", filePathsHashSet);
+        }
+
+        // increment number of stories
+        sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
+        sharedPreferencesEditor.apply();
+        finish();
     }
 
     @Override
@@ -214,23 +268,25 @@ public class StoryEditorActivity extends AppCompatActivity
         onSaveImageListener.hideUI();
         saveImage();
         createInstagramIntent();
+        finish();
     }
-
-    // StoryPresenter interface
-    @Override
-    public void updateView() { }
 
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
-        storiesPresenter.updateTemplateName(0, template);
+        storiesPresenter.updateTemplateName(currentPageIndex, template);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
+        fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void updateView() {
+
     }
 }
 
