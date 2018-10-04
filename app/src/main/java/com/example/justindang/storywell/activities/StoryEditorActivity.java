@@ -223,6 +223,7 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
+        storiesPresenter.updateTemplateName(0, template);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
