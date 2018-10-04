@@ -33,9 +33,9 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     // request code
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
 
-    // file paths
-    ArrayList<String> filePaths;
-    String innerMediaFilePath;
+    // image uri and color strings
+    ArrayList<String> imageUriStrings;
+    String innerMediaUriString;
     Integer outerLayerColor;
 
     // views
@@ -57,7 +57,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         ButterKnife.bind(this, view);
 
         // initialize filePaths
-        filePaths = new ArrayList<>();
+        imageUriStrings = new ArrayList<>();
 
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
@@ -78,13 +78,9 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                innerMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(innerMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
             }
         });
         colorPickerImageView.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +99,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaImageView.setImageBitmap(null);
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(innerMediaFilePath);
+                imageUriStrings.remove(innerMediaUriString);
             }
         });
 
@@ -115,12 +111,14 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                filePaths.add(data.getData().toString());
+                innerMediaUriString = data.getData().toString();
+                imageUriStrings.add(innerMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.FIT_CENTER);
             }
         }
     }
 
+    // OnSaveImageListener
     @Override
     public void hideUI() {
         colorPicker.setVisibility(View.INVISIBLE);
@@ -129,18 +127,16 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void showUI() {
-
-    }
-
-    @Override
     public ArrayList<String> sendFilePaths() {
-        return filePaths;
+        return imageUriStrings;
     }
 
     @Override
     public ArrayList<Integer> sendColors() {
         ArrayList<Integer> colors = new ArrayList<Integer>();
+        if (outerLayerColor == null) {
+            outerLayerColor = 0;
+        }
         colors.add(outerLayerColor);
         return colors;
     }

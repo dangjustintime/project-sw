@@ -163,18 +163,11 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         }
     }
 
-    // hide UI
+    // OnSaveImageListener
     @Override
     public void hideUI() {
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-    }
-
-    // show UI
-    @Override
-    public void showUI() {
-        removeInnerMediaImageView.setVisibility(View.VISIBLE);
-        removeOuterMediaImageView.setVisibility(View.VISIBLE);
     }
 
     @Override

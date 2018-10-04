@@ -132,11 +132,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void showUI() {
-
-    }
-
-    @Override
     public ArrayList<String> sendFilePaths() {
         return filePaths;
     }
