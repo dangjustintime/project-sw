@@ -34,9 +34,9 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     // request code
     private static final int IMAGE_GALLERY_REQUEST_MEDIA = 13;
 
-    // file paths
-    ArrayList<String> filePaths;
-    String mediaFilePath;
+    // image uri strings and color
+    ArrayList<String> imageUriStrings;
+    String mediaUriString;
     Integer backgroundColor;
 
     // views
@@ -64,7 +64,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         colorPickerImageView.setVisibility(View.VISIBLE);
 
         // initialize filePath
-        filePaths = new ArrayList<>();
+        imageUriStrings = new ArrayList<>();
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -81,13 +81,9 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 addMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                mediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(mediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_MEDIA);
                 removeMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_MEDIA);
             }
         });
         removeMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +92,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 mediaImageView.setImageBitmap(null);
                 addMediaImageView.setVisibility(View.VISIBLE);
                 removeMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(mediaFilePath);
+                imageUriStrings.remove(mediaUriString);
             }
         });
         colorPickerImageView.setOnClickListener(new View.OnClickListener() {
@@ -118,8 +114,9 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_MEDIA) {
-                filePaths.add(data.getData().toString());
-                ImageHandler.setImageToImageView(getContext(), data, mediaImageView, ImageView.ScaleType.MATRIX);
+                mediaUriString = data.getDataString();
+                imageUriStrings.add(data.getDataString());
+                ImageHandler.setImageToImageView(getContext(), data, mediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }
@@ -133,12 +130,15 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
-        return filePaths;
+        return imageUriStrings;
     }
 
     @Override
     public ArrayList<Integer> sendColors() {
         ArrayList<Integer> colors = new ArrayList<Integer>();
+        if (backgroundColor == null) {
+            backgroundColor = 0;
+        }
         colors.add(backgroundColor);
         return colors;
     }
