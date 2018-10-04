@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.icu.text.UnicodeSetSpanner;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +19,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
@@ -34,13 +37,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class Template1Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
 
-    // invalid pointer id
-    private static final int INVALID_POINTER_ID = 0;
-
-    // file paths
-    ArrayList<String> filePaths;
-    String innerMediaFilePath;
-    String outerMediaFilePath;
+    // uri strings
+    ArrayList<String> imageUriStrings;
+    String innerMediaUriString;
+    String outerMediaUriString;
 
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
@@ -54,22 +54,10 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.image_view_template1_remove_inner_media) ImageView removeInnerMediaImageView;
     @BindView(R.id.image_view_template1_remove_outer_media) ImageView removeOuterMediaImageView;
 
-    // pointer location
-    private float lastTouchX;
-    private float lastTouchY;
-    private float posX = 0;
-    private float posY = 0;
-
     // ScaleGestureDetector
     private ScaleGestureDetector scaleGestureDetector;
     private float scaleFactor = 1.5f;
     private Matrix outerMediaMatrix = new Matrix();
-
-    // active pointer for moving image
-    private int activePointerId = INVALID_POINTER_ID;
-
-    // Uri
-    Uri imageUri;
 
     public Template1Fragment() {
         // Required empty public constructor
@@ -104,7 +92,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         hideUI();
 
         // initialize filePaths
-        filePaths = new ArrayList<String>();
+        imageUriStrings = new ArrayList<String>();
 
         // gesture listener
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
@@ -114,13 +102,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View view) {
                 addOuterMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                outerMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(outerMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
                 removeOuterMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
             }
 
         });
@@ -128,13 +112,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View view) {
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                innerMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(innerMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +123,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaImageView.setImageBitmap(null);
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(innerMediaFilePath);
+                imageUriStrings.remove(innerMediaUriString);
             }
         });
         removeOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +132,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 outerMediaImageView.setImageBitmap(null);
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(outerMediaFilePath);
+                imageUriStrings.remove(outerMediaUriString);
             }
         });
 
@@ -164,7 +144,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 return true;
             }
         });
-
         return view;
     }
 
@@ -173,10 +152,12 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
-                filePaths.add(data.getData().toString());
+                outerMediaUriString = data.getData().toString();
+                imageUriStrings.add(outerMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), data, outerMediaImageView, ImageView.ScaleType.MATRIX);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                filePaths.add(data.getData().toString());
+                innerMediaUriString = data.getData().toString();
+                imageUriStrings.add(data.getData().toString());
                 ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
@@ -198,7 +179,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
-        return filePaths;
+        return imageUriStrings;
     }
 
     @Override

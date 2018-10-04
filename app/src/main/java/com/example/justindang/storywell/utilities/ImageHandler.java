@@ -91,4 +91,15 @@ public class ImageHandler {
             e.printStackTrace();
         }
     }
+
+    public static String getPictureDirectory() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+    }
+
+    public static Intent createPhotoGalleryIntent() {
+        Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
+        Uri data = Uri.parse(getPictureDirectory());
+        photoGalleryIntent.setDataAndType(data, "image/*");
+        return photoGalleryIntent;
+    }
 }

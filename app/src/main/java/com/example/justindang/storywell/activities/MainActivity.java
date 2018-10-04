@@ -63,8 +63,11 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
         savedStoriesList = new ArrayList<>();
+
+        // display shared preferences map in a textview
         Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
-        sharedPreferencesTextView.setText(sharedPrefMap.toString());
+        sharedPreferencesTextView.setTextSize(20f);
+        sharedPreferencesTextView.setText(sharedPrefMap.toString().replace(",", "\n"));
 
         /*
         if (numSavedStories == 0) {
