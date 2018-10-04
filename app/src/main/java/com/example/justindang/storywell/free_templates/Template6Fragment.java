@@ -36,10 +36,10 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 19;
     private static final int IMAGE_GALLERY_REQUEST_INNER = 25;
 
-    // file paths
-    ArrayList<String> filePaths;
-    String innerMediaFilePath;
-    String outerMediaFilePath;
+    // image uri strings and color
+    ArrayList<String> imageUriStrings;
+    String innerMediaUriString;
+    String outerMediaUriString;
     Integer backgroundColor;
 
     // views
@@ -71,7 +71,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
 
 
         // initialize filePaths
-        filePaths = new ArrayList<>();
+        imageUriStrings = new ArrayList<>();
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -88,26 +88,18 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 addOuterMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                outerMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(outerMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
                 removeOuterMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
             }
         });
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
-                Intent photoGalleryIntent = new Intent(Intent.ACTION_PICK);
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                innerMediaFilePath = pictureDirectory.getPath();
-                Uri data = Uri.parse(innerMediaFilePath);
-                photoGalleryIntent.setDataAndType(data, "image/*");
-                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
+                Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+                startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +108,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaImageView.setImageBitmap(null);
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(innerMediaFilePath);
+                imageUriStrings.remove(innerMediaUriString);
             }
         });
         removeOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +117,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
                 outerMediaImageView.setImageBitmap(null);
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-                filePaths.remove(outerMediaFilePath);
+                imageUriStrings.remove(outerMediaUriString);
             }
         });
         colorPickerImageView.setOnClickListener(new View.OnClickListener() {
@@ -147,11 +139,13 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
-                filePaths.add(data.getData().toString());
-                ImageHandler.setImageToImageView(getContext(), data, outerMediaImageView, ImageView.ScaleType.MATRIX);
+                outerMediaUriString = data.getDataString();
+                imageUriStrings.add(outerMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), data, outerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
-                filePaths.add(data.getData().toString());
-                ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.MATRIX);
+                innerMediaUriString = data.getDataString();
+                imageUriStrings.add(innerMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }
@@ -166,12 +160,15 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
-        return filePaths;
+        return imageUriStrings;
     }
 
     @Override
     public ArrayList<Integer> sendColors() {
         ArrayList<Integer> colors = new ArrayList<Integer>();
+        if (backgroundColor == null) {
+            backgroundColor = 0;
+        }
         colors.add(backgroundColor);
         return colors;
     }
