@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         // request read permissions
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
-
         // get values from SharedPreferences
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
@@ -128,14 +127,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 savedStoriesList.add(newStories);
             }
-
-            /*
-            // display shared preferences map in a textview
-            sharedPreferencesTextView.setTextSize(20f);
-            sharedPreferencesTextView.setText(savedStoriesList.toString());
-            */
-
-
 
             // check if read permissions are granted
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)

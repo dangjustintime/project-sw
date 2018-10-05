@@ -50,8 +50,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // TAG
     private static final String DIALOG_SAVE_STORY = "save story";
 
-
-
     public interface OnSaveImageListener {
         void hideUI();
         ArrayList<String> sendFilePaths();

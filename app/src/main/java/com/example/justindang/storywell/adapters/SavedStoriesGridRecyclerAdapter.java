@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder> {
 
     // member data
@@ -51,19 +54,16 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
 
     // view holder
     public static class SavedStoryViewHolder extends RecyclerView.ViewHolder {
-        public TextView savedStoryNameTextView;
-        public TextView savedStoryDateTextView;
-        public ImageView savedStoryImageView;
-        public ImageView savedStoryEditNameImageView;
-        public ConstraintLayout savedStoryContainerConstraintLayout;
+        @BindView(R.id.text_view_recycler_view_saved_story_name) TextView savedStoryNameTextView;
+        @BindView(R.id.text_view_recycler_view_saved_story_date) TextView savedStoryDateTextView;
+        @BindView(R.id.image_view_recycler_view_saved_story_image) ImageView savedStoryImageView;
+        @BindView(R.id.image_view_recycler_view_edit_saved_story_name) ImageView savedStoryEditNameImageView;
+        @BindView(R.id.constraint_layout_recycler_view_saved_story_container) ConstraintLayout savedStoryContainerConstraintLayout;
+        @BindView(R.id.image_view_recycler_view_delete) ImageView savedStoryDeleteImageView;
 
         public SavedStoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            savedStoryNameTextView = (TextView) itemView.findViewById(R.id.text_view_recycler_view_saved_story_name);
-            savedStoryDateTextView = (TextView) itemView.findViewById(R.id.text_view_recycler_view_saved_story_date);
-            savedStoryImageView = (ImageView) itemView.findViewById(R.id.image_view_recycler_view_saved_story_image);
-            savedStoryEditNameImageView = (ImageView) itemView.findViewById(R.id.image_view_recycler_view_edit_saved_story_name);
-            savedStoryContainerConstraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraint_layout_recycler_view_saved_story_container);
+            ButterKnife.bind(this, itemView);
         }
     }
 
