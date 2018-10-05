@@ -1,13 +1,21 @@
 package com.example.justindang.storywell.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -19,8 +27,14 @@ import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.adapters.SavedStoriesGridRecyclerAdapter;
 import com.example.justindang.storywell.model.Stories;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +45,9 @@ public class MainActivity extends AppCompatActivity
     // tags
     private static final String EXTRA_NAME = "name";
     private static final String DIALOG_NEW_STORY = "create a new story";
+
+    // request code
+    private static final int REQUEST_READ_PERMISSION = 202;
 
     // Fragments
     FragmentManager fragmentManager;
@@ -58,56 +75,78 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // request read permissions
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
+
+
         // get values from SharedPreferences
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        // place shared pref values in map
+        Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
         savedStoriesList = new ArrayList<>();
 
-        // display shared preferences map in a textview
-        Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
-        sharedPreferencesTextView.setTextSize(20f);
-        sharedPreferencesTextView.setText(sharedPrefMap.toString().replace(",", "\n"));
-
-        /*
         if (numSavedStories == 0) {
             hideSavedStoriesRecyclerView();
         } else {
             showSavedStoriesRecyclerView();
 
-            // place stories into an array
+            //Toast.makeText(this, sharedPreferences.getString("stories_0_0_template", "kl"), Toast.LENGTH_SHORT).show();
+
             for (int i = 0; i < numSavedStories; i++) {
-                // get values from shared preferences
                 Stories newStories = new Stories();
-                String newStoryKey = "stories_" + String.valueOf(i);
-                newStories.setName(sharedPreferences.getString(newStoryKey + "_name", "NOT FOUND"));
-                newStories.setDate(sharedPreferences.getString(newStoryKey + "_date", "NOT FOUND"));
-                // get values of each story
-                newStories.addStory(new Story());
-                newStories.setTemplateName(0, sharedPreferences.getString(newStoryKey + "_0_template", "NOT FOUND"));
-                newStories.setTitle(0, sharedPreferences.getString(newStoryKey + "_0_title", "NOT FOUND"));
-                newStories.setText(0, sharedPreferences.getString(newStoryKey + "_0_text", "NOT FOUND"));
-                Set<String> newStoryFilePathsSet = sharedPreferences.getStringSet(newStoryKey + "_0_file_paths", new HashSet<String>());
-                for (String filePath : newStoryFilePathsSet) {
-                    newStories.addImage(0, filePath);
-                }
-                Set<String> newStoryColors = sharedPreferences.getStringSet(newStoryKey + "_0_colors", new HashSet<String>());
-                if (newStoryColors.size() > 0) {
-                    for (String color : newStoryColors) {
-                        newStories.addColor(0, Integer.valueOf(color));
+                String storiesKey = "stories_" + String.valueOf(i);
+                newStories.setSharedPrefKey(storiesKey);
+
+                newStories.setName(sharedPreferences.getString(storiesKey + "_name", "NOT FOUND"));
+                newStories.setDate(sharedPreferences.getString(storiesKey + "_date", "NOT FOUND"));
+                int numPages = sharedPreferences.getInt(storiesKey + "_num_pages", 0);
+
+                for (int j = 0; j < numPages; j++) {
+                    String pageKey = storiesKey + "_" + String.valueOf(j);
+                    newStories.addPage(new Stories.Page());
+
+                    // get image uris
+                    Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new HashSet<String>());
+                    ArrayList<String> imageUrisStrings = new ArrayList<>();
+                    imageUrisStrings.addAll(imageUrisSet);
+                    newStories.setImageUris(j, imageUrisStrings);
+
+                    // get colors
+                    Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new HashSet<String>());
+                    ArrayList<Integer> colorsInts = new ArrayList<>();
+                    for (String color: colorsSet) {
+                        colorsInts.add(Integer.getInteger(color));
                     }
+                    newStories.setColors(j, colorsInts);
+
+                    // get template, title, and text
+                    newStories.setTemplateName(j, sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
+                    newStories.setTitle(j, sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
+                    newStories.setText(j, sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
                 }
-                // push to savedStories list
                 savedStoriesList.add(newStories);
             }
 
-            // create recycler view
-            savedStoriesRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false));
-            savedStoriesGridRecyclerAdapter = new SavedStoriesGridRecyclerAdapter(MainActivity.this, savedStoriesList);
-            savedStoriesRecyclerView.setAdapter(savedStoriesGridRecyclerAdapter);
+            /*
+            // display shared preferences map in a textview
+            sharedPreferencesTextView.setTextSize(20f);
+            sharedPreferencesTextView.setText(savedStoriesList.toString());
+            */
+
+
+
+            // check if read permissions are granted
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                // create recycler view
+                savedStoriesRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2, GridLayoutManager.VERTICAL, false));
+                savedStoriesGridRecyclerAdapter = new SavedStoriesGridRecyclerAdapter(MainActivity.this, savedStoriesList);
+                savedStoriesRecyclerView.setAdapter(savedStoriesGridRecyclerAdapter);
+            }
 
         }
-        */
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {

@@ -20,6 +20,19 @@ public class StoriesPresenter {
         this.stories = stories;
     }
 
+    // getters
+    public Stories getPages() {
+        return this.stories;
+    }
+
+    public Stories.Page getPage(int index) {
+        return this.stories.getPage(index);
+    }
+
+    public int getNumPages() {
+        return this.stories.getNumPages();
+    }
+
     // update values
     public void updateName(String name) {
         stories.setName(name);
@@ -32,7 +45,7 @@ public class StoriesPresenter {
     }
 
     public void generateSharedPrefKey(int numStories) {
-        String key = "story_" + String.valueOf(numStories);
+        String key = "stories_" + String.valueOf(numStories);
         stories.setSharedPrefKey(key);
         view.updateView();
     }
@@ -50,14 +63,6 @@ public class StoriesPresenter {
     public void removePage(Stories.Page page) {
         this.stories.removePage(page);
         view.updateView();
-    }
-
-    public Stories getPages() {
-        return this.stories;
-    }
-
-    public Stories.Page getPage(int index) {
-        return this.stories.getPage(index);
     }
 
     // update story values

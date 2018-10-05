@@ -106,6 +106,7 @@ public class StoryEditorActivity extends AppCompatActivity
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
         sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
+        sharedPreferencesEditor.putInt(key + "_num_pages", 1);
 
         // convert Arraylists to HashSets
         HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getImageUris());
@@ -116,9 +117,9 @@ public class StoryEditorActivity extends AppCompatActivity
         }
         HashSet<String> colorsHashSet = new HashSet<String>(colorsArrayList);
 
-        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_template", storiesPresenter.getPage(0).getTemplateName());
-        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_title", storiesPresenter.getPage(0).getTitle());
-        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_text", storiesPresenter.getPage(0).getText());
+        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_template", storiesPresenter.getPage(currentPageIndex).getTemplateName());
+        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_title", storiesPresenter.getPage(currentPageIndex).getTitle());
+        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_text", storiesPresenter.getPage(currentPageIndex).getText());
         sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex +"_colors", colorsHashSet);
         sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex + "_image_uris", filePathsHashSet);
 
@@ -236,6 +237,7 @@ public class StoryEditorActivity extends AppCompatActivity
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
         sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
+        sharedPreferencesEditor.putInt(key + "_num_pages", storiesPresenter.getNumPages());
 
         // put values of each page
         for (int i = 0; i <= currentPageIndex; i++) {
