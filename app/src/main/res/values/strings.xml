@@ -11,12 +11,14 @@
 
     <!-- create new story fragment -->
     <string name="create_new_story">create new story</string>
-    <string name="enter_a_name_for_this_story">enter a name for this story</string>
+    <string name="enter_a_name_for_this_story">ENTER A NAME FOR THIS STORY</string>
     <string name="cancel">cancel</string>
     <string name="add">add</string>
 
     <!-- change story name fragment -->
-    <string name="change_story_name"></string>
+    <string name="change_story_name">change story name</string>
+    <string name="enter_a_new_name">ENTER A NEW NAME</string>
+    <string name="change">change</string>
 
     <!-- choose a template fragment -->
     <string name="choose_a_template">choose a template</string>

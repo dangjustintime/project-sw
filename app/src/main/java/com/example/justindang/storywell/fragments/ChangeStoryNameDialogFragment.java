@@ -52,7 +52,6 @@ public class ChangeStoryNameDialogFragment extends DialogFragment {
                 if (storyName.equals("")) {
                     Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT).show();
                 } else {
-                    onChangeNameListener.onChange(storyName);
                     dismiss();
                 }
             }
