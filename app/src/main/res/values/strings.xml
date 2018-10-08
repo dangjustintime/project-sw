@@ -15,6 +15,9 @@
     <string name="cancel">cancel</string>
     <string name="add">add</string>
 
+    <!-- change story name fragment -->
+    <string name="change_story_name"></string>
+
     <!-- choose a template fragment -->
     <string name="choose_a_template">choose a template</string>
     <string name="c01">c01</string>
