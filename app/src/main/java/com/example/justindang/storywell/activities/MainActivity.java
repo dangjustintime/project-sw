@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         int numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
         // place shared pref values in map
         Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
+        sharedPreferencesTextView.setText(sharedPrefMap.toString());
         savedStoriesList = new ArrayList<>();
 
         if (numSavedStories == 0) {
@@ -122,32 +123,34 @@ public class MainActivity extends AppCompatActivity
 
                 newStories.setName(sharedPreferences.getString(storiesKey + "_name", "NOT FOUND"));
                 newStories.setDate(sharedPreferences.getString(storiesKey + "_date", "NOT FOUND"));
-                int numPages = sharedPreferences.getInt(storiesKey + "_num_pages", 0);
+                int numPages = sharedPreferences.getInt(storiesKey + "_num_pages", -1);
 
-                for (int j = 0; j < numPages; j++) {
-                    String pageKey = storiesKey + "_" + String.valueOf(j);
-                    newStories.addPage(new Stories.Page());
+                if (numPages != -1) {
+                    for (int j = 0; j < numPages; j++) {
+                        String pageKey = storiesKey + "_" + String.valueOf(j);
+                        newStories.addPage(new Stories.Page());
 
-                    // get image uris
-                    Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new HashSet<String>());
-                    ArrayList<String> imageUrisStrings = new ArrayList<>();
-                    imageUrisStrings.addAll(imageUrisSet);
-                    newStories.setImageUris(j, imageUrisStrings);
+                        // get image uris
+                        Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new HashSet<String>());
+                        ArrayList<String> imageUrisStrings = new ArrayList<>();
+                        imageUrisStrings.addAll(imageUrisSet);
+                        newStories.setImageUris(j, imageUrisStrings);
 
-                    // get colors
-                    Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new HashSet<String>());
-                    ArrayList<Integer> colorsInts = new ArrayList<>();
-                    for (String color: colorsSet) {
-                        colorsInts.add(Integer.getInteger(color));
+                        // get colors
+                        Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new HashSet<String>());
+                        ArrayList<Integer> colorsInts = new ArrayList<>();
+                        for (String color: colorsSet) {
+                            colorsInts.add(Integer.getInteger(color));
+                        }
+                        newStories.setColors(j, colorsInts);
+
+                        // get template, title, and text
+                        newStories.setTemplateName(j, sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
+                        newStories.setTitle(j, sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
+                        newStories.setText(j, sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
                     }
-                    newStories.setColors(j, colorsInts);
-
-                    // get template, title, and text
-                    newStories.setTemplateName(j, sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
-                    newStories.setTitle(j, sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
-                    newStories.setText(j, sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
+                    savedStoriesList.add(newStories);
                 }
-                savedStoriesList.add(newStories);
             }
 
             // check if read permissions are granted

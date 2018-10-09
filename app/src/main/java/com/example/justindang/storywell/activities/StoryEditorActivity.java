@@ -95,9 +95,10 @@ public class StoryEditorActivity extends AppCompatActivity
         // put values in shared preferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
 
         // generate key
-        storiesPresenter.generateSharedPrefKey(numStories);
+        storiesPresenter.generateSharedPrefKey(serialID);
         String key = storiesPresenter.getPages().getSharedPrefKey();
 
         // put values in shared preferences
@@ -123,6 +124,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
         // increment number of stories
         sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
+        sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), ++serialID);
         sharedPreferencesEditor.apply();
     }
 
@@ -226,9 +228,10 @@ public class StoryEditorActivity extends AppCompatActivity
         // put values in shared preferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
 
         // generate key
-        storiesPresenter.generateSharedPrefKey(numStories);
+        storiesPresenter.generateSharedPrefKey(serialID);
         String key = storiesPresenter.getPages().getSharedPrefKey();
 
         // put values in shared preferences
@@ -258,6 +261,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
         // increment number of stories
         sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
+        sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), serialID++);
         sharedPreferencesEditor.apply();
         finish();
     }

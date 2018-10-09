@@ -79,8 +79,6 @@ public class Stories {
     private ArrayList<Page> pagesList;
     private String SHARED_PREF_KEY;
 
-
-
     // constructor
     public Stories() {
         this.pagesList = new ArrayList<>();
@@ -144,7 +142,7 @@ public class Stories {
         this.pagesList.set(index, page);
     }
 
-    public ArrayList<String> getImageUris(int index) {
+    public ArrayList<String> getImageUris(int index)  {
         return pagesList.get(index).getImageUris();
     }
 

@@ -44,8 +44,8 @@ public class StoriesPresenter {
         view.updateView();
     }
 
-    public void generateSharedPrefKey(int numStories) {
-        String key = "stories_" + String.valueOf(numStories);
+    public void generateSharedPrefKey(int serialId) {
+        String key = "stories_" + String.valueOf(serialId);
         stories.setSharedPrefKey(key);
         view.updateView();
     }

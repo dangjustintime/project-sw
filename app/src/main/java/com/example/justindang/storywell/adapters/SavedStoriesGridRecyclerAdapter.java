@@ -109,9 +109,14 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryEditNameImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "change name", Toast.LENGTH_SHORT).show();
                 onItemListener = (OnItemListener) context;
                 onItemListener.getNewName(savedStoryViewHolder.getAdapterPosition());
+            }
+        });
+        savedStoryViewHolder.savedStoryDeleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletePage(savedStoryViewHolder.getAdapterPosition());
             }
         });
 
@@ -126,6 +131,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
     }
 
     public void changeName(int postion, String newName) {
+        // change name of page in list
         Stories stories = savedStoriesList.get(postion);
         stories.setName(newName);
         savedStoriesList.set(postion, stories);
@@ -136,5 +142,31 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         editor.putString(stories.getSharedPrefKey() + "_name", newName);
         editor.commit();
         notifyItemChanged(postion);
+    }
+
+    public void deletePage(int position) {
+        // remove story from shared pref
+        String sharedPrefKey = savedStoriesList.get(position).getSharedPrefKey();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.saved_stories), 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        int numPages = sharedPreferences.getInt(sharedPrefKey + "_num_pages", 1);
+        editor.remove(sharedPrefKey + "_num_pages");
+        editor.remove(sharedPrefKey + "_name");
+        editor.remove(sharedPrefKey + "_date");
+        for (int i = 0; i < numPages; i++) {
+            String pageKey = sharedPrefKey + "_" + String.valueOf(i);
+            editor.remove(pageKey + "_image_uris");
+            editor.remove(pageKey + "_template");
+            editor.remove(pageKey + "_colors");
+            editor.remove(pageKey + "_title");
+            editor.remove(pageKey + "_text");
+        }
+        int numStories = sharedPreferences.getInt(context.getResources().getString(R.string.saved_num_stories_keys), 0);
+        editor.putInt(context.getResources().getString(R.string.saved_num_stories_keys), --numStories);
+        editor.commit();
+
+        // remove page from saved stories list
+        savedStoriesList.remove(position);
+        notifyItemRemoved(position);
     }
 }
