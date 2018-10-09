@@ -26,7 +26,7 @@ public class ChangeStoryNameDialogFragment extends DialogFragment {
     @BindView(R.id.edit_text_enter_a_new_name) EditText enterNewNameEditText;
 
     public interface OnChangeNameListener {
-        void onChangeName(String newName);
+        void sendNewName(String newName);
     }
 
     public ChangeStoryNameDialogFragment() {
@@ -52,6 +52,7 @@ public class ChangeStoryNameDialogFragment extends DialogFragment {
                 if (storyName.equals("")) {
                     Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT).show();
                 } else {
+                    onChangeNameListener.sendNewName(storyName);
                     dismiss();
                 }
             }

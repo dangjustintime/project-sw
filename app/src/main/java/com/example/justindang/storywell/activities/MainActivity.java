@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.justindang.storywell.fragments.ChangeStoryNameDialogFragment;
 import com.example.justindang.storywell.fragments.CreateNewStoryDialogFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.adapters.SavedStoriesGridRecyclerAdapter;
@@ -40,11 +41,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements CreateNewStoryDialogFragment.OnInputListener {
+        implements CreateNewStoryDialogFragment.OnInputListener,
+        SavedStoriesGridRecyclerAdapter.OnItemListener,
+        ChangeStoryNameDialogFragment.OnChangeNameListener {
 
     // tags
     private static final String EXTRA_NAME = "name";
     private static final String DIALOG_NEW_STORY = "create a new story";
+    private static final String DIALOG_CHANGE_NAME = "change name";
 
     // request code
     private static final int REQUEST_READ_PERMISSION = 202;
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     // Fragments
     FragmentManager fragmentManager;
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
+    ChangeStoryNameDialogFragment changeStoryNameDialogFragment = new ChangeStoryNameDialogFragment();
 
     // views
     @BindView(R.id.toolbar_main_activity) Toolbar toolbar;
@@ -68,6 +73,25 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
     SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
     private ArrayList<Stories> savedStoriesList;
+    private int changeNamePosition;
+
+    @Override
+    public void getNewName(int position) {
+        fragmentManager = getSupportFragmentManager();
+        changeStoryNameDialogFragment.show(fragmentManager, DIALOG_CHANGE_NAME);
+        changeNamePosition = position;
+
+    }
+
+    @Override
+    public void sendNewName(String newName) {
+        savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
+    }
+
+    // interface
+    public interface OnRecyclerListener {
+        void openChangeNameFragment();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +114,6 @@ public class MainActivity extends AppCompatActivity
             hideSavedStoriesRecyclerView();
         } else {
             showSavedStoriesRecyclerView();
-
-            //Toast.makeText(this, sharedPreferences.getString("stories_0_0_template", "kl"), Toast.LENGTH_SHORT).show();
 
             for (int i = 0; i < numSavedStories; i++) {
                 Stories newStories = new Stories();
@@ -136,7 +158,6 @@ public class MainActivity extends AppCompatActivity
                 savedStoriesGridRecyclerAdapter = new SavedStoriesGridRecyclerAdapter(MainActivity.this, savedStoriesList);
                 savedStoriesRecyclerView.setAdapter(savedStoriesGridRecyclerAdapter);
             }
-
         }
 
         // clickListeners

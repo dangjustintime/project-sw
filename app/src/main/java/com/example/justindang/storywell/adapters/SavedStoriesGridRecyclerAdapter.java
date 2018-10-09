@@ -3,6 +3,7 @@ package com.example.justindang.storywell.adapters;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.MainActivity;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Stories;
 
@@ -47,11 +50,6 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         this.savedStoriesList = savedStoriesList;
     }
 
-    public interface OnStoryListener {
-        public void sendStory();
-    }
-    OnStoryListener onStoryListener;
-
     // view holder
     public static class SavedStoryViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_view_recycler_view_saved_story_name) TextView savedStoryNameTextView;
@@ -67,6 +65,12 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         }
     }
 
+    // interface
+    public interface OnItemListener {
+        void getNewName(int position);
+    }
+    OnItemListener onItemListener;
+
     // inflater
     @NonNull
     @Override
@@ -78,7 +82,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
 
     // binder
     @Override
-    public void onBindViewHolder(@NonNull SavedStoryViewHolder savedStoryViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final SavedStoryViewHolder savedStoryViewHolder, int i) {
         final Stories savedStories = savedStoriesList.get(i);
         savedStoryViewHolder.savedStoryNameTextView.setText(savedStories.getName());
         savedStoryViewHolder.savedStoryDateTextView.setText(savedStories.getDate());
@@ -102,6 +106,14 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
                 Intent intent = new Intent(context, StoryEditorActivity.class);
             }
         });
+        savedStoryViewHolder.savedStoryEditNameImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "change name", Toast.LENGTH_SHORT).show();
+                onItemListener = (OnItemListener) context;
+                onItemListener.getNewName(savedStoryViewHolder.getAdapterPosition());
+            }
+        });
 
     }
 
@@ -111,5 +123,18 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
             return 0;
         }
         return savedStoriesList.size();
+    }
+
+    public void changeName(int postion, String newName) {
+        Stories stories = savedStoriesList.get(postion);
+        stories.setName(newName);
+        savedStoriesList.set(postion, stories);
+
+        // update shared pref
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.saved_stories), 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(stories.getSharedPrefKey() + "_name", newName);
+        editor.commit();
+        notifyItemChanged(postion);
     }
 }
