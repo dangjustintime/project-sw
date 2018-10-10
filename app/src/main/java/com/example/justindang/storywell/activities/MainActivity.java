@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         changeStoryNameDialogFragment.show(fragmentManager, DIALOG_CHANGE_NAME);
         changeNamePosition = position;
-
     }
 
     @Override
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -105,18 +104,18 @@ public class MainActivity extends AppCompatActivity
         // get values from SharedPreferences
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        int numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+        int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
         // place shared pref values in map
         Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
         sharedPreferencesTextView.setText(sharedPrefMap.toString());
         savedStoriesList = new ArrayList<>();
 
-        if (numSavedStories == 0) {
+        if (serialID == 0) {
             hideSavedStoriesRecyclerView();
         } else {
             showSavedStoriesRecyclerView();
 
-            for (int i = 0; i < numSavedStories; i++) {
+            for (int i = 0; i < serialID; i++) {
                 Stories newStories = new Stories();
                 String storiesKey = "stories_" + String.valueOf(i);
                 newStories.setSharedPrefKey(storiesKey);
@@ -182,11 +181,10 @@ public class MainActivity extends AppCompatActivity
         trashIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.commit();
-                Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
+                for (int i = 0; i < savedStoriesList.size(); i++) {
+                    SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
+                    savedStoryViewHolder.toggleDeleteImageView();
+                }
             }
         });
         shoppingCartImageView.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +192,27 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, StarterKitsActivity.class);
                 startActivity(intent);
+            }
+        });
+        pencilIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < savedStoriesList.size(); i++) {
+                    SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
+                    savedStoryViewHolder.toggleEditNameImageView();
+                }
+            }
+        });
+
+        trashIconImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
+                return false;
             }
         });
 

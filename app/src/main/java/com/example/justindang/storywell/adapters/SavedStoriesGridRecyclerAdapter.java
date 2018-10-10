@@ -62,6 +62,26 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         public SavedStoryViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            // hide delete and change name buttons
+            toggleDeleteImageView();
+            toggleEditNameImageView();
+        }
+
+        public void toggleEditNameImageView () {
+            if (savedStoryEditNameImageView.getVisibility() == View.VISIBLE) {
+                savedStoryEditNameImageView.setVisibility(View.INVISIBLE);
+            } else {
+                savedStoryEditNameImageView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void toggleDeleteImageView() {
+            if (savedStoryDeleteImageView.getVisibility() == View.VISIBLE) {
+                savedStoryDeleteImageView.setVisibility(View.INVISIBLE);
+            } else {
+                savedStoryDeleteImageView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -119,7 +139,6 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
                 deletePage(savedStoryViewHolder.getAdapterPosition());
             }
         });
-
     }
 
     @Override
