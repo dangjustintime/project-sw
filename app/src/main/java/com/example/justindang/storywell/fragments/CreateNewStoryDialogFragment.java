@@ -55,6 +55,7 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
                     Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT).show();
                 } else {
                     onInputListener.sendInput(storyName);
+                    editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
                     dismiss();
                 }
             }

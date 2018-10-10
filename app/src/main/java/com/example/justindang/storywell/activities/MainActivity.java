@@ -101,6 +101,94 @@ public class MainActivity extends AppCompatActivity
         // request read permissions
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
+        loadRecyclerView();
+
+        // clickListeners
+        constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentManager = getSupportFragmentManager();
+                createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
+            }
+        });
+        plusIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager = getSupportFragmentManager();
+                createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
+                hideSavedStoriesRecyclerView();
+            }
+        });
+        trashIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < savedStoriesList.size(); i++) {
+                    SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
+                    savedStoryViewHolder.toggleDeleteImageView();
+                }
+            }
+        });
+        shoppingCartImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, StarterKitsActivity.class);
+                startActivity(intent);
+            }
+        });
+        pencilIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < savedStoriesList.size(); i++) {
+                    SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
+                    savedStoryViewHolder.toggleEditNameImageView();
+                }
+            }
+        });
+
+        trashIconImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(MainActivity.this, "welcome back", Toast.LENGTH_SHORT).show();
+        loadRecyclerView();
+    }
+
+    @Override
+    public void sendInput(String input) {
+        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        intent.putExtra(EXTRA_NAME, input);
+        startActivity(intent);
+    }
+
+    public void showSavedStoriesRecyclerView() {
+        constraintLayoutAnywhere.setVisibility(View.INVISIBLE);
+        savedStoriesRecyclerView.setVisibility(View.VISIBLE);
+        bottomBarConstraintLayout.setVisibility(View.VISIBLE);
+        shoppingCartImageView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideSavedStoriesRecyclerView() {
+        constraintLayoutAnywhere.setVisibility(View.VISIBLE);
+        savedStoriesRecyclerView.setVisibility(View.INVISIBLE);
+        bottomBarConstraintLayout.setVisibility(View.INVISIBLE);
+        shoppingCartImageView.setVisibility(View.INVISIBLE);
+    }
+
+    public void loadRecyclerView() {
         // get values from SharedPreferences
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
@@ -161,82 +249,5 @@ public class MainActivity extends AppCompatActivity
                 savedStoriesRecyclerView.setAdapter(savedStoriesGridRecyclerAdapter);
             }
         }
-
-        // clickListeners
-        constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager = getSupportFragmentManager();
-                createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
-            }
-        });
-        plusIconImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentManager = getSupportFragmentManager();
-                createNewStoryDialogFragment.show(fragmentManager, DIALOG_NEW_STORY);
-                hideSavedStoriesRecyclerView();
-            }
-        });
-        trashIconImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < savedStoriesList.size(); i++) {
-                    SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
-                    savedStoryViewHolder.toggleDeleteImageView();
-                }
-            }
-        });
-        shoppingCartImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, StarterKitsActivity.class);
-                startActivity(intent);
-            }
-        });
-        pencilIconImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < savedStoriesList.size(); i++) {
-                    SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
-                    savedStoryViewHolder.toggleEditNameImageView();
-                }
-            }
-        });
-
-        trashIconImageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.commit();
-                Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-
-        setSupportActionBar(toolbar);
-    }
-
-    public void showSavedStoriesRecyclerView() {
-        constraintLayoutAnywhere.setVisibility(View.INVISIBLE);
-        savedStoriesRecyclerView.setVisibility(View.VISIBLE);
-        bottomBarConstraintLayout.setVisibility(View.VISIBLE);
-        shoppingCartImageView.setVisibility(View.VISIBLE);
-    }
-
-    public void hideSavedStoriesRecyclerView() {
-        constraintLayoutAnywhere.setVisibility(View.VISIBLE);
-        savedStoriesRecyclerView.setVisibility(View.INVISIBLE);
-        bottomBarConstraintLayout.setVisibility(View.INVISIBLE);
-        shoppingCartImageView.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void sendInput(String input) {
-        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        intent.putExtra(EXTRA_NAME, input);
-        startActivity(intent);
     }
 }

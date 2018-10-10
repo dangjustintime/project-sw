@@ -214,6 +214,7 @@ public class StoryEditorActivity extends AppCompatActivity
         onSaveImageListener.hideUI();
         saveImage();
         finish();
+        // Intent intent = new Intent(StoryEditorActivity.this, MainActivity.class);
     }
 
     @Override
@@ -264,6 +265,7 @@ public class StoryEditorActivity extends AppCompatActivity
         sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), serialID++);
         sharedPreferencesEditor.apply();
         finish();
+        // Intent intent = new Intent(StoryEditorActivity.this, MainActivity.class);
     }
 
     @Override
