@@ -26,6 +26,7 @@ import com.example.justindang.storywell.fragments.ChangeStoryNameDialogFragment;
 import com.example.justindang.storywell.fragments.CreateNewStoryDialogFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.adapters.SavedStoriesGridRecyclerAdapter;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 
 import java.io.File;
@@ -202,7 +203,6 @@ public class MainActivity extends AppCompatActivity
             hideSavedStoriesRecyclerView();
         } else {
             showSavedStoriesRecyclerView();
-
             for (int i = 0; i < serialID; i++) {
                 Stories newStories = new Stories();
                 String storiesKey = "stories_" + String.valueOf(i);
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity
                 if (numPages != -1) {
                     for (int j = 0; j < numPages; j++) {
                         String pageKey = storiesKey + "_" + String.valueOf(j);
-                        newStories.addPage(new Stories.Page());
+                        newStories.addPage(new Page());
 
                         // get image uris
                         Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new HashSet<String>());

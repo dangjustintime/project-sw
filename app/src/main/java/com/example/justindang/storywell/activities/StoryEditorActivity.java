@@ -21,6 +21,7 @@ import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
 import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.utilities.ImageHandler;
@@ -158,7 +159,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
         // get data from intent
         currentPageIndex = 0;
-        storiesPresenter.addPage(new Stories.Page());
+        storiesPresenter.addPage(new Page());
         storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
 
         // add Choose a template fragment
@@ -196,7 +197,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
                 // add new page to stories
                 currentPageIndex++;
-                storiesPresenter.addPage(new Stories.Page());
+                storiesPresenter.addPage(new Page());
 
                 // start new template fragment
                 fragmentManager = getSupportFragmentManager();

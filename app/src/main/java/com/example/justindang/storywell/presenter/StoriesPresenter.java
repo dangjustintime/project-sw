@@ -1,5 +1,6 @@
 package com.example.justindang.storywell.presenter;
 
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class StoriesPresenter {
         return this.stories;
     }
 
-    public Stories.Page getPage(int index) {
+    public Page getPage(int index) {
         return this.stories.getPage(index);
     }
 
@@ -55,18 +56,18 @@ public class StoriesPresenter {
         view.updateView();
     }
 
-    public void addPage(Stories.Page page) {
+    public void addPage(Page page) {
         this.stories.addPage(page);
         view.updateView();
     }
 
-    public void removePage(Stories.Page page) {
+    public void removePage(Page page) {
         this.stories.removePage(page);
         view.updateView();
     }
 
     // update story values
-    public void updatePage(int index, Stories.Page page) {
+    public void updatePage(int index, Page page) {
         this.stories.setPage(index, page);
         view.updateView();
     }
