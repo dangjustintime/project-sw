@@ -7,13 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Stories {
+public class Stories implements Parcelable {
 
     // member data
     private String name;
     private String date;    // format: MM.DD.YY
-    private ArrayList<Page> pagesList;
     private String SHARED_PREF_KEY;
+    private ArrayList<Page> pagesList;
 
     // constructor
     public Stories() {
@@ -23,6 +23,25 @@ public class Stories {
         Date currentTime = new Date();
         this.date = formatter.format(currentTime);
     }
+
+    protected Stories(Parcel in) {
+        name = in.readString();
+        date = in.readString();
+        SHARED_PREF_KEY = in.readString();
+        pagesList = in.createTypedArrayList(Page.CREATOR);
+    }
+
+    public static final Creator<Stories> CREATOR = new Creator<Stories>() {
+        @Override
+        public Stories createFromParcel(Parcel in) {
+            return new Stories(in);
+        }
+
+        @Override
+        public Stories[] newArray(int size) {
+            return new Stories[size];
+        }
+    };
 
     // getters and setters
     public String getName() {
@@ -132,5 +151,18 @@ public class Stories {
 
     public void setText(int index, String text) {
         this.pagesList.get(index).setText(text);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(date);
+        dest.writeString(SHARED_PREF_KEY);
+        dest.writeTypedList(pagesList);
     }
 }
