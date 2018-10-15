@@ -30,6 +30,7 @@ import com.example.justindang.storywell.utilities.TemplateManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,9 +42,11 @@ public class StoryEditorActivity extends AppCompatActivity
         TemplateGridRecyclerAdapter.OnTemplateListener {
 
     // intent keys
-    private static final String EXTRA_NAME = "name";
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
 
     private int currentPageIndex;
+    boolean isNewStories;
 
     // model of story
     private StoriesPresenter storiesPresenter;
@@ -95,32 +98,37 @@ public class StoryEditorActivity extends AppCompatActivity
 
         // put values in shared preferences
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
-        int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 
-        // generate key
-        storiesPresenter.generateSharedPrefKey(serialID);
-        String key = storiesPresenter.getPages().getSharedPrefKey();
+        if (isNewStories) {
+            int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+            int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
+
+            // generate key
+            storiesPresenter.generateSharedPrefKey(serialID);
+
+            // increment number of stories
+            sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
+            sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), ++serialID);
+        }
+
+        String key = storiesPresenter.getSharedPrefKey();
 
         // put values in shared preferences
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
         sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
         sharedPreferencesEditor.putInt(key + "_num_pages", 1);
 
         // convert Arraylists to HashSets
-        HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getImageUris());
-        HashSet<String> colorsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getColors());
+        CopyOnWriteArraySet<String> filePathsSet = new CopyOnWriteArraySet<>(storiesPresenter.getPage(0).getImageUris());
+        CopyOnWriteArraySet<String> colorsSet = new CopyOnWriteArraySet<String>(storiesPresenter.getPage(0).getColors());
 
         sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_template", storiesPresenter.getPage(currentPageIndex).getTemplateName());
         sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_title", storiesPresenter.getPage(currentPageIndex).getTitle());
         sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_text", storiesPresenter.getPage(currentPageIndex).getText());
-        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex +"_colors", colorsHashSet);
-        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex + "_image_uris", filePathsHashSet);
+        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex +"_colors", colorsSet);
+        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex + "_image_uris", filePathsSet);
 
-        // increment number of stories
-        sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
-        sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), ++serialID);
         sharedPreferencesEditor.apply();
     }
 
@@ -149,19 +157,35 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-        // initialize presenter
-        storiesPresenter = new StoriesPresenter(this);
-
         // get data from intent
-        currentPageIndex = 0;
-        storiesPresenter.addPage(new Page());
-        storiesPresenter.updateName(getIntent().getStringExtra(EXTRA_NAME));
+        Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
 
-        // add Choose a template fragment
+        // initialize presenter
+        storiesPresenter = new StoriesPresenter(this, savedStories);
+        currentPageIndex = 0;
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, new ChooseATemplateFragment());
+
+        isNewStories = getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
+
+        if (isNewStories) {
+            storiesPresenter.addPage(new Page());
+
+            // add Choose a template fragment
+            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, new ChooseATemplateFragment());
+        } else {
+
+            String template = storiesPresenter.getPage(currentPageIndex).getTemplateName();
+            storiesPresenter.updateTemplateName(currentPageIndex, template);
+            templatePlaceholderFragment = templateManager.getTemplate(template);
+            onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
+            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
+            fragmentTransaction.addToBackStack(null);
+
+
+        }
         fragmentTransaction.commit();
+
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +234,6 @@ public class StoryEditorActivity extends AppCompatActivity
         onSaveImageListener.hideUI();
         saveImage();
         finish();
-        // Intent intent = new Intent(StoryEditorActivity.this, MainActivity.class);
     }
 
     @Override

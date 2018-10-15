@@ -106,14 +106,15 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_TOP) {
                     topMediaUriString = data.getDataString();
                     imageUriStrings.add(topMediaUriString);
-                ImageHandler.setImageToImageView(getContext(), data, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
+                ImageHandler.setImageToImageView(getContext(), imageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_BOTTOM) {
                 bottomMediaUriString = data.getDataString();
                 imageUriStrings.add(bottomMediaUriString);
-                ImageHandler.setImageToImageView(getContext(), data, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
+                ImageHandler.setImageToImageView(getContext(), imageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }

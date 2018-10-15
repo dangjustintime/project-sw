@@ -34,6 +34,10 @@ public class StoriesPresenter {
         return this.stories.getNumPages();
     }
 
+    public String getSharedPrefKey() {
+        return this.stories.getSharedPrefKey();
+    };
+
     // update values
     public void updateName(String name) {
         stories.setName(name);

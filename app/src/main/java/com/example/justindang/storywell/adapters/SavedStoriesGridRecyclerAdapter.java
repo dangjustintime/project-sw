@@ -27,6 +27,7 @@ import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.MainActivity;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Stories;
+import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,6 +40,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder> {
+
+    // tags
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
 
     // member data
     Context context;
@@ -108,22 +113,17 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryDateTextView.setText(savedStories.getDate());
 
         Uri imageUri = Uri.parse(savedStories.getImageUris(0).get(0));
-        InputStream inputStream = null;
-        try {
-            inputStream = context.getContentResolver().openInputStream(imageUri);
-            Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-            savedStoryViewHolder.savedStoryImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            savedStoryViewHolder.savedStoryImageView.setImageBitmap(imageBitmap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        ImageHandler.setImageToImageView(context, imageUri, savedStoryViewHolder.savedStoryImageView, ImageView.ScaleType.CENTER_CROP);
 
         // clicklisteners
         savedStoryViewHolder.savedStoryContainerConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, savedStories.getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, StoryEditorActivity.class);
+                intent.putExtra(EXTRA_SAVED_STORIES, savedStories);
+                intent.putExtra(EXTRA_IS_NEW_STORIES, false);
+                context.startActivity(intent);
             }
         });
         savedStoryViewHolder.savedStoryEditNameImageView.setOnClickListener(new View.OnClickListener() {

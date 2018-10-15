@@ -79,8 +79,7 @@ public class ImageHandler {
         }
     }
 
-    public static void setImageToImageView(Context context, Intent intent, ImageView imageView, ImageView.ScaleType scaleType) {
-        Uri imageUri = intent.getData();
+    public static void setImageToImageView(Context context, Uri imageUri, ImageView imageView, ImageView.ScaleType scaleType) {
         InputStream inputStream;
         try {
             inputStream = context.getContentResolver().openInputStream(imageUri);

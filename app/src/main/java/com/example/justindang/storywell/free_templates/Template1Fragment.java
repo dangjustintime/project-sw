@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
@@ -38,9 +39,15 @@ import static android.app.Activity.RESULT_OK;
 public class Template1Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
 
     // uri strings
+    // index 0 = innerMedia
+    // index 1 = outerMedia
     ArrayList<String> imageUriStrings;
     String innerMediaUriString;
     String outerMediaUriString;
+
+    // tags
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
 
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
@@ -93,6 +100,24 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         // initialize filePaths
         imageUriStrings = new ArrayList<String>();
+
+        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+            addOuterMediaImageView.setVisibility(View.INVISIBLE);
+            removeOuterMediaImageView.setVisibility(View.VISIBLE);
+            addInnerMediaImageView.setVisibility(View.INVISIBLE);
+            removeInnerMediaImageView.setVisibility(View.VISIBLE);
+
+            // put images into image views
+            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
+            imageUriStrings = savedStories.getImageUris(0);
+            innerMediaUriString = imageUriStrings.get(0);
+            outerMediaUriString = imageUriStrings.get(1);
+            Uri innerImageUri = Uri.parse(innerMediaUriString);
+            Uri outerImageUri = Uri.parse(outerMediaUriString);
+
+            ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.MATRIX);
+        }
 
         // gesture listener
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
@@ -151,14 +176,13 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
                 outerMediaUriString = data.getDataString();
-                imageUriStrings.add(outerMediaUriString);
-                ImageHandler.setImageToImageView(getContext(), data, outerMediaImageView, ImageView.ScaleType.MATRIX);
+                ImageHandler.setImageToImageView(getContext(), imageUri, outerMediaImageView, ImageView.ScaleType.MATRIX);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 innerMediaUriString = data.getDataString();
-                imageUriStrings.add(innerMediaUriString);
-                ImageHandler.setImageToImageView(getContext(), data, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+                ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }
@@ -172,6 +196,8 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        imageUriStrings.add(innerMediaUriString);
+        imageUriStrings.add(outerMediaUriString);
         return imageUriStrings;
     }
 

@@ -15,8 +15,17 @@ public class Stories implements Parcelable {
     private String SHARED_PREF_KEY;
     private ArrayList<Page> pagesList;
 
-    // constructor
+    // constructors
     public Stories() {
+        this.pagesList = new ArrayList<>();
+        // format the current date
+        SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
+        Date currentTime = new Date();
+        this.date = formatter.format(currentTime);
+    }
+
+    public Stories(String name) {
+        this.name = name;
         this.pagesList = new ArrayList<>();
         // format the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");

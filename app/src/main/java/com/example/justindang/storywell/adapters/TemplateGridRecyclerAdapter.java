@@ -51,7 +51,6 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
             @Override
             public void onClick(View v) {
                 Activity activity = (Activity) context;
-                Toast.makeText(context, templateName, Toast.LENGTH_SHORT).show();
                 onTemplateListener = (OnTemplateListener) activity;
                 onTemplateListener.sendTemplate(templateName);
             }

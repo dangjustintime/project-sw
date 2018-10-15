@@ -47,9 +47,10 @@ public class MainActivity extends AppCompatActivity
         ChangeStoryNameDialogFragment.OnChangeNameListener {
 
     // tags
-    private static final String EXTRA_NAME = "name";
     private static final String DIALOG_NEW_STORY = "create a new story";
     private static final String DIALOG_CHANGE_NAME = "change name";
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
 
     // request code
     private static final int REQUEST_READ_PERMISSION = 202;
@@ -86,11 +87,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendNewName(String newName) {
         savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
-    }
-
-    // interface
-    public interface OnRecyclerListener {
-        void openChangeNameFragment();
     }
 
     @Override
@@ -164,14 +160,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(MainActivity.this, "welcome back", Toast.LENGTH_SHORT).show();
         loadRecyclerView();
     }
 
     @Override
     public void sendInput(String input) {
         Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        intent.putExtra(EXTRA_NAME, input);
+        Stories newStories= new Stories(input);
+        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
+        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
         startActivity(intent);
     }
 
