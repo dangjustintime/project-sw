@@ -225,11 +225,9 @@ public class MainActivity extends AppCompatActivity
 
                         // get colors
                         Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new HashSet<String>());
-                        ArrayList<Integer> colorsInts = new ArrayList<>();
-                        for (String color: colorsSet) {
-                            colorsInts.add(Integer.getInteger(color));
-                        }
-                        newStories.setColors(j, colorsInts);
+                        ArrayList<String> colorsIntStrings = new ArrayList<>();
+                        colorsIntStrings.addAll(colorsSet);
+                        newStories.setColors(j, colorsIntStrings);
 
                         // get template, title, and text
                         newStories.setTemplateName(j, sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));

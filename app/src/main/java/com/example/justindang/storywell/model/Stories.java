@@ -102,15 +102,15 @@ public class Stories {
         this.pagesList.get(index).removeImage(imagePath);
     }
 
-    public ArrayList<Integer> getColors(int index) {
+    public ArrayList<String> getColors(int index) {
         return this.pagesList.get(index).getColors();
     }
 
-    public void setColors(int index, ArrayList<Integer> colors) {
+    public void setColors(int index, ArrayList<String> colors) {
         this.pagesList.get(index).setColors(colors);
     }
 
-    public void addColor(int index, Integer color) {
+    public void addColor(int index, String color) {
         this.pagesList.get(index).addColor(color);
     }
 

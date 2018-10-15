@@ -82,7 +82,7 @@ public class StoriesPresenter {
         view.updateView();
     }
 
-    public void updateColors(int index, ArrayList<Integer> colors) {
+    public void updateColors(int index, ArrayList<String> colors) {
         stories.setColors(index, colors);
         view.updateView();
     }

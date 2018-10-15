@@ -164,12 +164,12 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public ArrayList<Integer> sendColors() {
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+    public ArrayList<String> sendColors() {
+        ArrayList<String> colors = new ArrayList<String>();
         if (backgroundColor == null) {
             backgroundColor = 0;
         }
-        colors.add(backgroundColor);
+        colors.add(backgroundColor.toString());
         return colors;
     }
 

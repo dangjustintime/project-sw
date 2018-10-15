@@ -54,7 +54,7 @@ public class StoryEditorActivity extends AppCompatActivity
     public interface OnSaveImageListener {
         void hideUI();
         ArrayList<String> sendFilePaths();
-        ArrayList<Integer> sendColors();
+        ArrayList<String> sendColors();
         String sendTitle();
         String sendText();
     }
@@ -110,12 +110,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
         // convert Arraylists to HashSets
         HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getImageUris());
-        ArrayList<String> colorsArrayList = new ArrayList<String>();
-        ArrayList<Integer> integerColors = storiesPresenter.getPage(0).getColors();
-        for (Integer integer : integerColors) {
-            colorsArrayList.add(integer.toString());
-        }
-        HashSet<String> colorsHashSet = new HashSet<String>(colorsArrayList);
+        HashSet<String> colorsHashSet = new HashSet<String>(storiesPresenter.getPage(0).getColors());
 
         sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_template", storiesPresenter.getPage(currentPageIndex).getTemplateName());
         sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_title", storiesPresenter.getPage(currentPageIndex).getTitle());
@@ -247,12 +242,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
             // convert Arraylists to HashSets
             HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(i).getImageUris());
-            ArrayList<String> colorsArrayList = new ArrayList<String>();
-            ArrayList<Integer> integerColors = storiesPresenter.getPage(i).getColors();
-            for (Integer integer : integerColors) {
-                colorsArrayList.add(integer.toString());
-            }
-            HashSet<String> colorsHashSet = new HashSet<String>(colorsArrayList);
+            HashSet<String> colorsHashSet = new HashSet<String>(storiesPresenter.getPage(i).getColors());
 
             sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_template", storiesPresenter.getPage(i).getTemplateName());
             sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_title", storiesPresenter.getPage(i).getTitle());
