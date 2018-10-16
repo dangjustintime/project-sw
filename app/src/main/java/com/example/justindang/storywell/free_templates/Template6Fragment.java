@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
@@ -36,11 +37,19 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 19;
     private static final int IMAGE_GALLERY_REQUEST_INNER = 25;
 
+    // tags
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
+
     // image uri strings and color
+    // index 0 = outer media
+    // index 1 = inner media
     ArrayList<String> imageUriStrings;
     String innerMediaUriString;
     String outerMediaUriString;
     Integer backgroundColor;
+    String title;
+    String text;
 
     // views
     @BindView(R.id.edit_text_template6_add_title) EditText addTitleEditText;
@@ -69,6 +78,29 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
 
+        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+            addOuterMediaImageView.setVisibility(View.INVISIBLE);
+            addInnerMediaImageView.setVisibility(View.INVISIBLE);
+            removeOuterMediaImageView.setVisibility(View.VISIBLE);
+            removeInnerMediaImageView.setVisibility(View.VISIBLE);
+            tipEditText.setVisibility(View.INVISIBLE);
+
+            // get data and put into views
+            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
+            outerMediaUriString = savedStories.getImageUris(0).get(0);
+            innerMediaUriString = savedStories.getImageUris(0).get(1);
+            title = savedStories.getTitle(0);
+            text = savedStories.getText(0);
+            backgroundColor = Integer.valueOf(savedStories.getColors(0).get(0));
+
+            Uri outerImageUri = Uri.parse(outerMediaUriString);
+            Uri innerImageUri = Uri.parse(innerMediaUriString);
+            ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            addTitleEditText.setText(title);
+            tapToAddEditText.setText(text);
+            containerConstraintLayout.setBackgroundColor(backgroundColor);
+        }
 
         // initialize filePaths
         imageUriStrings = new ArrayList<>();
@@ -141,11 +173,9 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_OUTER) {
                 outerMediaUriString = data.getDataString();
-                imageUriStrings.add(outerMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), imageUri, outerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 innerMediaUriString = data.getDataString();
-                imageUriStrings.add(innerMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
@@ -161,6 +191,8 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        imageUriStrings.add(outerMediaUriString);
+        imageUriStrings.add(innerMediaUriString);
         return imageUriStrings;
     }
 

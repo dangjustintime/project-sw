@@ -142,7 +142,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_MEDIA) {
                 mediaUriString = data.getDataString();
-                imageUriStrings.add(data.getDataString());
                 ImageHandler.setImageToImageView(getContext(), imageUri, mediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
@@ -157,6 +156,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        imageUriStrings.add(mediaUriString);
         return imageUriStrings;
     }
 
