@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
@@ -33,7 +34,13 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
 
+    // tags
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
+
     // image uri strings
+    // index 0 = top media
+    // index 1 = bottom media
     ArrayList<String> imageUriStrings;
     String bottomMediaUriString;
     String topMediaUriString;
@@ -60,6 +67,23 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         imageUriStrings = new ArrayList<>();
 
         hideUI();
+
+        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+            addBottomMediaImageView.setVisibility(View.INVISIBLE);
+            addTopMediaImageView.setVisibility(View.INVISIBLE);
+            removeBottomMediaImageView.setVisibility(View.VISIBLE);
+            removeTopMediaImageView.setVisibility(View.VISIBLE);
+
+            // get saved stories and put data into views
+            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
+            topMediaUriString = savedStories.getImageUris(0).get(0);
+            bottomMediaUriString = savedStories.getImageUris(0).get(1);
+            Uri topImageUri = Uri.parse(topMediaUriString);
+            Uri bottomImageUri = Uri.parse(bottomMediaUriString);
+
+            ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            ImageHandler.setImageToImageView(getContext(), bottomImageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
+        }
 
         // clicklisteners
         addTopMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -109,11 +133,9 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_TOP) {
                 topMediaUriString = data.getDataString();
-                imageUriStrings.add(topMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), imageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
             } else if (requestCode == IMAGE_GALLERY_REQUEST_BOTTOM) {
                 bottomMediaUriString = data.getDataString();
-                imageUriStrings.add(bottomMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), imageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
@@ -127,6 +149,8 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        imageUriStrings.add(topMediaUriString);
+        imageUriStrings.add(bottomMediaUriString);
         return imageUriStrings;
     }
 

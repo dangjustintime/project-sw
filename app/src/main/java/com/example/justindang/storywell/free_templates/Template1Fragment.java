@@ -39,8 +39,8 @@ import static android.app.Activity.RESULT_OK;
 public class Template1Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
 
     // uri strings
-    // index 0 = innerMedia
-    // index 1 = outerMedia
+    // index 0 = inner Media
+    // index 1 = outer Media
     ArrayList<String> imageUriStrings;
     String innerMediaUriString;
     String outerMediaUriString;
