@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
@@ -34,10 +35,16 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     // request code
     private static final int IMAGE_GALLERY_REQUEST_MEDIA = 13;
 
-    // image uri strings and color
+    // tags
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
+
+    // image uri strings, color, title, text
     ArrayList<String> imageUriStrings;
     String mediaUriString;
     Integer backgroundColor;
+    String title;
+    String text;
 
     // views
     @BindView(R.id.image_view_template5_media) ImageView mediaImageView;
@@ -62,6 +69,25 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
+
+        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+            addMediaImageView.setVisibility(View.INVISIBLE);
+            removeMediaImageView.setVisibility(View.VISIBLE);
+            tipEditText.setVisibility(View.INVISIBLE);
+
+            // get data and put into views
+            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
+            mediaUriString = savedStories.getImageUris(0).get(0);
+            title = savedStories.getTitle(0);
+            text = savedStories.getText(0);
+            backgroundColor = Integer.valueOf(savedStories.getColors(0).get(0));
+
+            Uri imageUri = Uri.parse(mediaUriString);
+            ImageHandler.setImageToImageView(getContext(), imageUri, mediaImageView, ImageView.ScaleType.CENTER_CROP);
+            addTitleEditText.setText(title);
+            tapToAddEditText.setText(text);
+            containerConstraintLayout.setBackgroundColor(backgroundColor);
+        }
 
         // initialize filePath
         imageUriStrings = new ArrayList<>();
