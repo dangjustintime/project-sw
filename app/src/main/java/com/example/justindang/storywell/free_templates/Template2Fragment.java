@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.File;
@@ -32,6 +33,10 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
     // request code
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
+
+    // tags
+    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    private static final String EXTRA_SAVED_STORIES = "saved stories";
 
     // image uri and color strings
     ArrayList<String> imageUriStrings;
@@ -62,6 +67,19 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
 
+        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+            addInnerMediaImageView.setVisibility(View.INVISIBLE);
+            removeInnerMediaImageView.setVisibility(View.VISIBLE);
+
+            // get values of saved stories
+            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
+            outerLayerColor = Integer.valueOf(savedStories.getColors(0).get(0));
+            outerLayerImageView.setBackgroundColor(outerLayerColor);
+            innerMediaUriString = savedStories.getImageUris(0).get(0);
+            Uri innerImageUri = Uri.parse(innerMediaUriString);
+            ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+
+        }
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -113,7 +131,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 innerMediaUriString = data.getDataString();
-                imageUriStrings.add(innerMediaUriString);
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.FIT_CENTER);
             }
         }
@@ -129,6 +146,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        imageUriStrings.add(innerMediaUriString);
         return imageUriStrings;
     }
 
