@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".free_templates.Template5Fragment"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:layout_marginBottom="50dp"
     android:background="@color/colorPeach">
     <ImageView
         android:id="@+id/image_view_template5_media"

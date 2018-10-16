@@ -174,18 +174,14 @@ public class StoryEditorActivity extends AppCompatActivity
             // add Choose a template fragment
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, new ChooseATemplateFragment());
         } else {
-
             String template = storiesPresenter.getPage(currentPageIndex).getTemplateName();
             storiesPresenter.updateTemplateName(currentPageIndex, template);
             templatePlaceholderFragment = templateManager.getTemplate(template);
             onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
             fragmentTransaction.addToBackStack(null);
-
-
         }
         fragmentTransaction.commit();
-
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {

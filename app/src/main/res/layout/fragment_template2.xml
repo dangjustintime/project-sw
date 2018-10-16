@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".free_templates.Template2Fragment"
-    android:layout_marginTop="?attr/actionBarSize"
-    android:layout_marginBottom="50dp">
+    tools:context=".free_templates.Template2Fragment">
     <ImageView
         android:id="@+id/image_view_template2_outer_layer"
         android:layout_width="match_parent"
