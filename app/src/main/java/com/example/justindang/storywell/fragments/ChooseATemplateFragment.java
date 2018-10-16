@@ -32,7 +32,6 @@ public class ChooseATemplateFragment extends Fragment {
     @BindView(R.id.text_view_choose_a_template) TextView chooseATemplateTextView;
     @BindView(R.id.image_view_x_icon) ImageView xIconImageView;
     @BindView(R.id.image_view_shopping_cart_icon) ImageView shoppingCartIconImageView;
-    @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderFrameLayout;
 
     // recycler view
     @BindView(R.id.recycler_view_templates) RecyclerView templatesRecyclerView;

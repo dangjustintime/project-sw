@@ -72,17 +72,19 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.image_view_story_editor_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_story_editor_three_circle_icon) ImageView threeCircleIconImageView;
     @BindView(R.id.image_view_story_editor_angle_brackets_icon) ImageView angleBracketsIconImageView;
-    @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
     @BindView(R.id.image_view_story_editor_back_button) ImageView backButtonImageView;
     @BindView(R.id.image_view_story_editor_download_icon) ImageView downloadButtonImageView;
-    @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.constraint_layout_icon_container) ConstraintLayout iconContainerConstraintLayout;
+    @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
+    @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
+    @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
 
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Fragment templatePlaceholderFragment;
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
+    ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
 
     // save photo to storage
     public void saveImage() {
@@ -172,7 +174,7 @@ public class StoryEditorActivity extends AppCompatActivity
             storiesPresenter.addPage(new Page());
 
             // add Choose a template fragment
-            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, new ChooseATemplateFragment());
+            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
         } else {
             String template = storiesPresenter.getPage(currentPageIndex).getTemplateName();
             storiesPresenter.updateTemplateName(currentPageIndex, template);
@@ -217,8 +219,7 @@ public class StoryEditorActivity extends AppCompatActivity
                 // start new template fragment
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
-                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, chooseATemplateFragment);
+                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
                 fragmentTransaction.commit();
             }
         });
@@ -295,7 +296,8 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-        fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
+        fragmentTransaction.remove(chooseATemplateFragment);
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

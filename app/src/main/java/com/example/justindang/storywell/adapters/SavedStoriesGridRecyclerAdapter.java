@@ -49,6 +49,12 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
     Context context;
     List<Stories> savedStoriesList;
 
+    // interface
+    public interface OnItemListener {
+        void getNewName(int position);
+    }
+    OnItemListener onItemListener;
+
     // constructor
     public SavedStoriesGridRecyclerAdapter(Context context, List<Stories> savedStoriesList) {
         this.context = context;
@@ -89,12 +95,6 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
             }
         }
     }
-
-    // interface
-    public interface OnItemListener {
-        void getNewName(int position);
-    }
-    OnItemListener onItemListener;
 
     // inflater
     @NonNull

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.fragments.ChangeStoryNameDialogFragment;
+import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.fragments.CreateNewStoryDialogFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.adapters.SavedStoriesGridRecyclerAdapter;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity
 
     // Fragments
     FragmentManager fragmentManager;
+    ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
     ChangeStoryNameDialogFragment changeStoryNameDialogFragment = new ChangeStoryNameDialogFragment();
 
@@ -141,7 +143,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
         trashIconImageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
