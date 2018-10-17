@@ -2,6 +2,7 @@ package com.example.justindang.storywell.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Stories;
 
 import butterknife.BindView;
@@ -48,11 +50,13 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     // binder
     @Override
     public void onBindViewHolder(@NonNull PageViewHolder pageViewHolder, int i) {
-
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (stories == null) {
+            return 0;
+        }
+        return  stories.getNumPages();
     }
 }

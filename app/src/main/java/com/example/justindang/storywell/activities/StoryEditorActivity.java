@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
@@ -25,6 +26,7 @@ import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 
 import java.io.File;
@@ -79,6 +81,9 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
 
+    @BindView(R.id.text_view_story_editor_prev) TextView prevTextView;
+    @BindView(R.id.text_view_story_editor_next) TextView nextTextView;
+
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -98,40 +103,8 @@ public class StoryEditorActivity extends AppCompatActivity
         storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
         storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
 
-        // put values in shared preferences
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-
-        if (isNewStories) {
-            int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
-            int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
-
-            // generate key
-            storiesPresenter.generateSharedPrefKey(serialID);
-
-            // increment number of stories
-            sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
-            sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), ++serialID);
-        }
-
-        String key = storiesPresenter.getSharedPrefKey();
-
-        // put values in shared preferences
-        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
-        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
-        sharedPreferencesEditor.putInt(key + "_num_pages", 1);
-
-        // convert Arraylists to HashSets
-        CopyOnWriteArraySet<String> filePathsSet = new CopyOnWriteArraySet<>(storiesPresenter.getPage(0).getImageUris());
-        CopyOnWriteArraySet<String> colorsSet = new CopyOnWriteArraySet<String>(storiesPresenter.getPage(0).getColors());
-
-        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_template", storiesPresenter.getPage(currentPageIndex).getTemplateName());
-        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_title", storiesPresenter.getPage(currentPageIndex).getTitle());
-        sharedPreferencesEditor.putString(key + "_" + currentPageIndex + "_text", storiesPresenter.getPage(currentPageIndex).getText());
-        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex +"_colors", colorsSet);
-        sharedPreferencesEditor.putStringSet(key + "_" + currentPageIndex + "_image_uris", filePathsSet);
-
-        sharedPreferencesEditor.apply();
+        // put stories in shared pref
+        SharedPrefHandler.putStories(this, storiesPresenter, isNewStories);
     }
 
     // creates intent that launches instagram app to post story
@@ -172,7 +145,6 @@ public class StoryEditorActivity extends AppCompatActivity
 
         if (isNewStories) {
             storiesPresenter.addPage(new Page());
-
             // add Choose a template fragment
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
         } else {
@@ -223,6 +195,18 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
+        prevTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "prev", Toast.LENGTH_SHORT).show();
+            }
+        });
+        nextTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "next", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // SaveStoryDialog interface
@@ -236,47 +220,17 @@ public class StoryEditorActivity extends AppCompatActivity
     @Override
     public void saveStories() {
         Toast.makeText(getBaseContext(), "saving stories...", Toast.LENGTH_SHORT).show();
+
         // get values from template fragments
         storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
         storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
         storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
         storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
 
-        // put values in shared preferences
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
-        int numStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
-        int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
+        // put stories in shared pref
+        SharedPrefHandler.putStories(this, storiesPresenter, isNewStories);
 
-        // generate key
-        storiesPresenter.generateSharedPrefKey(serialID);
-        String key = storiesPresenter.getPages().getSharedPrefKey();
-
-        // put values in shared preferences
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
-        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
-        sharedPreferencesEditor.putInt(key + "_num_pages", storiesPresenter.getNumPages());
-
-        // put values of each page
-        for (int i = 0; i <= currentPageIndex; i++) {
-
-            // convert Arraylists to HashSets
-            HashSet<String> filePathsHashSet = new HashSet<String>(storiesPresenter.getPage(i).getImageUris());
-            HashSet<String> colorsHashSet = new HashSet<String>(storiesPresenter.getPage(i).getColors());
-
-            sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_template", storiesPresenter.getPage(i).getTemplateName());
-            sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_title", storiesPresenter.getPage(i).getTitle());
-            sharedPreferencesEditor.putString(key + "_" + String.valueOf(i) + "_text", storiesPresenter.getPage(i).getText());
-            sharedPreferencesEditor.putStringSet(key + "_" + String.valueOf(i) + "_colors", colorsHashSet);
-            sharedPreferencesEditor.putStringSet(key + "_" + String.valueOf(i) + "_image_uris", filePathsHashSet);
-        }
-
-        // increment number of stories
-        sharedPreferencesEditor.putInt(getResources().getString(R.string.saved_num_stories_keys), ++numStories);
-        sharedPreferencesEditor.putInt(getResources().getString(R.string.serial_id), serialID++);
-        sharedPreferencesEditor.apply();
         finish();
-        // Intent intent = new Intent(StoryEditorActivity.this, MainActivity.class);
     }
 
     @Override
