@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
@@ -44,10 +45,12 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     ArrayList<String> imageUriStrings;
     String innerMediaUriString;
     String outerMediaUriString;
+    Page page;
 
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
+    private static final String BUNDLE_CURRENT_PAGE = "current page";
 
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
@@ -106,6 +109,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
             removeOuterMediaImageView.setVisibility(View.VISIBLE);
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeInnerMediaImageView.setVisibility(View.VISIBLE);
+
+            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
+            Toast.makeText(getContext(), page.getImageUris().toString(), Toast.LENGTH_SHORT).show();
 
             // put images into image views
             Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);

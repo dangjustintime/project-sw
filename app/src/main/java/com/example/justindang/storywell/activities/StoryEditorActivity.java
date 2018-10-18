@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +38,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
         StoriesPresenter.View,
@@ -55,6 +55,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // TAG
     private static final String DIALOG_SAVE_STORY = "save story";
+    private static final String BUNDLE_CURRENT_PAGE = "current page";
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -81,8 +82,9 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
 
-    @BindView(R.id.text_view_story_editor_prev) TextView prevTextView;
-    @BindView(R.id.text_view_story_editor_next) TextView nextTextView;
+    // testing placeholder views
+    @BindView(R.id.button_story_editor_prev) Button prevTextView;
+    @BindView(R.id.button_story_editor_next) Button nextTextView;
 
     // fragments
     FragmentManager fragmentManager;
@@ -138,24 +140,19 @@ public class StoryEditorActivity extends AppCompatActivity
         // initialize presenter
         storiesPresenter = new StoriesPresenter(this, savedStories);
         currentPageIndex = 0;
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
 
         isNewStories = getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
 
         if (isNewStories) {
             storiesPresenter.addPage(new Page());
             // add Choose a template fragment
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
+            fragmentTransaction.commit();
         } else {
-            String template = storiesPresenter.getPage(currentPageIndex).getTemplateName();
-            storiesPresenter.updateTemplateName(currentPageIndex, template);
-            templatePlaceholderFragment = templateManager.getTemplate(template);
-            onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
-            fragmentTransaction.addToBackStack(null);
+            loadSavedPageToTemplate();
         }
-        fragmentTransaction.commit();
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -199,12 +196,16 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "prev", Toast.LENGTH_SHORT).show();
+                currentPageIndex--;
+                loadSavedPageToTemplate();
             }
         });
         nextTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "next", Toast.LENGTH_SHORT).show();
+                currentPageIndex++;
+                loadSavedPageToTemplate();
             }
         });
     }
@@ -249,9 +250,10 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
+
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.remove(chooseATemplateFragment);
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -259,6 +261,25 @@ public class StoryEditorActivity extends AppCompatActivity
     @Override
     public void updateView() {
 
+    }
+
+    public void loadSavedPageToTemplate() {
+        // get template fragment for saved page
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        String template = storiesPresenter.getPage(currentPageIndex).getTemplateName();
+        storiesPresenter.updateTemplateName(currentPageIndex, template);
+        templatePlaceholderFragment = templateManager.getTemplate(template);
+        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
+
+        // put page in bundle for template fragment
+        Page page = storiesPresenter.getPage(currentPageIndex);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
+        templatePlaceholderFragment.setArguments(bundle);
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
 
