@@ -102,7 +102,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         // initialize page
         page = new Page();
 
-        // if page is previously saved
+        // load previously saved page
         if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
             addOuterMediaImageView.setVisibility(View.INVISIBLE);
             removeOuterMediaImageView.setVisibility(View.VISIBLE);

@@ -37,10 +37,9 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
-    private static final String EXTRA_SAVED_STORIES = "saved stories";
+    private static final String BUNDLE_CURRENT_PAGE = "current page";
 
     // image uri and color strings
-    ArrayList<String> imageUriStrings;
     String innerMediaUriString;
     Integer outerLayerColor;
     Page page;
@@ -63,21 +62,24 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template2, container, false);
         ButterKnife.bind(this, view);
 
-        // initialize filePaths
-        imageUriStrings = new ArrayList<>();
+        // initialize page
+        page = new Page();
 
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
 
+        // load previously saved page
         if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeInnerMediaImageView.setVisibility(View.VISIBLE);
 
-            // get values of saved stories
-            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
-            outerLayerColor = Integer.valueOf(savedStories.getColors(0).get(0));
+            // get page from bundle
+            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
+
+            // put images into image views
+            outerLayerColor = Integer.valueOf(page.getColors().get(0));
             outerLayerImageView.setBackgroundColor(outerLayerColor);
-            innerMediaUriString = savedStories.getImageUris(0).get(0);
+            innerMediaUriString = page.getImageUris().get(0);
             Uri innerImageUri = Uri.parse(innerMediaUriString);
             ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
 
@@ -119,10 +121,8 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaImageView.setImageBitmap(null);
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-                imageUriStrings.remove(innerMediaUriString);
             }
         });
-
         return view;
     }
 
@@ -133,7 +133,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             Uri imageUri = data.getData();
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 innerMediaUriString = data.getDataString();
-                ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.FIT_CENTER);
+                ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
     }
@@ -148,7 +148,9 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        ArrayList<String> imageUriStrings = new ArrayList<>();
         imageUriStrings.add(innerMediaUriString);
+        page.setImageUris(imageUriStrings);
         return imageUriStrings;
     }
 
@@ -159,21 +161,36 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             outerLayerColor = 0;
         }
         colors.add(outerLayerColor.toString());
+        page.setColors(colors);
         return colors;
     }
 
     @Override
     public String sendTitle() {
+        page.setTitle(null);
         return null;
     }
 
     @Override
     public String sendText() {
+        page.setText(null);
         return null;
     }
 
     @Override
     public Page sendPage() {
-        return null;
+        page.setTitle(null);
+        page.setText(null);
+        // set array data
+        ArrayList<String> imageUriStrings = new ArrayList<>();
+        imageUriStrings.add(innerMediaUriString);
+        page.setImageUris(imageUriStrings);
+        ArrayList<String> colors = new ArrayList<String>();
+        if (outerLayerColor == null) {
+            outerLayerColor = 0;
+        }
+        colors.add(outerLayerColor.toString());
+        page.setColors(colors);
+        return page;
     }
 }
