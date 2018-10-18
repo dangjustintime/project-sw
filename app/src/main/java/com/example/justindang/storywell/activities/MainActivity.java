@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -217,13 +218,13 @@ public class MainActivity extends AppCompatActivity
                         newStories.addPage(new Page());
 
                         // get image uris
-                        Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new CopyOnWriteArraySet<String>());
+                        Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new LinkedHashSet<String>());
                         ArrayList<String> imageUrisStrings = new ArrayList<>();
                         imageUrisStrings.addAll(imageUrisSet);
                         newStories.setImageUris(j, imageUrisStrings);
 
                         // get colors
-                        Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new CopyOnWriteArraySet<String>());
+                        Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new LinkedHashSet<String>());
                         ArrayList<String> colorsIntStrings = new ArrayList<>();
                         colorsIntStrings.addAll(colorsSet);
                         newStories.setColors(j, colorsIntStrings);

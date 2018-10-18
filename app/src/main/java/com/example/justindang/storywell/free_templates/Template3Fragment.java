@@ -37,14 +37,14 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
-    private static final String EXTRA_SAVED_STORIES = "saved stories";
+    private static final String BUNDLE_CURRENT_PAGE = "current page";
 
     // image uri strings
     // index 0 = top media
     // index 1 = bottom media
-    ArrayList<String> imageUriStrings;
     String bottomMediaUriString;
     String topMediaUriString;
+    Page page;
 
     // views
     @BindView(R.id.image_view_template3_add_bottom_media) ImageView addBottomMediaImageView;
@@ -64,10 +64,10 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template3, container, false);
         ButterKnife.bind(this, view);
 
-        // initialize filePaths
-        imageUriStrings = new ArrayList<>();
-
         hideUI();
+
+        // initialize filePaths
+        page = new Page();
 
         if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
             addBottomMediaImageView.setVisibility(View.INVISIBLE);
@@ -75,13 +75,15 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             removeBottomMediaImageView.setVisibility(View.VISIBLE);
             removeTopMediaImageView.setVisibility(View.VISIBLE);
 
+            // get page from bundle
+            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
+
+
             // get saved stories and put data into views
-            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
-            topMediaUriString = savedStories.getImageUris(0).get(0);
-            bottomMediaUriString = savedStories.getImageUris(0).get(1);
+            topMediaUriString = page.getImageUris().get(0);
+            bottomMediaUriString = page.getImageUris().get(1);
             Uri topImageUri = Uri.parse(topMediaUriString);
             Uri bottomImageUri = Uri.parse(bottomMediaUriString);
-
             ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
             ImageHandler.setImageToImageView(getContext(), bottomImageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
         }
@@ -111,7 +113,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 topMediaImageView.setImageBitmap(null);
                 addTopMediaImageView.setVisibility(View.VISIBLE);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
-                imageUriStrings.remove(topMediaUriString);
             }
         });
         removeBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -120,10 +121,8 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaImageView.setImageBitmap(null);
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
-                imageUriStrings.remove(bottomMediaUriString);
             }
         });
-
         return view;
     }
 
@@ -142,6 +141,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         }
     }
 
+    // OnSaveImageListener
     @Override
     public void hideUI() {
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
@@ -150,8 +150,10 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        ArrayList<String> imageUriStrings = new ArrayList<String>();
         imageUriStrings.add(topMediaUriString);
         imageUriStrings.add(bottomMediaUriString);
+        page.setImageUris(imageUriStrings);
         return imageUriStrings;
     }
 
@@ -159,21 +161,34 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     public ArrayList<String> sendColors() {
         ArrayList<String> colors = new ArrayList<String>();
         colors.add("0");
+        page.setColors(colors);
         return colors;
     }
 
     @Override
     public String sendTitle() {
+        page.setTitle(null);
         return null;
     }
 
     @Override
     public String sendText() {
+        page.setTitle(null);
         return null;
     }
 
     @Override
     public Page sendPage() {
-        return null;
+        page.setTitle(null);
+        page.setTitle(null);
+        // set array data
+        ArrayList<String> imageUriStrings = new ArrayList<String>();
+        imageUriStrings.add(topMediaUriString);
+        imageUriStrings.add(bottomMediaUriString);
+        page.setImageUris(imageUriStrings);
+        ArrayList<String> colors = new ArrayList<String>();
+        colors.add("0");
+        page.setColors(colors);
+        return page;
     }
 }

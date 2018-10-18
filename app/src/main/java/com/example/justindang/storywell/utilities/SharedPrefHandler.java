@@ -10,6 +10,7 @@ import com.example.justindang.storywell.presenter.StoriesPresenter;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -47,8 +48,8 @@ public class SharedPrefHandler {
         for (int i = 0; i < storiesPresenter.getNumPages(); i++) {
             String pageKey = key + "_" + String.valueOf(i);
             // convert Arraylists to Sets
-            CopyOnWriteArraySet<String> filePathsSet = new CopyOnWriteArraySet<String>(storiesPresenter.getPage(i).getImageUris());
-            CopyOnWriteArraySet<String> colorsSet = new CopyOnWriteArraySet<String>(storiesPresenter.getPage(i).getColors());
+            LinkedHashSet<String> filePathsSet = new LinkedHashSet<String>(storiesPresenter.getPage(i).getImageUris());
+            LinkedHashSet<String> colorsSet = new LinkedHashSet<String>(storiesPresenter.getPage(i).getColors());
 
             sharedPreferencesEditor.putString(pageKey + "_template", storiesPresenter.getPage(i).getTemplateName());
             sharedPreferencesEditor.putString(pageKey + "_title", storiesPresenter.getPage(i).getTitle());

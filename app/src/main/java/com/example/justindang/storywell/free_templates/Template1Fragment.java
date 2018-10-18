@@ -124,7 +124,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         // gesture listener
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
 
-        // get image from gallery onclick
+        // clicklisteners
         addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
