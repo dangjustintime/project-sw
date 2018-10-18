@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
@@ -168,6 +169,11 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public String sendText() {
+        return null;
+    }
+
+    @Override
+    public Page sendPage() {
         return null;
     }
 }

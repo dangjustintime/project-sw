@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
@@ -214,5 +215,10 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public String sendText() {
         return tapToAddEditText.getText().toString();
+    }
+
+    @Override
+    public Page sendPage() {
+        return null;
     }
 }

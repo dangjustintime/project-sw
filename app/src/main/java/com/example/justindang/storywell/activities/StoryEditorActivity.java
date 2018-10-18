@@ -63,6 +63,7 @@ public class StoryEditorActivity extends AppCompatActivity
         ArrayList<String> sendColors();
         String sendTitle();
         String sendText();
+        Page sendPage();
     }
     OnSaveImageListener onSaveImageListener;
 
@@ -170,7 +171,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
             }
         });
-
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

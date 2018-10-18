@@ -42,14 +42,12 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     // uri strings
     // index 0 = inner Media
     // index 1 = outer Media
-    ArrayList<String> imageUriStrings;
     String innerMediaUriString;
     String outerMediaUriString;
     Page page;
 
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
-    private static final String EXTRA_SAVED_STORIES = "saved stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
 
     // request codes
@@ -101,26 +99,24 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        // initialize filePaths
-        imageUriStrings = new ArrayList<String>();
+        // initialize page
+        page = new Page();
 
+        // if page is previously saved
         if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
             addOuterMediaImageView.setVisibility(View.INVISIBLE);
             removeOuterMediaImageView.setVisibility(View.VISIBLE);
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeInnerMediaImageView.setVisibility(View.VISIBLE);
 
+            // get page from bundle
             page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
-            Toast.makeText(getContext(), page.getImageUris().toString(), Toast.LENGTH_SHORT).show();
 
             // put images into image views
-            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
-            imageUriStrings = savedStories.getImageUris(0);
-            innerMediaUriString = imageUriStrings.get(0);
-            outerMediaUriString = imageUriStrings.get(1);
+            innerMediaUriString = page.getImageUris().get(0);
+            outerMediaUriString = page.getImageUris().get(1);
             Uri innerImageUri = Uri.parse(innerMediaUriString);
             Uri outerImageUri = Uri.parse(outerMediaUriString);
-
             ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.MATRIX);
         }
@@ -154,7 +150,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaImageView.setImageBitmap(null);
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-                imageUriStrings.remove(innerMediaUriString);
             }
         });
         removeOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +158,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 outerMediaImageView.setImageBitmap(null);
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-                imageUriStrings.remove(outerMediaUriString);
             }
         });
 
@@ -202,8 +196,10 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public ArrayList<String> sendFilePaths() {
+        ArrayList<String> imageUriStrings = new ArrayList<String>();
         imageUriStrings.add(innerMediaUriString);
         imageUriStrings.add(outerMediaUriString);
+        page.setImageUris(imageUriStrings);
         return imageUriStrings;
     }
 
@@ -211,16 +207,34 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     public ArrayList<String> sendColors() {
         ArrayList<String> colors = new ArrayList<String>();
         colors.add("0");
+        page.setColors(colors);
         return colors;
     }
 
     @Override
     public String sendTitle() {
+        page.setTitle(null);
         return null;
     }
 
     @Override
     public String sendText() {
+        page.setText(null);
         return null;
+    }
+
+    @Override
+    public Page sendPage() {
+        page.setTitle(null);
+        page.setText(null);
+        // set array data
+        ArrayList<String> imageUriStrings = new ArrayList<>();
+        imageUriStrings.add(innerMediaUriString);
+        imageUriStrings.add(outerMediaUriString);
+        page.setImageUris(imageUriStrings);
+        ArrayList<String> colors = new ArrayList<String>();
+        colors.add("0");
+        page.setColors(colors);
+        return page;
     }
 }
