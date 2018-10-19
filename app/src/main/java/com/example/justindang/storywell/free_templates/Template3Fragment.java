@@ -78,7 +78,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             // get page from bundle
             page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
 
-
             // get saved stories and put data into views
             topMediaUriString = page.getImageUris().get(0);
             bottomMediaUriString = page.getImageUris().get(1);
