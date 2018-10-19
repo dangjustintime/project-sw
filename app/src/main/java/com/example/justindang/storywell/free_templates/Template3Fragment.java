@@ -66,7 +66,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        // initialize filePaths
+        // initialize page
         page = new Page();
 
         if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {

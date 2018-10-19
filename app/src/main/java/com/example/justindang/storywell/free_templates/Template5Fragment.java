@@ -38,14 +38,14 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
-    private static final String EXTRA_SAVED_STORIES = "saved stories";
+    private static final String BUNDLE_CURRENT_PAGE = "current page";
 
     // image uri strings, color, title, text
-    ArrayList<String> imageUriStrings;
     String mediaUriString;
     Integer backgroundColor;
     String title;
     String text;
+    Page page;
 
     // views
     @BindView(R.id.image_view_template5_media) ImageView mediaImageView;
@@ -71,27 +71,30 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
 
+        // initialize page
+        page = new Page();
+
         if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
             addMediaImageView.setVisibility(View.INVISIBLE);
             removeMediaImageView.setVisibility(View.VISIBLE);
             tipEditText.setVisibility(View.INVISIBLE);
 
-            // get data and put into views
-            Stories savedStories = getActivity().getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
-            mediaUriString = savedStories.getImageUris(0).get(0);
-            title = savedStories.getTitle(0);
-            text = savedStories.getText(0);
-            backgroundColor = Integer.valueOf(savedStories.getColors(0).get(0));
+            // get page from bundle
+            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
 
+            // get data and put into views
+            mediaUriString = page.getImageUris().get(0);
+            title = page.getTitle();
+            text = page.getText();
+            backgroundColor = Integer.valueOf(page.getColors().get(0));
+
+            // get data and put into views
             Uri imageUri = Uri.parse(mediaUriString);
             ImageHandler.setImageToImageView(getContext(), imageUri, mediaImageView, ImageView.ScaleType.CENTER_CROP);
             addTitleEditText.setText(title);
             tapToAddEditText.setText(text);
             containerConstraintLayout.setBackgroundColor(backgroundColor);
         }
-
-        // initialize filePath
-        imageUriStrings = new ArrayList<>();
 
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -119,7 +122,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 mediaImageView.setImageBitmap(null);
                 addMediaImageView.setVisibility(View.VISIBLE);
                 removeMediaImageView.setVisibility(View.INVISIBLE);
-                imageUriStrings.remove(mediaUriString);
             }
         });
         colorPickerImageView.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +150,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         }
     }
 
+    // OnSaveImageListener
     @Override
     public void hideUI() {
         removeMediaImageView.setVisibility(View.INVISIBLE);
@@ -155,9 +158,12 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         colorPicker.setVisibility(View.INVISIBLE);
     }
 
+
     @Override
     public ArrayList<String> sendFilePaths() {
+        ArrayList<String> imageUriStrings = new ArrayList<>();
         imageUriStrings.add(mediaUriString);
+        page.setImageUris(imageUriStrings);
         return imageUriStrings;
     }
 
@@ -168,21 +174,40 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             backgroundColor = 0;
         }
         colors.add(backgroundColor.toString());
+        page.setColors(colors);
         return colors;
     }
 
     @Override
     public String sendTitle() {
-        return addTitleEditText.getText().toString();
+        title = addTitleEditText.getText().toString();
+        page.setTitle(title);
+        return title;
     }
 
     @Override
     public String sendText() {
-        return tapToAddEditText.getText().toString();
+        text = tapToAddEditText.getText().toString();
+        page.setText(text);
+        return text;
     }
 
     @Override
     public Page sendPage() {
+        title = addTitleEditText.getText().toString();
+        page.setTitle(title);
+        text = tapToAddEditText.getText().toString();
+        page.setText(text);
+        // set array data
+        ArrayList<String> imageUriStrings = new ArrayList<>();
+        imageUriStrings.add(mediaUriString);
+        page.setImageUris(imageUriStrings);
+        ArrayList<String> colors = new ArrayList<String>();
+        if (backgroundColor == null) {
+            backgroundColor = 0;
+        }
+        colors.add(backgroundColor.toString());
+        page.setColors(colors);
         return null;
     }
 }
