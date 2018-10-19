@@ -29,6 +29,7 @@ import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.adapters.SavedStoriesGridRecyclerAdapter;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
+import com.example.justindang.storywell.utilities.SharedPrefHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -68,12 +69,14 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar_main_activity) Toolbar toolbar;
     @BindView(R.id.constraint_layout_anywhere) ConstraintLayout constraintLayoutAnywhere;
     @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
-    @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
     @BindView(R.id.constraint_layout_bottom_bar) ConstraintLayout bottomBarConstraintLayout;
     @BindView(R.id.image_view_main_activity_pencil_icon) ImageView pencilIconImageView;
     @BindView(R.id.image_view_main_activity_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
     @BindView(R.id.image_view_main_activity_shopping_cart) ImageView shoppingCartImageView;
+
+    @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
+
 
     // recycler view
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
@@ -101,6 +104,9 @@ public class MainActivity extends AppCompatActivity
 
         // request read permissions
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
+
+        sharedPreferencesTextView.setText(SharedPrefHandler.getSharedPrefString(MainActivity.this));
+        sharedPreferencesTextView.setTextSize(20f);
 
         loadRecyclerView();
 
@@ -163,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        loadRecyclerView();
+        //loadRecyclerView();
     }
 
     @Override
@@ -194,9 +200,6 @@ public class MainActivity extends AppCompatActivity
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
-        // place shared pref values in map
-        Map<String, ?> sharedPrefMap = sharedPreferences.getAll();
-        sharedPreferencesTextView.setText(sharedPrefMap.toString());
         savedStoriesList = new ArrayList<>();
 
         if (serialID == 0) {
@@ -204,38 +207,8 @@ public class MainActivity extends AppCompatActivity
         } else {
             showSavedStoriesRecyclerView();
             for (int i = 0; i < serialID; i++) {
-                Stories newStories = new Stories();
-                String storiesKey = "stories_" + String.valueOf(i);
-                newStories.setSharedPrefKey(storiesKey);
-
-                newStories.setName(sharedPreferences.getString(storiesKey + "_name", "NOT FOUND"));
-                newStories.setDate(sharedPreferences.getString(storiesKey + "_date", "NOT FOUND"));
-                int numPages = sharedPreferences.getInt(storiesKey + "_num_pages", -1);
-
-                if (numPages != -1) {
-                    for (int j = 0; j < numPages; j++) {
-                        String pageKey = storiesKey + "_" + String.valueOf(j);
-                        newStories.addPage(new Page());
-
-                        // get image uris
-                        Set<String> imageUrisSet = sharedPreferences.getStringSet(pageKey + "_image_uris", new LinkedHashSet<String>());
-                        ArrayList<String> imageUrisStrings = new ArrayList<>();
-                        imageUrisStrings.addAll(imageUrisSet);
-                        newStories.setImageUris(j, imageUrisStrings);
-
-                        // get colors
-                        Set<String> colorsSet = sharedPreferences.getStringSet(pageKey + "_colors", new LinkedHashSet<String>());
-                        ArrayList<String> colorsIntStrings = new ArrayList<>();
-                        colorsIntStrings.addAll(colorsSet);
-                        newStories.setColors(j, colorsIntStrings);
-
-                        // get template, title, and text
-                        newStories.setTemplateName(j, sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
-                        newStories.setTitle(j, sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
-                        newStories.setText(j, sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
-                    }
-                    savedStoriesList.add(newStories);
-                }
+                Stories newStories = SharedPrefHandler.getStories(MainActivity.this, i);
+                savedStoriesList.add(newStories);
             }
 
             // check if read permissions are granted

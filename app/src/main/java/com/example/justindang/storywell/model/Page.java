@@ -16,6 +16,8 @@ public class Page implements Parcelable {
 
     // constructors
     public Page() {
+        this.imageUris = new ArrayList<>();
+        this.colors = new ArrayList<>();
     }
     protected Page(Parcel in) {
         templateName = in.readString();

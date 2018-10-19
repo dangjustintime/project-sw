@@ -63,7 +63,7 @@ public class SharedPrefHandler {
             ArrayList<String> colors = storiesPresenter.getPage(i).getColors();
             for (int j = 0; j < 2; j++) {
                 if (j < colors.size()) {
-                    sharedPreferencesEditor.putString(pageKey + "_color_" + String.valueOf(j), imageUris.get(j));
+                    sharedPreferencesEditor.putString(pageKey + "_color_" + String.valueOf(j), colors.get(j));
                 }
             }
 
@@ -90,26 +90,31 @@ public class SharedPrefHandler {
         if (numPages != -1) {
             for (int i = 0; i < numPages; i++) {
                 String pageKey = storiesKey + "_" + String.valueOf(i);
-                newStories.addPage(new Page());
+                Page page = new Page();
 
                 // get image uris
                 for (int j = 0; j < 9; j++) {
-                    newStories.addImage(i, sharedPreferences.getString(pageKey + "_image_uri_" + String.valueOf(j), "NOT FOUND"));
+                    page.addImage(sharedPreferences.getString(pageKey + "_image_uri_" + String.valueOf(j), "NOT FOUND"));
                 }
 
                 // get colors
                 for (int j = 0; j < 2; j++) {
-                    newStories.addColor(i, sharedPreferences.getString(pageKey + "_color_" + String.valueOf(j), "NOT FOUND"));
+                    page.addColor(sharedPreferences.getString(pageKey + "_color_" + String.valueOf(j), "NOT FOUND"));
                 }
 
                 // get template, title, and text
-                newStories.setTemplateName(i, sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
-                newStories.setTitle(i, sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
-                newStories.setText(i, sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
+                page.setTemplateName(sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
+                page.setTitle(sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
+                page.setText(sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
+                newStories.addPage(page);
             }
         }
 
         return newStories;
     }
 
+    public static String getSharedPrefString(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.saved_stories), 0);
+        return sharedPreferences.getAll().toString();
+    }
 }
