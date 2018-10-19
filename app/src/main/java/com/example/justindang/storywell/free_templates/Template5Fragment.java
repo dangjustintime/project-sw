@@ -39,6 +39,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
+    private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
     // image uri strings, color, title, text
     String mediaUriString;
@@ -74,7 +75,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         // initialize page
         page = new Page();
 
-        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+        if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             addMediaImageView.setVisibility(View.INVISIBLE);
             removeMediaImageView.setVisibility(View.VISIBLE);
             tipEditText.setVisibility(View.INVISIBLE);

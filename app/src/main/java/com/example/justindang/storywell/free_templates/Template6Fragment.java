@@ -41,6 +41,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
+    private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
     // image uri strings and color
     // index 0 = outer media
@@ -82,7 +83,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         // initialize page
         page = new Page();
 
-        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+        if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             addOuterMediaImageView.setVisibility(View.INVISIBLE);
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeOuterMediaImageView.setVisibility(View.VISIBLE);

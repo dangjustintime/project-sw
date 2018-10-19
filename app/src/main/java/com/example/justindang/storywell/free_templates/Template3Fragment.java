@@ -38,6 +38,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
+    private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
     // image uri strings
     // index 0 = top media
@@ -69,7 +70,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         // initialize page
         page = new Page();
 
-        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+        if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             addBottomMediaImageView.setVisibility(View.INVISIBLE);
             addTopMediaImageView.setVisibility(View.INVISIBLE);
             removeBottomMediaImageView.setVisibility(View.VISIBLE);

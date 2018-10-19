@@ -49,6 +49,8 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     // tags
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
+    private static final String BUNDLE_IS_NEW_PAGE = "new page";
+
 
     // request codes
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
@@ -103,7 +105,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         page = new Page();
 
         // load previously saved page
-        if (!getActivity().getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true)) {
+        if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             addOuterMediaImageView.setVisibility(View.INVISIBLE);
             removeOuterMediaImageView.setVisibility(View.VISIBLE);
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
