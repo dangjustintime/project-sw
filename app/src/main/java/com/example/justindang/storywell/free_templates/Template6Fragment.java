@@ -191,41 +191,8 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public ArrayList<String> sendFilePaths() {
-        ArrayList<String> imageUriStrings = new ArrayList<>();
-        imageUriStrings.add(outerMediaUriString);
-        imageUriStrings.add(innerMediaUriString);
-        page.setImageUris(imageUriStrings);
-        return imageUriStrings;
-    }
-
-    @Override
-    public ArrayList<String> sendColors() {
-        ArrayList<String> colors = new ArrayList<String>();
-        if (backgroundColor == null) {
-            backgroundColor = 0;
-        }
-        colors.add(backgroundColor.toString());
-        page.setColors(colors);
-        return colors;
-    }
-
-    @Override
-    public String sendTitle() {
-        title = addTitleEditText.getText().toString();
-        page.setTitle(title);
-        return title;
-    }
-
-    @Override
-    public String sendText() {
-        text = tapToAddEditText.getText().toString();
-        page.setText(text);
-        return text;
-    }
-
-    @Override
     public Page sendPage() {
+        page.setTemplateName("free template 6");
         title = addTitleEditText.getText().toString();
         page.setTitle(title);
         text = tapToAddEditText.getText().toString();

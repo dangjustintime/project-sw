@@ -195,36 +195,8 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public ArrayList<String> sendFilePaths() {
-        ArrayList<String> imageUriStrings = new ArrayList<String>();
-        imageUriStrings.add(innerMediaUriString);
-        imageUriStrings.add(outerMediaUriString);
-        page.setImageUris(imageUriStrings);
-        return imageUriStrings;
-    }
-
-    @Override
-    public ArrayList<String> sendColors() {
-        ArrayList<String> colors = new ArrayList<String>();
-        colors.add("0");
-        page.setColors(colors);
-        return colors;
-    }
-
-    @Override
-    public String sendTitle() {
-        page.setTitle(null);
-        return null;
-    }
-
-    @Override
-    public String sendText() {
-        page.setText(null);
-        return null;
-    }
-
-    @Override
     public Page sendPage() {
+        page.setTemplateName("free template 1");
         page.setTitle(null);
         page.setText(null);
         // set array data

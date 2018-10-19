@@ -59,10 +59,6 @@ public class StoryEditorActivity extends AppCompatActivity
 
     public interface OnSaveImageListener {
         void hideUI();
-        ArrayList<String> sendFilePaths();
-        ArrayList<String> sendColors();
-        String sendTitle();
-        String sendText();
         Page sendPage();
     }
     OnSaveImageListener onSaveImageListener;
@@ -101,10 +97,7 @@ public class StoryEditorActivity extends AppCompatActivity
         ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
 
         // get values from template fragments
-        storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
-        storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
-        storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
-        storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
+        storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
 
         // put stories in shared pref
         SharedPrefHandler.putStories(this, storiesPresenter, isNewStories);
@@ -152,7 +145,20 @@ public class StoryEditorActivity extends AppCompatActivity
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
             fragmentTransaction.commit();
         } else {
-            loadSavedPageToTemplate();
+            // get template fragment for saved page
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            String template = storiesPresenter.getPage(currentPageIndex).getTemplateName();
+            templatePlaceholderFragment = templateManager.getTemplate(template);
+            onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
+
+            // put page in bundle for template fragment
+            Page page = storiesPresenter.getPage(currentPageIndex);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
+            templatePlaceholderFragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
+            fragmentTransaction.commit();
         }
 
         // clicklisteners
@@ -174,12 +180,8 @@ public class StoryEditorActivity extends AppCompatActivity
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // get values from template fragments
-                storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
-                storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
-                storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
-                storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
+                storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
 
                 // add new page to stories
                 currentPageIndex++;
@@ -195,17 +197,31 @@ public class StoryEditorActivity extends AppCompatActivity
         prevTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "prev", Toast.LENGTH_SHORT).show();
-                currentPageIndex--;
-                loadSavedPageToTemplate();
+                if (currentPageIndex != 0) {
+                    // get values from template fragments
+                    storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
+                    // update stories in shared pref
+                    SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
+                    currentPageIndex--;
+                    loadSavedPageToTemplate();
+                } else {
+                    Toast.makeText(StoryEditorActivity.this, "first page", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         nextTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "next", Toast.LENGTH_SHORT).show();
-                currentPageIndex++;
-                loadSavedPageToTemplate();
+                if (currentPageIndex != storiesPresenter.getNumPages() - 1) {
+                    // get values from template fragments
+                    storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
+                    // update stories in shared pref
+                    SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
+                    currentPageIndex++;
+                    loadSavedPageToTemplate();
+                } else {
+                    Toast.makeText(StoryEditorActivity.this, "last page", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -223,10 +239,7 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), "saving stories...", Toast.LENGTH_SHORT).show();
 
         // get values from template fragments
-        storiesPresenter.updateImageUris(currentPageIndex, onSaveImageListener.sendFilePaths());
-        storiesPresenter.updateColors(currentPageIndex, onSaveImageListener.sendColors());
-        storiesPresenter.updateTitle(currentPageIndex, onSaveImageListener.sendTitle());
-        storiesPresenter.updateText(currentPageIndex, onSaveImageListener.sendText());
+        storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
 
         // put stories in shared pref
         SharedPrefHandler.putStories(this, storiesPresenter, isNewStories);
@@ -277,8 +290,7 @@ public class StoryEditorActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
         templatePlaceholderFragment.setArguments(bundle);
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.commit();
     }
 }
