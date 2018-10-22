@@ -196,6 +196,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
+    public void recieveColorFromColorPicker(int color) { }
+
+    @Override
     public Page sendPage() {
         page.setTemplateName("free template 1");
         page.setTitle(null);

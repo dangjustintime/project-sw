@@ -56,7 +56,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.edit_text_template5_tap_to_add) EditText tapToAddEditText;
     @BindView(R.id.edit_text_template5_tip) EditText tipEditText;
     @BindView(R.id.image_view_template5_color_picker) ImageView colorPickerImageView;
-    @BindView(R.id.color_picker_template5) ColorPicker colorPicker;
     @BindView(R.id.constraint_layout_template5_container) ConstraintLayout containerConstraintLayout;
 
     public Template5Fragment() {
@@ -97,16 +96,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             containerConstraintLayout.setBackgroundColor(backgroundColor);
         }
 
-        // color picker
-        colorPicker.setGradientView(R.drawable.color_gradient);
-        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color, boolean isTapUp) {
-                backgroundColor = color;
-                containerConstraintLayout.setBackgroundColor(backgroundColor);
-            }
-        });
-
         // clickListeners
         addMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,16 +112,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 mediaImageView.setImageBitmap(null);
                 addMediaImageView.setVisibility(View.VISIBLE);
                 removeMediaImageView.setVisibility(View.INVISIBLE);
-            }
-        });
-        colorPickerImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorPicker.getVisibility() == View.INVISIBLE) {
-                    colorPicker.setVisibility(View.VISIBLE);
-                } else {
-                    colorPicker.setVisibility(View.INVISIBLE);
-                }
             }
         });
 
@@ -156,7 +135,12 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeMediaImageView.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
-        colorPicker.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void recieveColorFromColorPicker(int color) {
+        backgroundColor = color;
+        containerConstraintLayout.setBackgroundColor(backgroundColor);
     }
 
     @Override

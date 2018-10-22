@@ -40,6 +40,10 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
     <FrameLayout
+        android:id="@+id/frame_layout_story_editor_anywhere"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <FrameLayout
         android:id="@+id/frame_layout_fragment_placeholder_story_editor"
         android:layout_width="1080px"
         android:layout_height="1920px"
@@ -107,8 +111,9 @@
         android:id="@+id/frame_layout_fragment_placeholder_choose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <FrameLayout
-        android:id="@+id/frame_layout_story_editor_anywhere"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <com.colorpicker.shishank.colorpicker.ColorPicker
+        android:id="@+id/color_picker_story_editor"
+        android:layout_width="wrap_content"
+        android:layout_height="125dp"
+        app:layout_constraintBottom_toTopOf="@id/constraint_layout_icon_container"/>
 </android.support.constraint.ConstraintLayout>

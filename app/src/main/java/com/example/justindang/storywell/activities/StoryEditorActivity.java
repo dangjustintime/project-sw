@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
@@ -62,6 +63,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     public interface OnSaveImageListener {
         void hideUI();
+        void recieveColorFromColorPicker(int color);
         Page sendPage();
     }
     OnSaveImageListener onSaveImageListener;
@@ -82,6 +84,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
     @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
+    @BindView(R.id.color_picker_story_editor) ColorPicker colorPicker;
 
     // fragments
     FragmentManager fragmentManager;
@@ -128,6 +131,8 @@ public class StoryEditorActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
+
+        colorPicker.setVisibility(View.INVISIBLE);
 
         // get data from intent
         Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
@@ -227,6 +232,25 @@ public class StoryEditorActivity extends AppCompatActivity
                 } else {
                     Toast.makeText(StoryEditorActivity.this, "first page", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        threeCircleIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (colorPicker.getVisibility() == View.INVISIBLE) {
+                    colorPicker.setVisibility(View.VISIBLE);
+                } else {
+                    colorPicker.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        // color picker
+        colorPicker.setGradientView(R.drawable.color_gradient);
+        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color, boolean isTapUp) {
+                onSaveImageListener.recieveColorFromColorPicker(color);
             }
         });
     }

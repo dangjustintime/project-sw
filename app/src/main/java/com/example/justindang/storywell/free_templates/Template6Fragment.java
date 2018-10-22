@@ -39,7 +39,6 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_INNER = 25;
 
     // tags
-    private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
@@ -64,7 +63,6 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.image_view_template6_remove_outer_media) ImageView removeOuterMediaImageView;
     @BindView(R.id.image_view_template6_remove_inner_media) ImageView removeInnerMediaImageView;
     @BindView(R.id.image_view_template6_color_picker) ImageView colorPickerImageView;
-    @BindView(R.id.color_picker_template6) ColorPicker colorPicker;
     @BindView(R.id.constraint_layout_template6_container) ConstraintLayout containerConstraintLayout;
 
     public Template6Fragment() {
@@ -109,17 +107,6 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             containerConstraintLayout.setBackgroundColor(backgroundColor);
         }
 
-
-        // color picker
-        colorPicker.setGradientView(R.drawable.color_gradient);
-        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color, boolean isTapUp) {
-                backgroundColor = color;
-                containerConstraintLayout.setBackgroundColor(backgroundColor);
-            }
-        });
-
         // clicklisteners
         addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,16 +142,6 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
             }
         });
-        colorPickerImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorPicker.getVisibility() == View.INVISIBLE) {
-                    colorPicker.setVisibility(View.VISIBLE);
-                } else {
-                    colorPicker.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
         return view;
     }
 
@@ -187,8 +164,13 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeOuterMediaImageView.setVisibility(View.INVISIBLE);
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-        colorPicker.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void recieveColorFromColorPicker(int color) {
+        backgroundColor = color;
+        containerConstraintLayout.setBackgroundColor(backgroundColor);
     }
 
     @Override

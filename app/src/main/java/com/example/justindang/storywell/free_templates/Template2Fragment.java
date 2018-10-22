@@ -36,7 +36,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
 
     // tags
-    private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
@@ -51,7 +50,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.image_view_template2_add_inner_media) ImageView addInnerMediaImageView;
     @BindView(R.id.image_view_template2_color_picker_outer_layer) ImageView colorPickerImageView;
     @BindView(R.id.image_view_template2_remove_inner_media) ImageView removeInnerMediaImageView;
-    @BindView(R.id.color_picker_template2_outer_later) ColorPicker colorPicker;
 
     public Template2Fragment() {
         // Required empty public constructor
@@ -86,16 +84,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
         }
 
-        // color picker
-        colorPicker.setGradientView(R.drawable.color_gradient);
-        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color, boolean isTapUp) {
-                    outerLayerColor = color;
-                    outerLayerImageView.setBackgroundColor(outerLayerColor);
-            }
-        });
-
         // clicklisteners
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,16 +92,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
                 Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_INNER);
-            }
-        });
-        colorPickerImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (colorPicker.getVisibility() == View.INVISIBLE) {
-                    colorPicker.setVisibility(View.VISIBLE);
-                } else {
-                    colorPicker.setVisibility(View.INVISIBLE);
-                }
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -142,9 +120,14 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     // OnSaveImageListener
     @Override
     public void hideUI() {
-        colorPicker.setVisibility(View.INVISIBLE);
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void recieveColorFromColorPicker(int color) {
+        outerLayerColor = color;
+        outerLayerImageView.setBackgroundColor(outerLayerColor);
     }
 
     @Override
