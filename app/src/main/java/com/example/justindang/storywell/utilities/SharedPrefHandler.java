@@ -48,6 +48,7 @@ public class SharedPrefHandler {
         sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
         sharedPreferencesEditor.putInt(key + "_num_pages", storiesPresenter.getNumPages());
 
+        // put values of pages
         for (int i = 0; i < storiesPresenter.getNumPages(); i++) {
             String pageKey = key + "_" + String.valueOf(i);
 

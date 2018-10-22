@@ -176,6 +176,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         }
         colors.add(backgroundColor.toString());
         page.setColors(colors);
-        return null;
+        return page;
     }
 }
