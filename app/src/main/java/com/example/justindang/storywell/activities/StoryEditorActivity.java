@@ -81,6 +81,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
+    @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
 
     // fragments
     FragmentManager fragmentManager;
@@ -196,7 +197,7 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-        fragmentPlaceholderFrameLayout.setOnTouchListener(new OnSwipeTouchListener(StoryEditorActivity.this) {
+        frameLayoutAnywhere.setOnTouchListener(new OnSwipeTouchListener(StoryEditorActivity.this) {
             @Override
             public void onSwipeLeft() {
                 Toast.makeText(StoryEditorActivity.this, "swipe left", Toast.LENGTH_SHORT).show();

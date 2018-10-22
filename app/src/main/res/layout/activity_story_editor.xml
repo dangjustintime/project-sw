@@ -107,4 +107,8 @@
         android:id="@+id/frame_layout_fragment_placeholder_choose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <FrameLayout
+        android:id="@+id/frame_layout_story_editor_anywhere"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </android.support.constraint.ConstraintLayout>
