@@ -47,7 +47,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     Page page;
 
     // tags
-    private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
 

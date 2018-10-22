@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.activities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
 import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
+import com.example.justindang.storywell.listeners.OnSwipeTouchListener;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.presenter.StoriesPresenter;
@@ -80,10 +82,6 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
 
-    // testing placeholder views
-    @BindView(R.id.button_story_editor_prev) Button prevTextView;
-    @BindView(R.id.button_story_editor_next) Button nextTextView;
-
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -123,6 +121,7 @@ public class StoryEditorActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,25 +196,10 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-        prevTextView.setOnClickListener(new View.OnClickListener() {
+        fragmentPlaceholderFrameLayout.setOnTouchListener(new OnSwipeTouchListener(StoryEditorActivity.this) {
             @Override
-            public void onClick(View v) {
-                if (currentPageIndex != 0) {
-                    // get values from template fragments
-                    storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
-
-                    // update stories in shared pref
-                    SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
-                    currentPageIndex--;
-                    loadSavedPageToTemplate();
-                } else {
-                    Toast.makeText(StoryEditorActivity.this, "first page", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        nextTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onSwipeLeft() {
+                Toast.makeText(StoryEditorActivity.this, "swipe left", Toast.LENGTH_SHORT).show();
                 if (currentPageIndex != storiesPresenter.getNumPages() - 1) {
                     // get values from template fragments
                     storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
@@ -226,6 +210,21 @@ public class StoryEditorActivity extends AppCompatActivity
                     loadSavedPageToTemplate();
                 } else {
                     Toast.makeText(StoryEditorActivity.this, "last page", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(StoryEditorActivity.this, "swipe left", Toast.LENGTH_SHORT).show();
+                if (currentPageIndex != 0) {
+                    // get values from template fragments
+                    storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
+
+                    // update stories in shared pref
+                    SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
+                    currentPageIndex--;
+                    loadSavedPageToTemplate();
+                } else {
+                    Toast.makeText(StoryEditorActivity.this, "first page", Toast.LENGTH_SHORT).show();
                 }
             }
         });
