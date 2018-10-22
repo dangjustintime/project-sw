@@ -23,9 +23,15 @@
         android:src="@drawable/add_story_icon"/>
     <ImageView
         android:id="@+id/image_view_template5_remove_media"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/x_icon"
+        android:background="@drawable/bronze_x_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="8dp"
+        android:tint="@color/colorWhite"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@id/image_view_template5_media"/>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_template5_text_container"
@@ -74,6 +80,5 @@
         app:layout_constraintLeft_toRightOf="@id/constraint_layout_template5_text_container"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="25dp"
-        android:background="@color/colorWhite"
         app:layout_constraintCircleRadius="50dp"/>
 </android.support.constraint.ConstraintLayout>

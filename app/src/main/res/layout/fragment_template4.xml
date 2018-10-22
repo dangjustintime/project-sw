@@ -40,15 +40,26 @@
         android:src="@drawable/add_story_icon"/>
     <ImageView
         android:id="@+id/image_view_template4_remove_top_media"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/x_icon"
+        android:background="@drawable/bronze_x_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="8dp"
+        android:tint="@color/colorWhite"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@id/image_view_template4_top_media"/>
     <ImageView
         android:id="@+id/image_view_template4_remove_bottom_media"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/x_icon"
+        android:background="@drawable/bronze_x_icon"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="8dp"
+        android:tint="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="@id/image_view_template4_bottom_media"
         app:layout_constraintTop_toTopOf="@id/image_view_template4_bottom_media"/>
 </android.support.constraint.ConstraintLayout>
