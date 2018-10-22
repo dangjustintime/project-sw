@@ -3,7 +3,6 @@ package com.example.justindang.storywell.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,13 +13,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
+import com.example.justindang.storywell.fragments.SelectOrderFragment;
 import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
@@ -34,9 +32,6 @@ import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -242,6 +237,17 @@ public class StoryEditorActivity extends AppCompatActivity
                 } else {
                     colorPicker.setVisibility(View.INVISIBLE);
                 }
+            }
+        });
+        angleBracketsIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(StoryEditorActivity.this, "chnage order", Toast.LENGTH_SHORT).show();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, new SelectOrderFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
