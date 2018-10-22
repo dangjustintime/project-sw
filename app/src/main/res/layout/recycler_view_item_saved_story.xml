@@ -16,8 +16,8 @@
         android:background="@drawable/black_gradient"/>
     <ImageView
         android:id="@+id/image_view_recycler_view_edit_saved_story_name"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/pencil_icon"
         android:tint="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,14 +49,16 @@
         android:layout_marginLeft="20dp"/>
     <ImageView
         android:id="@+id/image_view_recycler_view_delete"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/x_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorOffWhite"
+        android:background="@drawable/bronze_x_icon"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:padding="8dp"
+        android:tint="@color/colorWhite" />
     <ImageView
         android:layout_width="20dp"
         android:layout_height="2dp"
