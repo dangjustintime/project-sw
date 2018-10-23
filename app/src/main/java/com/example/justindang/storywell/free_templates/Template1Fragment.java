@@ -196,7 +196,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void recieveColorFromColorPicker(int color) { }
+    public void recieveColorFromColorPicker(int color) {
+        Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public Page sendPage() {

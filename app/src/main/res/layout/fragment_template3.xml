@@ -8,7 +8,7 @@
     android:background="@color/colorWhite">
     <ImageView
         android:id="@+id/image_view_template3_top_media"
-        android:layout_width="300dp"
+        android:layout_width="265dp"
         android:layout_height="250dp"
         android:background="@color/colorGrey"
         android:layout_marginTop="40dp"
@@ -24,7 +24,7 @@
         android:src="@drawable/add_story_icon"/>
     <ImageView
         android:id="@+id/image_view_template3_bottom_media"
-        android:layout_width="300dp"
+        android:layout_width="265dp"
         android:layout_height="250dp"
         android:background="@color/colorGrey"
         app:layout_constraintEnd_toEndOf="parent"

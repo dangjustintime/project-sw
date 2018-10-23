@@ -250,7 +250,18 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-
+        aaIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
+            }
+        });
+        squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
+            }
+        });
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {

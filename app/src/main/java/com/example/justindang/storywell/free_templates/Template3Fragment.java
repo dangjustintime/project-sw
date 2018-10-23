@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
@@ -149,7 +150,9 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void recieveColorFromColorPicker(int color) { }
+    public void recieveColorFromColorPicker(int color) {
+        Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public Page sendPage() {
