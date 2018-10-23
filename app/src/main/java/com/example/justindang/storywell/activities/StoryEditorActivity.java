@@ -215,7 +215,7 @@ public class StoryEditorActivity extends AppCompatActivity
             }
             @Override
             public void onSwipeRight() {
-                Toast.makeText(StoryEditorActivity.this, "swipe left", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StoryEditorActivity.this, "swipe right", Toast.LENGTH_SHORT).show();
                 if (currentPageIndex != 0) {
                     // get values from template fragments
                     storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());

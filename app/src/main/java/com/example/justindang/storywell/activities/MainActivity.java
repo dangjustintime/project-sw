@@ -202,9 +202,11 @@ public class MainActivity extends AppCompatActivity
         // if there are not stories, hide recycler view
         SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
         int serialID = sharedPreferences.getInt(getResources().getString(R.string.serial_id), 0);
+        int numSavedStories = sharedPreferences.getInt(getResources().getString(R.string.saved_num_stories_keys), 0);
+
         savedStoriesList = new ArrayList<>();
 
-        if (serialID == 0) {
+        if (numSavedStories == 0) {
             hideSavedStoriesRecyclerView();
         } else {
             showSavedStoriesRecyclerView();

@@ -8,10 +8,11 @@
     android:background="@color/colorWhite">
     <ImageView
         android:id="@+id/image_view_template3_top_media"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="250dp"
         android:background="@color/colorGrey"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent" />
     <ImageView
         android:id="@+id/image_view_template3_add_top_media"
         android:layout_width="50dp"
@@ -23,12 +24,12 @@
         android:src="@drawable/add_story_icon"/>
     <ImageView
         android:id="@+id/image_view_template3_bottom_media"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="250dp"
         android:background="@color/colorGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="40dp"/>
     <ImageView
         android:id="@+id/image_view_template3_add_bottom_media"
         android:layout_width="50dp"
@@ -50,7 +51,7 @@
         android:src="@color/colorWhite"
         app:layout_constraintRight_toLeftOf="@id/image_view_template3_bottom_media"
         app:layout_constraintTop_toTopOf="@id/image_view_template3_bottom_media"
-        app:layout_constraintBottom_toBottomOf="@id/image_view_template3_bottom_media"/>
+        app:layout_constraintBottom_toBottomOf="@id/image_view_template3_bottom_media" />
     <ImageView
         android:id="@+id/image_view_template3_remove_top_media"
         android:layout_width="30dp"
@@ -61,7 +62,7 @@
         android:layout_marginRight="10dp"
         android:padding="8dp"
         android:tint="@color/colorWhite"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_view_template3_top_media"
         app:layout_constraintEnd_toEndOf="@id/image_view_template3_top_media"/>
     <ImageView
         android:id="@+id/image_view_template3_remove_bottom_media"

@@ -31,19 +31,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_title"
+        android:fontFamily="@font/freight_big_w01_sb_regular"
+        android:textSize="30dp"
         android:background="@android:color/transparent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_view_template6_add_outer_media"/>
+        app:layout_constraintBottom_toTopOf="@id/image_view_template6_inner_media"
+        android:layout_marginBottom="15dp"/>
     <ImageView
         android:id="@+id/image_view_template6_inner_media"
         android:layout_width="260dp"
         android:layout_height="260dp"
         android:background="@drawable/white_border"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_template6_add_title"
+        app:layout_constraintTop_toBottomOf="@id/image_view_template6_add_outer_media"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:layout_marginTop="30dp"/>
     <ImageView
         android:id="@+id/image_view_template6_add_inner_media"
         android:layout_width="50dp"
@@ -58,31 +62,37 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="@string/tap_to_add_text"
-        android:textSize="10dp"
+        android:fontFamily="@font/freight_big_w01_sb_regular"
+        android:textSize="18dp"
         android:textAlignment="center"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/image_view_template6_inner_media"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"/>
     <EditText
         android:id="@+id/edit_text_template6_tip"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:textSize="10dp"
+        android:textSize="18dp"
         android:text="@string/tip"
+        android:fontFamily="@font/freight_big_w01_sb_regular"
         android:textAlignment="center"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/edit_text_template6_tap_to_add"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"/>
     <ImageView
         android:id="@+id/image_view_template6_color_picker"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/three_circles_icon"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_template6_tip"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/white_circle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_template6_tip"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintCircleRadius="50dp"
         app:layout_constraintLeft_toRightOf="@id/image_view_template6_inner_media"/>
     <ImageView
         android:id="@+id/image_view_template6_remove_outer_media"
