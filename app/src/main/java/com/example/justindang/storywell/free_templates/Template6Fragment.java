@@ -75,6 +75,9 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template6, container, false);
         ButterKnife.bind(this, view);
 
+        // set default color
+        backgroundColor = Integer.valueOf(getContext().getResources().getColor(R.color.colorPeach));
+
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
 

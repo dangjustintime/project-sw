@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity
         pencilIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pencilIconImageView.setColorFilter(0);
                 for (int i = 0; i < savedStoriesList.size(); i++) {
                     SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder savedStoryViewHolder = (SavedStoriesGridRecyclerAdapter.SavedStoryViewHolder) savedStoriesRecyclerView.findViewHolderForAdapterPosition(i);
                     savedStoryViewHolder.toggleEditNameImageView();

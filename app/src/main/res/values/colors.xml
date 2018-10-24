@@ -11,6 +11,7 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGrey">#ebebeb</color>
+    <color name="colorGreyedOutFilter">#d0d0d0</color>
     <color name="colorC01">#f4c3b2</color>
     <color name="colorC02">#8cb4d0</color>
     <color name="colorC03">#b7dbdb</color>
