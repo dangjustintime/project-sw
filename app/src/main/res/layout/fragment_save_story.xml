@@ -6,25 +6,29 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bronze_border"
-    android:padding="10dp"
+    android:padding="25dp"
     android:layout_gravity="center">
     <TextView
         android:id="@+id/text_view_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
+        android:textSize="22dp"
+        android:fontFamily="@font/freight_big_w01_sb_italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textColor="@color/colorDarkGrey"/>
+        android:textColor="@color/colorDarkGrey" />
     <TextView
         android:id="@+id/text_view_individual_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/individual_story"
+        android:fontFamily="@font/franklingothic_book"
         app:layout_constraintTop_toBottomOf="@id/text_view_save"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textColor="@color/colorDarkGrey"/>
+        android:textColor="@color/colorDarkGrey"
+        android:layout_marginTop="20dp"/>
     <LinearLayout
         android:id="@+id/linear_layout_or_entire_stories"
         android:layout_width="wrap_content"
@@ -37,12 +41,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/or"
-            android:textColor="@color/colorDarkGrey"/>
+            android:fontFamily="@font/freight_big_w01_light_italic"
+            android:textColor="@color/colorDarkGrey"
+            android:layout_marginRight="5dp"/>
         <TextView
             android:id="@+id/text_view_entire_stories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/entire_stories"
+            android:fontFamily="@font/franklingothic_book"
             android:textColor="@color/colorDarkGrey"/>
     </LinearLayout>
     <Button
@@ -50,24 +57,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/story"
+        android:fontFamily="@font/franklingothic_med"
         app:layout_constraintTop_toBottomOf="@id/linear_layout_or_entire_stories"
         app:layout_constraintStart_toStartOf="@id/button_share_story_to_instagram"
         android:background="@drawable/bronze_border"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp" />
     <Button
         android:id="@+id/button_save_stories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/stories"
+        android:fontFamily="@font/franklingothic_med"
         app:layout_constraintTop_toBottomOf="@id/linear_layout_or_entire_stories"
         app:layout_constraintEnd_toEndOf="@id/button_share_story_to_instagram"
         android:background="@drawable/bronze_border"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp" />
     <Button
         android:id="@+id/button_share_story_to_instagram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/share_story_to_instagram"
+        android:fontFamily="@font/franklingothic_med"
         app:layout_constraintTop_toBottomOf="@id/button_save_story"
         android:background="@drawable/bronze_border"
         android:layout_marginTop="15dp"
