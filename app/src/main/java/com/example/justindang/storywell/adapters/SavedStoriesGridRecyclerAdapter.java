@@ -174,9 +174,11 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         editor.remove(sharedPrefKey + "_date");
         for (int i = 0; i < numPages; i++) {
             String pageKey = sharedPrefKey + "_" + String.valueOf(i);
-            editor.remove(pageKey + "_image_uris");
+            for (int j = 0; j < 9; j++) {
+                editor.remove(pageKey + "_image_uri_" + String.valueOf(j));
+                editor.remove(pageKey + "_color_" + String.valueOf(j));
+            }
             editor.remove(pageKey + "_template");
-            editor.remove(pageKey + "_colors");
             editor.remove(pageKey + "_title");
             editor.remove(pageKey + "_text");
         }

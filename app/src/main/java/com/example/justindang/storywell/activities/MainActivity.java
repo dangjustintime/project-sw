@@ -105,10 +105,8 @@ public class MainActivity extends AppCompatActivity
         // request read permissions
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
-        /*
         sharedPreferencesTextView.setText(SharedPrefHandler.getSharedPrefString(MainActivity.this));
         sharedPreferencesTextView.setTextSize(20f);
-        */
 
         loadRecyclerView();
 
@@ -212,7 +210,9 @@ public class MainActivity extends AppCompatActivity
             showSavedStoriesRecyclerView();
             for (int i = 0; i < serialID; i++) {
                 Stories newStories = SharedPrefHandler.getStories(MainActivity.this, i);
-                savedStoriesList.add(newStories);
+                if (newStories.getName() != "NOT FOUND") {
+                    savedStoriesList.add(newStories);
+                }
             }
 
             // check if read permissions are granted
