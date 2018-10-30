@@ -27,7 +27,7 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
 
     // interface listener
     public interface OnTemplateListener {
-        public void sendTemplate(String template);
+        void sendTemplate(String template);
     }
     OnTemplateListener onTemplateListener;
 

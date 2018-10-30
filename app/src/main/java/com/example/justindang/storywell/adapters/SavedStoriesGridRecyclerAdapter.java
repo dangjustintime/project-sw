@@ -112,8 +112,8 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryNameTextView.setText(savedStories.getName());
         savedStoryViewHolder.savedStoryDateTextView.setText(savedStories.getDate());
 
+        // put Uri into imageView
         Uri imageUri = Uri.parse(savedStories.getImageUris(0).get(0));
-
         ImageHandler.setImageToImageView(context, imageUri, savedStoryViewHolder.savedStoryImageView, ImageView.ScaleType.CENTER_CROP);
 
         // clicklisteners
