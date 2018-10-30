@@ -11,11 +11,9 @@ import com.example.justindang.storywell.R;
 
 public class SelectOrderFragment extends Fragment {
 
-
     public SelectOrderFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

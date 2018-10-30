@@ -40,7 +40,7 @@ public class ChooseATemplateFragment extends Fragment {
 
     // interface listener
     public interface OnCancelListener {
-        public void cancelStory();
+        void cancelStory();
     }
     OnCancelListener onCancelListener;
 
@@ -77,6 +77,7 @@ public class ChooseATemplateFragment extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ChooseATemplateFragment.this);
                 fragmentTransaction.commit();
+                onCancelListener.cancelStory();
             }
         });
         shoppingCartIconImageView.setOnClickListener(new View.OnClickListener() {
