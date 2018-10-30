@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         SavedStoriesGridRecyclerAdapter.OnItemListener,
         ChangeStoryNameDialogFragment.OnChangeNameListener {
 
-    // tags
+    // static data
     private static final String DIALOG_NEW_STORY = "create a new story";
     private static final String DIALOG_CHANGE_NAME = "change name";
     private static final String EXTRA_IS_NEW_STORIES = "new stories";

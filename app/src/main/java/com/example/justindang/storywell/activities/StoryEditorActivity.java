@@ -41,20 +41,18 @@ public class StoryEditorActivity extends AppCompatActivity
         StoriesPresenter.View,
         TemplateGridRecyclerAdapter.OnTemplateListener {
 
-    // intent keys
+    // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
+    private static final String DIALOG_SAVE_STORY = "save story";
+    private static final String BUNDLE_CURRENT_PAGE = "current page";
+    private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
     private int currentPageIndex;
     boolean isNewStories;
 
     // model of story
     private StoriesPresenter storiesPresenter;
-
-    // TAG
-    private static final String DIALOG_SAVE_STORY = "save story";
-    private static final String BUNDLE_CURRENT_PAGE = "current page";
-    private static final String BUNDLE_IS_NEW_PAGE = "new page";
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -91,7 +89,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // save photo to storage
     public void saveImage() {
         Toast.makeText(getBaseContext(), "saving image to device...", Toast.LENGTH_SHORT).show();
-
         ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
 
         // get values from template fragments
@@ -135,7 +132,6 @@ public class StoryEditorActivity extends AppCompatActivity
         // initialize presenter
         storiesPresenter = new StoriesPresenter(this, savedStories);
         currentPageIndex = 0;
-
         isNewStories = getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
 
         if (isNewStories) {
@@ -159,7 +155,6 @@ public class StoryEditorActivity extends AppCompatActivity
             bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
             bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
             templatePlaceholderFragment.setArguments(bundle);
-
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
             fragmentTransaction.commit();
         }
@@ -193,6 +188,8 @@ public class StoryEditorActivity extends AppCompatActivity
                 // start new template fragment
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
+
+                // add fragment to backstack
                 fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
                 fragmentTransaction.commit();
             }
@@ -283,13 +280,11 @@ public class StoryEditorActivity extends AppCompatActivity
     @Override
     public void saveStories() {
         Toast.makeText(getBaseContext(), "saving stories...", Toast.LENGTH_SHORT).show();
-
         // get values from template fragments
         storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
 
         // put stories in shared pref
         SharedPrefHandler.putStories(this, storiesPresenter, isNewStories);
-
         finish();
     }
 
@@ -319,6 +314,7 @@ public class StoryEditorActivity extends AppCompatActivity
         bundle.putBoolean(BUNDLE_IS_NEW_PAGE, true);
         templatePlaceholderFragment.setArguments(bundle);
 
+        // add fragment to backstack
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -345,6 +341,7 @@ public class StoryEditorActivity extends AppCompatActivity
         bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
         templatePlaceholderFragment.setArguments(bundle);
 
+        // add fragment to backstack
         fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.commit();
     }
