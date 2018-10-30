@@ -55,13 +55,10 @@ public class MainActivity extends AppCompatActivity
     private static final String DIALOG_CHANGE_NAME = "change name";
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
-
-    // request code
     private static final int REQUEST_READ_PERMISSION = 202;
 
     // Fragments
     FragmentManager fragmentManager;
-    ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
     CreateNewStoryDialogFragment createNewStoryDialogFragment = new CreateNewStoryDialogFragment();
     ChangeStoryNameDialogFragment changeStoryNameDialogFragment = new ChangeStoryNameDialogFragment();
 
@@ -75,15 +72,13 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
     @BindView(R.id.image_view_main_activity_shopping_cart) ImageView shoppingCartImageView;
 
-    @BindView(R.id.text_view_shared_preferences) TextView sharedPreferencesTextView;
-
-
     // recycler view
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
     SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
     private ArrayList<Stories> savedStoriesList;
     private int changeNamePosition;
 
+    // OnItemListener interface
     @Override
     public void getNewName(int position) {
         fragmentManager = getSupportFragmentManager();
@@ -91,9 +86,20 @@ public class MainActivity extends AppCompatActivity
         changeNamePosition = position;
     }
 
+    // OnChangeNameListener interface
     @Override
     public void sendNewName(String newName) {
         savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
+    }
+
+    // OnInputListener interface
+    @Override
+    public void sendInput(String input) {
+        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        Stories newStories= new Stories(input);
+        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
+        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
+        startActivity(intent);
     }
 
     @Override
@@ -104,9 +110,6 @@ public class MainActivity extends AppCompatActivity
 
         // request read permissions
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
-
-        sharedPreferencesTextView.setText(SharedPrefHandler.getSharedPrefString(MainActivity.this));
-        sharedPreferencesTextView.setTextSize(20f);
 
         loadRecyclerView();
 
@@ -171,15 +174,6 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         loadRecyclerView();
-    }
-
-    @Override
-    public void sendInput(String input) {
-        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        Stories newStories= new Stories(input);
-        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
-        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
-        startActivity(intent);
     }
 
     public void showSavedStoriesRecyclerView() {
