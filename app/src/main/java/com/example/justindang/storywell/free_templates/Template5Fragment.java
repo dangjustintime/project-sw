@@ -33,13 +33,10 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class Template5Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
-    // request code
-    private static final int IMAGE_GALLERY_REQUEST_MEDIA = 13;
-
-    // tags
-    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    // static data
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
+    private static final int IMAGE_GALLERY_REQUEST_MEDIA = 13;
 
     // image uri strings, color, title, text
     String mediaUriString;
@@ -141,7 +138,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void recieveColorFromColorPicker(int color) {
+    public void receiveColorFromColorPicker(int color) {
         backgroundColor = color;
         containerConstraintLayout.setBackgroundColor(backgroundColor);
     }

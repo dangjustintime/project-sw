@@ -3,15 +3,10 @@ package com.example.justindang.storywell.free_templates;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
-import android.icu.text.UnicodeSetSpanner;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,12 +19,8 @@ import android.widget.Toast;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
-import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -46,12 +37,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     String outerMediaUriString;
     Page page;
 
-    // tags
+    // static data
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
-
-
-    // request codes
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
     private static final int IMAGE_GALLERY_REQUEST_INNER = 21;
 
@@ -73,7 +61,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     // scalelistener
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+    private class OnScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
             Drawable imageDrawable = outerMediaImageView.getDrawable();
@@ -105,7 +93,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            addOuterMediaImageView.setVisibility(View.INVISIBLE);
             removeOuterMediaImageView.setVisibility(View.VISIBLE);
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeInnerMediaImageView.setVisibility(View.VISIBLE);
@@ -123,7 +110,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         }
 
         // gesture listener
-        scaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
+        scaleGestureDetector = new ScaleGestureDetector(getContext(), new OnScaleListener());
 
         // clicklisteners
         addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +121,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
                 startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST_OUTER);
             }
-
         });
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +182,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void recieveColorFromColorPicker(int color) {
+    public void receiveColorFromColorPicker(int color) {
         Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
     }
 

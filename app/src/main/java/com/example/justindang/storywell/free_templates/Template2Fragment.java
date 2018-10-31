@@ -32,12 +32,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class Template2Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
 
-    // request code
-    private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
-
-    // tags
+    // static data
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
+    private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
 
     // image uri and color strings
     String innerMediaUriString;
@@ -125,7 +123,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void recieveColorFromColorPicker(int color) {
+    public void receiveColorFromColorPicker(int color) {
         outerLayerColor = color;
         outerLayerImageView.setBackgroundColor(outerLayerColor);
     }

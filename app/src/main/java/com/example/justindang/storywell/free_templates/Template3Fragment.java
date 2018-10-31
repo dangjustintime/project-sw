@@ -31,15 +31,11 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class Template3Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
-
-    // request codes
-    private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
-    private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
-
-    // tags
-    private static final String EXTRA_IS_NEW_STORIES = "new stories";
+    // static data
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
+    private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
+    private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
 
     // image uri strings
     // index 0 = top media
@@ -150,7 +146,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     }
 
     @Override
-    public void recieveColorFromColorPicker(int color) {
+    public void receiveColorFromColorPicker(int color) {
         Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
     }
 

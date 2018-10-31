@@ -56,7 +56,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     public interface OnSaveImageListener {
         void hideUI();
-        void recieveColorFromColorPicker(int color);
+        void receiveColorFromColorPicker(int color);
         Page sendPage();
     }
     OnSaveImageListener onSaveImageListener;
@@ -264,7 +264,7 @@ public class StoryEditorActivity extends AppCompatActivity
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
             @Override
             public void onColorSelected(int color, boolean isTapUp) {
-                onSaveImageListener.recieveColorFromColorPicker(color);
+                onSaveImageListener.receiveColorFromColorPicker(color);
             }
         });
     }
