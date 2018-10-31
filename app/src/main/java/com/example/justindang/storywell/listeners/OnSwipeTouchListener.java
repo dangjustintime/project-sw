@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 public class OnSwipeTouchListener implements OnTouchListener {
-
     private final GestureDetector gestureDetector;
 
     public OnSwipeTouchListener (Context ctx){
@@ -21,7 +20,6 @@ public class OnSwipeTouchListener implements OnTouchListener {
     }
 
     private final class GestureListener extends SimpleOnGestureListener {
-
         private static final int SWIPE_THRESHOLD = 100;
         private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
@@ -61,6 +59,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
+    // swipe directions
     public void onSwipeRight() { }
 
     public void onSwipeLeft() { }

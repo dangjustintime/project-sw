@@ -24,7 +24,6 @@ public class SharedPrefHandler {
     private SharedPrefHandler() {}
 
     public static void putStories(Context context, StoriesPresenter storiesPresenter, boolean isNewStories) {
-
         // initialize shared preferences
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.saved_stories), 0);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -52,6 +51,10 @@ public class SharedPrefHandler {
         for (int i = 0; i < storiesPresenter.getNumPages(); i++) {
             String pageKey = key + "_" + String.valueOf(i);
 
+            sharedPreferencesEditor.putString(pageKey + "_template", storiesPresenter.getPage(i).getTemplateName());
+            sharedPreferencesEditor.putString(pageKey + "_title", storiesPresenter.getPage(i).getTitle());
+            sharedPreferencesEditor.putString(pageKey + "_text", storiesPresenter.getPage(i).getText());
+
             // image uris
             ArrayList<String> imageUris = storiesPresenter.getPage(i).getImageUris();
             for (int j = 0; j < 9; j++) {
@@ -67,12 +70,7 @@ public class SharedPrefHandler {
                     sharedPreferencesEditor.putString(pageKey + "_color_" + String.valueOf(j), colors.get(j));
                 }
             }
-
-            sharedPreferencesEditor.putString(pageKey + "_template", storiesPresenter.getPage(i).getTemplateName());
-            sharedPreferencesEditor.putString(pageKey + "_title", storiesPresenter.getPage(i).getTitle());
-            sharedPreferencesEditor.putString(pageKey + "_text", storiesPresenter.getPage(i).getText());
         }
-
         sharedPreferencesEditor.apply();
     }
 
