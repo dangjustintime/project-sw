@@ -47,6 +47,7 @@ public class StoryEditorActivity extends AppCompatActivity
     private static final String DIALOG_SAVE_STORY = "save story";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
+    private static final String BUNDLE_STORY = "current story";
 
     private int currentPageIndex;
     boolean isNewStories;
@@ -239,10 +240,15 @@ public class StoryEditorActivity extends AppCompatActivity
         angleBracketsIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // put stories into a bundle
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(BUNDLE_STORY, storiesPresenter.getPages());
                 Toast.makeText(StoryEditorActivity.this, "chnage order", Toast.LENGTH_SHORT).show();
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, new SelectOrderFragment());
+                SelectOrderFragment selectOrderFragment = new SelectOrderFragment();
+                selectOrderFragment.setArguments(bundle);
+                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, selectOrderFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -321,9 +327,7 @@ public class StoryEditorActivity extends AppCompatActivity
     }
 
     @Override
-    public void updateView() {
-
-    }
+    public void updateView() { }
 
     public void loadSavedPageToTemplate() {
         // get template fragment for saved page

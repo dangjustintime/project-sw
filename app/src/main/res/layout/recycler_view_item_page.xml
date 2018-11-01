@@ -1,7 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/frame_layout_recycler_view_page_item_container"
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/constraint_layout_recycler_view_item_page"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="720px"
-    android:layout_height="1280px">
-</FrameLayout>
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    android:background="@drawable/dark_grey_border">
+    <ImageView
+        android:id="@+id/image_view_recycler_view_page_trash_can"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@color/colorWhite"
+        android:src="@drawable/trash_can_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"/>
+    <TextView
+        android:id="@+id/text_view_recycler_view_page_number"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:text="1"
+        android:textColor="@color/colorWhite"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:fontFamily="@font/freight_big_w01_medium_italic"
+        android:background="@drawable/bronze_x_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp" />
+</android.support.constraint.ConstraintLayout>
