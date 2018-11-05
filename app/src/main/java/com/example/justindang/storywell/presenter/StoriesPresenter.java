@@ -65,6 +65,10 @@ public class StoriesPresenter {
         view.updateView();
     }
 
+    public void updatePageList(ArrayList<Page> pageList) {
+        this.stories.setPagesList(pageList);
+    }
+
     public void removePage(Page page) {
         this.stories.removePage(page);
         view.updateView();

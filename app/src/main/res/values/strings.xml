@@ -10,6 +10,9 @@
     <string name="tap_anywhere">tap anywhere</string>
     <string name="to_start_your_story">to start your story</string>
 
+    <!-- story editor activity -->
+    <string name="update">update</string>
+
     <!-- create new story fragment -->
     <string name="create_new_story">create new story</string>
     <string name="enter_a_name_for_this_story">ENTER A NAME FOR THIS STORY</string>

@@ -15,9 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
+import com.example.justindang.storywell.adapters.PagesListRecyclerAdapter;
 import com.example.justindang.storywell.fragments.SelectOrderFragment;
 import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
@@ -32,6 +34,7 @@ import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +65,12 @@ public class StoryEditorActivity extends AppCompatActivity
     }
     OnSaveImageListener onSaveImageListener;
 
+    // interface
+    public interface UpdateOrderListener {
+        ArrayList<Page> getNewPageOrder();
+    }
+    UpdateOrderListener updateOrderListener;
+
     // template manager
     TemplateManager templateManager = new TemplateManager();
 
@@ -79,6 +88,8 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
     @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
     @BindView(R.id.color_picker_story_editor) ColorPicker colorPicker;
+    @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
+    @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
 
     // fragments
     FragmentManager fragmentManager;
@@ -126,6 +137,8 @@ public class StoryEditorActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         colorPicker.setVisibility(View.INVISIBLE);
+        updateTextView.setVisibility(View.INVISIBLE);
+        eyeImageView.setVisibility(View.INVISIBLE);
 
         // get data from intent
         Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
@@ -137,6 +150,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
         if (isNewStories) {
             storiesPresenter.addPage(new Page());
+
             // add Choose a template fragment
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -240,14 +254,19 @@ public class StoryEditorActivity extends AppCompatActivity
         angleBracketsIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // change visibility of buttons
+                updateTextView.setVisibility(View.VISIBLE);
+                downloadButtonImageView.setVisibility(View.INVISIBLE);
+                eyeImageView.setVisibility(View.VISIBLE);
+
                 // put stories into a bundle
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(BUNDLE_STORY, storiesPresenter.getPages());
-                Toast.makeText(StoryEditorActivity.this, "chnage order", Toast.LENGTH_SHORT).show();
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 SelectOrderFragment selectOrderFragment = new SelectOrderFragment();
                 selectOrderFragment.setArguments(bundle);
+                updateOrderListener = (UpdateOrderListener) selectOrderFragment;
                 fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, selectOrderFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -271,6 +290,14 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onColorSelected(int color, boolean isTapUp) {
                 onSaveImageListener.receiveColorFromColorPicker(color);
+            }
+        });
+        updateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storiesPresenter.updatePageList(updateOrderListener.getNewPageOrder());
+                SharedPrefHandler.putStories(getApplicationContext(), storiesPresenter, false);
+                finish();
             }
         });
     }

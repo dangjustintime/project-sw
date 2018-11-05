@@ -10,24 +10,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.adapters.PagesListRecyclerAdapter;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SelectOrderFragment extends Fragment {
+public class SelectOrderFragment extends Fragment implements StoryEditorActivity.UpdateOrderListener {
 
     // static data
     private static final String BUNDLE_STORY = "current story";
-
 
     // recycler view
     @BindView(R.id.recycler_view_pages) RecyclerView pagesRecyclerView;
     private PagesListRecyclerAdapter pagesListRecyclerAdapter;
     private Stories stories;
+
+    @Override
+    public ArrayList<Page> getNewPageOrder() {
+        return pagesListRecyclerAdapter.getNewOrderPageList();
+    }
+
+    // interface
+    public interface NewPageOrderListener {
+        ArrayList<Page> getNewPageList();
+    }
+    NewPageOrderListener newPageOrderListener;
 
     public SelectOrderFragment() {
         // Required empty public constructor
@@ -50,5 +65,4 @@ public class SelectOrderFragment extends Fragment {
 
         return view;
     }
-
 }

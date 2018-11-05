@@ -16,13 +16,17 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +36,8 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     // member data
     Context context;
     Stories stories;
+    int currentPageNumber = 1;
+    ArrayList<Page> newOrderPageList = new ArrayList<>();
 
     // constructor
     public PagesListRecyclerAdapter(Context context, Stories stories) {
@@ -41,7 +47,7 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
 
     // view holder
     public static class PageViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.constraint_layout_recycler_view_item_page) ConstraintLayout pageItemConstaintLayout;
+        @BindView(R.id.constraint_layout_recycler_view_item_page) ConstraintLayout pageItemConstraintLayout;
         @BindView(R.id.text_view_recycler_view_page_number) TextView pageNumberTextView;
         @BindView(R.id.image_view_recycler_view_page_trash_can) ImageView trashCanImageView;
 
@@ -63,18 +69,30 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
 
     // binder
     @Override
-    public void onBindViewHolder(@NonNull PageViewHolder pageViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final PageViewHolder pageViewHolder, final int i) {
         Uri imageUri = Uri.parse(stories.getImageUris(i).get(0));
         InputStream inputStream;
         try {
             inputStream = context.getContentResolver().openInputStream(imageUri);
             Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
             BitmapDrawable drawable = new BitmapDrawable(imageBitmap);
-            pageViewHolder.pageItemConstaintLayout.setBackground(drawable);
+            pageViewHolder.pageItemConstraintLayout.setBackground(drawable);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
+        // clicklistener
+        pageViewHolder.pageItemConstraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pageViewHolder.pageNumberTextView.getVisibility() == View.INVISIBLE) {
+                    pageViewHolder.pageNumberTextView.setText(String.valueOf(currentPageNumber));
+                    pageViewHolder.pageNumberTextView.setVisibility(View.VISIBLE);
+                    currentPageNumber++;
+                    newOrderPageList.add(stories.getPage(i));
+                }
+            }
+        });
     }
 
     @Override
@@ -82,8 +100,10 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
         if (stories == null) {
             return 0;
         }
-        return  stories.getNumPages();
+        return stories.getNumPages();
     }
 
-
+    public ArrayList<Page> getNewOrderPageList() {
+        return newOrderPageList;
+    }
 }
