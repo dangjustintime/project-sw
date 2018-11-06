@@ -67,6 +67,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // interface
     public interface UpdateOrderListener {
+        boolean allPagesSelected();
         ArrayList<Page> getNewPageOrder();
     }
     UpdateOrderListener updateOrderListener;
@@ -295,9 +296,11 @@ public class StoryEditorActivity extends AppCompatActivity
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storiesPresenter.updatePageList(updateOrderListener.getNewPageOrder());
-                SharedPrefHandler.putStories(getApplicationContext(), storiesPresenter, false);
-                finish();
+                if (updateOrderListener.allPagesSelected()) {
+                    storiesPresenter.updatePageList(updateOrderListener.getNewPageOrder());
+                    SharedPrefHandler.putStories(getApplicationContext(), storiesPresenter, false);
+                    finish();
+                }
             }
         });
     }

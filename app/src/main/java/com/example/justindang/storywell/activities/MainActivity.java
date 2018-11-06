@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
     @BindView(R.id.image_view_main_activity_shopping_cart) ImageView shoppingCartImageView;
 
+    // shared pref
+    @BindView(R.id.text_view_shared_preferences) TextView sharedPrefTextView;
+
     // recycler view
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
     SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
@@ -112,6 +115,9 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
         loadRecyclerView();
+
+        // get shared pref
+        sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {

@@ -34,6 +34,15 @@ public class SelectOrderFragment extends Fragment implements StoryEditorActivity
     private Stories stories;
 
     @Override
+    public boolean allPagesSelected() {
+        if (pagesListRecyclerAdapter.getNewOrderPageList().size() < pagesListRecyclerAdapter.getStories().getNumPages()) {
+            Toast.makeText(getContext(), "Must select all pages", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public ArrayList<Page> getNewPageOrder() {
         return pagesListRecyclerAdapter.getNewOrderPageList();
     }

@@ -93,6 +93,13 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
                 }
             }
         });
+        pageViewHolder.trashCanImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stories.removePage(stories.getPage(i));
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -105,5 +112,9 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
 
     public ArrayList<Page> getNewOrderPageList() {
         return newOrderPageList;
+    }
+
+    public Stories getStories() {
+        return stories;
     }
 }
