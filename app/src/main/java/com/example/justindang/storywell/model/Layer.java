@@ -1,4 +1,4 @@
-package team.uptech.motionviews.viewmodel;
+package com.example.justindang.storywell.model;
 
 import android.support.annotation.FloatRange;
 
