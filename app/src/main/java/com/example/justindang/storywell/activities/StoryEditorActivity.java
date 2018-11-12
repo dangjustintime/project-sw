@@ -378,6 +378,8 @@ public class StoryEditorActivity extends AppCompatActivity
         // add fragment to backstack
         fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.commit();
+
+
     }
 }
 
