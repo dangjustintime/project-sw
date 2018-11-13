@@ -19,9 +19,9 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.almeros.android.multitouch.MoveGestureDetector;
+import com.almeros.android.multitouch.RotateGestureDetector;
 import com.example.justindang.storywell.R;
-import com.example.justindang.storywell.gesture_detectors.MoveGestureDetector;
-import com.example.justindang.storywell.gesture_detectors.RotateGestureDetector;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -38,4 +38,7 @@ dependencies {
 
     // color picker
     implementation 'com.github.shishanksingh2015:colorpicker:v1.0'
+
+    // android gesture detectors framework
+    implementation 'com.github.Almeros:android-gesture-detectors:v1.0'
 }
