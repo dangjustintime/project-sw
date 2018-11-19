@@ -91,6 +91,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.color_picker_story_editor) ColorPicker colorPicker;
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
+    @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
 
     // fragments
     FragmentManager fragmentManager;
@@ -147,6 +148,7 @@ public class StoryEditorActivity extends AppCompatActivity
         // initialize presenter
         storiesPresenter = new StoriesPresenter(this, savedStories);
         currentPageIndex = 0;
+        pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
         isNewStories = getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
 
         if (isNewStories) {
@@ -199,6 +201,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
                 // add new page to stories
                 currentPageIndex++;
+                pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
                 storiesPresenter.addPage(new Page());
 
                 // start new template fragment
@@ -221,6 +224,7 @@ public class StoryEditorActivity extends AppCompatActivity
                     // update stories in shared pref
                     SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
                     currentPageIndex++;
+                    pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
                     loadSavedPageToTemplate();
                 } else {
                     Toast.makeText(StoryEditorActivity.this, "last page", Toast.LENGTH_SHORT).show();
@@ -236,6 +240,7 @@ public class StoryEditorActivity extends AppCompatActivity
                     // update stories in shared pref
                     SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
                     currentPageIndex--;
+                    pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
                     loadSavedPageToTemplate();
                 } else {
                     Toast.makeText(StoryEditorActivity.this, "first page", Toast.LENGTH_SHORT).show();
