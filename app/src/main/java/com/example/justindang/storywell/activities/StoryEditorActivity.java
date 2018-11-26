@@ -3,6 +3,7 @@ package com.example.justindang.storywell.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,7 +15,9 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
+import com.example.justindang.storywell.views.ShapeStickerDrawableView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,6 +96,10 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
+    @BindView(R.id.linear_layout_sticker_layer) LinearLayout stickerLayerLinearLayout;
+
+    // stickers
+    ShapeStickerDrawableView stickerDrawableView;
 
     // fragments
     FragmentManager fragmentManager;
@@ -137,6 +145,9 @@ public class StoryEditorActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
+
+        // instantiate sticker
+
 
         colorPicker.setVisibility(View.INVISIBLE);
         updateTextView.setVisibility(View.INVISIBLE);
@@ -288,6 +299,16 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
+
+                // instantiate shape
+                ImageView squareImageView = new ImageView(StoryEditorActivity.this);
+                squareImageView.setImageResource(R.drawable.square);
+                squareImageView.setAdjustViewBounds(true);
+                squareImageView.setLayoutParams(new Gallery.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                // add shape to linear layout
+                stickerLayerLinearLayout.addView(squareImageView);
             }
         });
         // color picker

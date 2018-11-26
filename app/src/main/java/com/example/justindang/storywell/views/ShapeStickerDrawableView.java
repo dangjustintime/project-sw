@@ -32,6 +32,7 @@ public class ShapeStickerDrawableView extends View {
         shapeDrawable.setBounds(x, y, x + width, y + height);
     }
 
+    @Override
     protected void onDraw(Canvas canvas) {
         shapeDrawable.draw(canvas);
     }
