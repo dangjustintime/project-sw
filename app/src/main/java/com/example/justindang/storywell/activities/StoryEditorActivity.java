@@ -94,6 +94,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
     @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
+    @BindView(R.id.linear_layout_shape_stickers) LinearLayout shapeStickersLinearLayout;
 
     // fragments
     FragmentManager fragmentManager;
@@ -140,12 +141,11 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-        // instantiate sticker
-
 
         colorPicker.setVisibility(View.INVISIBLE);
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
+        shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
 
         // get data from intent
         Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
@@ -198,6 +198,8 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
             }
         });
+
+        // new page
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,6 +264,8 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
             }
         });
+
+        // change page order
         angleBracketsIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,17 +287,28 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
+
+        // text inserter
         aaIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // shape inserter
         squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
 
+                if (shapeStickersLinearLayout.getVisibility() == View.INVISIBLE) {
+                    shapeStickersLinearLayout.setVisibility(View.VISIBLE);
+                } else {
+                    shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
+                }
+
+                /*
                 // instantiate shape
                 ImageView squareImageView = new ImageView(StoryEditorActivity.this);
                 squareImageView.setImageResource(R.drawable.square_solid);
@@ -303,6 +318,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
                 // add shape to linear layout
                 stickerLayerLinearLayout.addView(squareImageView);
+                */
             }
         });
         // color picker
