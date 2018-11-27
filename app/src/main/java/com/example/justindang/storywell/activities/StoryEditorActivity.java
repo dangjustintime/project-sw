@@ -3,7 +3,6 @@ package com.example.justindang.storywell.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
-import com.example.justindang.storywell.adapters.PagesListRecyclerAdapter;
 import com.example.justindang.storywell.fragments.SelectOrderFragment;
 import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
@@ -35,7 +33,6 @@ import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
-import com.example.justindang.storywell.views.ShapeStickerDrawableView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,10 +93,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
-    @BindView(R.id.linear_layout_sticker_layer) LinearLayout stickerLayerLinearLayout;
-
-    // stickers
-    ShapeStickerDrawableView stickerDrawableView;
+    @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
 
     // fragments
     FragmentManager fragmentManager;
@@ -302,7 +296,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
                 // instantiate shape
                 ImageView squareImageView = new ImageView(StoryEditorActivity.this);
-                squareImageView.setImageResource(R.drawable.square);
+                squareImageView.setImageResource(R.drawable.square_solid);
                 squareImageView.setAdjustViewBounds(true);
                 squareImageView.setLayoutParams(new Gallery.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
