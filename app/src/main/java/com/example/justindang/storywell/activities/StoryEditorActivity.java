@@ -94,7 +94,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
     @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
-    @BindView(R.id.linear_layout_shape_stickers) LinearLayout shapeStickersLinearLayout;
+    // @BindView(R.id.linear_layout_shape_stickers) LinearLayout shapeStickersLinearLayout;
 
     // fragments
     FragmentManager fragmentManager;
@@ -141,11 +141,10 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-
         colorPicker.setVisibility(View.INVISIBLE);
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
-        shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
+        // shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
 
         // get data from intent
         Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
@@ -296,10 +295,14 @@ public class StoryEditorActivity extends AppCompatActivity
             }
         });
 
+
         // shape inserter
+
+        /*
         squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
 
                 if (shapeStickersLinearLayout.getVisibility() == View.INVISIBLE) {
@@ -308,7 +311,6 @@ public class StoryEditorActivity extends AppCompatActivity
                     shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
                 }
 
-                /*
                 // instantiate shape
                 ImageView squareImageView = new ImageView(StoryEditorActivity.this);
                 squareImageView.setImageResource(R.drawable.square_solid);
@@ -318,9 +320,11 @@ public class StoryEditorActivity extends AppCompatActivity
 
                 // add shape to linear layout
                 stickerLayerLinearLayout.addView(squareImageView);
-                */
+
             }
         });
+        */
+
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
