@@ -26,7 +26,6 @@ public class ShapePickerFragment extends Fragment {
     @BindView(R.id.image_view_rectangle_solid) ImageView rectangleSolidImageView;
     @BindView(R.id.image_view_rectangle) ImageView rectangleImageView;
 
-
     // fragment manager
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
