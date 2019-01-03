@@ -1,6 +1,5 @@
 package com.example.justindang.storywell.activities;
 
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -418,8 +417,6 @@ public class StoryEditorActivity extends AppCompatActivity
         // add fragment to backstack
         fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.commit();
-
-
     }
 }
 

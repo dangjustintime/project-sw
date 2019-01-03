@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/linear_layout_shape_stickers"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/colorGrey">
+            <ImageView
+                android:id="@+id/image_view_square_solid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/square_solid"
+                android:layout_margin="10dp"/>
+            <ImageView
+                android:id="@+id/image_view_square"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/square"
+                android:layout_margin="10dp"/>
+            <ImageView
+                android:id="@+id/image_view_circle_solid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/circle_solid"
+                android:layout_margin="10dp"/>
+            <ImageView
+                android:id="@+id/image_view_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/circle"
+                android:layout_margin="10dp"/>
+            <ImageView
+                android:id="@+id/image_view_rectangle_solid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/rectangle_solid"
+                android:layout_margin="10dp"/>
+            <ImageView
+                android:id="@+id/image_view_rectangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/rectangle"
+                android:layout_margin="10dp"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+</android.support.constraint.ConstraintLayout>
