@@ -324,6 +324,7 @@ public class StoryEditorActivity extends AppCompatActivity
         });
         */
 
+        /*
         // color picker
         colorPicker.setGradientView(R.drawable.color_gradient);
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
@@ -332,6 +333,8 @@ public class StoryEditorActivity extends AppCompatActivity
                 onSaveImageListener.receiveColorFromColorPicker(color);
             }
         });
+        */
+
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
