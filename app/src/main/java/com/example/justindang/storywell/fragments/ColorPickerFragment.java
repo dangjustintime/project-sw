@@ -33,7 +33,7 @@ public class ColorPickerFragment extends Fragment {
         // inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_color_picker, container, false);
         ButterKnife.bind(this, view);
-
+        colorPicker.setGradientView(R.drawable.color_gradient);
         return view;
     }
 }

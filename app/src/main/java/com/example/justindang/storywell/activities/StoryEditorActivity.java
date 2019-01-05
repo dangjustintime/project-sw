@@ -20,11 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
+import com.example.justindang.storywell.fragments.ColorPickerFragment;
 import com.example.justindang.storywell.fragments.SelectOrderFragment;
 import com.example.justindang.storywell.fragments.ChooseATemplateFragment;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.fragments.SaveStoryDialogFragment;
 import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
+import com.example.justindang.storywell.fragments.ShapePickerFragment;
 import com.example.justindang.storywell.listeners.OnSwipeTouchListener;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
@@ -54,6 +56,8 @@ public class StoryEditorActivity extends AppCompatActivity
 
     private int currentPageIndex;
     boolean isNewStories;
+    boolean isShapeInserterOn;
+    boolean isColorPickerOn;
 
     // model of story
     private StoriesPresenter storiesPresenter;
@@ -87,8 +91,9 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
+    @BindView(R.id.frame_layout_fragment_placeholder_inserter) FrameLayout fragmentPlaceholderInserter;
     @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
-    @BindView(R.id.color_picker_story_editor) ColorPicker colorPicker;
+    // @BindView(R.id.color_picker_story_editor) ColorPicker colorPicker;
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
@@ -99,6 +104,9 @@ public class StoryEditorActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Fragment templatePlaceholderFragment;
+
+    ShapePickerFragment shapePickerFragment = new ShapePickerFragment();
+    ColorPickerFragment colorPickerFragment = new ColorPickerFragment();
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
     ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
 
@@ -140,7 +148,7 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-        colorPicker.setVisibility(View.INVISIBLE);
+        // colorPicker.setVisibility(View.INVISIBLE);
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
         // shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
@@ -153,6 +161,10 @@ public class StoryEditorActivity extends AppCompatActivity
         currentPageIndex = 0;
         pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
         isNewStories = getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
+
+        // fragment booleans
+        isShapeInserterOn = false;
+        isColorPickerOn = false;
 
         if (isNewStories) {
             storiesPresenter.addPage(new Page());
@@ -255,11 +267,19 @@ public class StoryEditorActivity extends AppCompatActivity
         threeCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (colorPicker.getVisibility() == View.INVISIBLE) {
-                    colorPicker.setVisibility(View.VISIBLE);
+                Toast.makeText(StoryEditorActivity.this, "insert color", Toast.LENGTH_SHORT).show();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+
+                if (!isColorPickerOn) {
+                    fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_inserter, colorPickerFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    isColorPickerOn = true;
                 } else {
-                    colorPicker.setVisibility(View.INVISIBLE);
+                    fragmentTransaction.remove(colorPickerFragment);
+                    isColorPickerOn = false;
                 }
+                fragmentTransaction.commit();
             }
         });
 
@@ -296,33 +316,24 @@ public class StoryEditorActivity extends AppCompatActivity
 
 
         // shape inserter
-
-        /*
         squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
 
-                if (shapeStickersLinearLayout.getVisibility() == View.INVISIBLE) {
-                    shapeStickersLinearLayout.setVisibility(View.VISIBLE);
+                if (!isShapeInserterOn) {
+                    fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_inserter, shapePickerFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    isShapeInserterOn = true;
                 } else {
-                    shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
+                    fragmentTransaction.remove(shapePickerFragment);
+                    isShapeInserterOn = false;
                 }
-
-                // instantiate shape
-                ImageView squareImageView = new ImageView(StoryEditorActivity.this);
-                squareImageView.setImageResource(R.drawable.square_solid);
-                squareImageView.setAdjustViewBounds(true);
-                squareImageView.setLayoutParams(new Gallery.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                // add shape to linear layout
-                stickerLayerLinearLayout.addView(squareImageView);
-
+                fragmentTransaction.commit();
             }
         });
-        */
 
         /*
         // color picker
