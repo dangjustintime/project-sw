@@ -44,7 +44,8 @@ import butterknife.ButterKnife;
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
         StoriesPresenter.View,
-        TemplateGridRecyclerAdapter.OnTemplateListener {
+        TemplateGridRecyclerAdapter.OnTemplateListener,
+        ColorPickerFragment.ColorPickerListener {
 
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
@@ -411,6 +412,12 @@ public class StoryEditorActivity extends AppCompatActivity
 
     @Override
     public void updateView() { }
+
+    // Colorpicker listener
+    @Override
+    public void getSelectedColor(int color) {
+        onSaveImageListener.receiveColorFromColorPicker(color);
+    }
 
     public void loadSavedPageToTemplate() {
         // get template fragment for saved page

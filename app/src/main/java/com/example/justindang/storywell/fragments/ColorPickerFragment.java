@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
@@ -22,6 +23,12 @@ public class ColorPickerFragment extends Fragment {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+    // colorpicker listener
+    public interface ColorPickerListener {
+        void getSelectedColor(int color);
+    }
+    ColorPickerListener colorPickerListener;
+
     // constructor
     public ColorPickerFragment() {
 
@@ -33,7 +40,18 @@ public class ColorPickerFragment extends Fragment {
         // inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_color_picker, container, false);
         ButterKnife.bind(this, view);
+
+        // color picker listener
         colorPicker.setGradientView(R.drawable.color_gradient);
+        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
+            @Override
+            public void onColorSelected(int color, boolean isTapUp) {
+                Toast.makeText(getContext(), String.valueOf(color), Toast.LENGTH_SHORT).show();
+               //  colorPickerListener.getSelectedColor(color);
+            }
+        });
+
         return view;
     }
+
 }
