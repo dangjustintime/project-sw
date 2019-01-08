@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.example.justindang.storywell.model.Stories;
 
-public class StoriesModelView extends ViewModel {
+public class StoriesViewModel extends ViewModel {
     private final MutableLiveData<Stories> mutableLiveData = new MutableLiveData<Stories>();
 
     public void setStories(Stories stories) {

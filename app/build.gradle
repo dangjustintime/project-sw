@@ -41,4 +41,9 @@ dependencies {
 
     // android gesture detectors framework
     implementation 'com.github.Almeros:android-gesture-detectors:v1.0'
+
+    def lifecycle_version = "1.1.1"
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
 }
