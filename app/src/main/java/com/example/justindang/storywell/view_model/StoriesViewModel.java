@@ -10,7 +10,7 @@ public class StoriesViewModel extends ViewModel {
     private MutableLiveData<Stories> mutableLiveData = new MutableLiveData<>();
 
     public void setStories(Stories stories) {
-        mutableLiveData.setValue(stories);
+        mutableLiveData.postValue(stories);
     }
 
     public LiveData<Stories> getStories() {

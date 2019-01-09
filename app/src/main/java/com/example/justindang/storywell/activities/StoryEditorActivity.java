@@ -203,9 +203,6 @@ public class StoryEditorActivity extends AppCompatActivity
         // put stories in view model
         storiesViewModel = ViewModelProviders.of(this).get(StoriesViewModel.class);
         storiesViewModel.setStories(storiesPresenter.getPages());
-        Toast.makeText(StoryEditorActivity.this,
-                storiesViewModel.getStories().getValue().toString(), Toast.LENGTH_SHORT).show();
-
         storiesViewModel.getStories().observe(this, new Observer<Stories>() {
             @Override
             public void onChanged(@Nullable Stories stories) {

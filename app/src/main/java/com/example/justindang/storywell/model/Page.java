@@ -61,7 +61,7 @@ public class Page implements Parcelable {
     }
 
     public void setImageUris(ArrayList<String> imageUris) {
-        this.imageUris = imageUris;
+        this.imageUris = new ArrayList<>(imageUris);
     }
 
     public String getTemplateName() {
@@ -69,7 +69,7 @@ public class Page implements Parcelable {
     }
 
     public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+        this.templateName = new String(templateName);
     }
 
     public ArrayList<String> getColors() {
@@ -85,7 +85,7 @@ public class Page implements Parcelable {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = new String(title);
     }
 
     public String getText() {
@@ -93,7 +93,7 @@ public class Page implements Parcelable {
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text = new String(text);
     }
 
     public String toString() {

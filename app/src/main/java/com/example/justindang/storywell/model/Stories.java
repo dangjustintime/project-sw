@@ -59,7 +59,7 @@ public class Stories implements Parcelable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = new String(name);
     }
 
     public String getDate() {
@@ -67,7 +67,7 @@ public class Stories implements Parcelable {
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date = new String(date);
     }
 
     public ArrayList<Page> getPagesList() {
@@ -75,7 +75,7 @@ public class Stories implements Parcelable {
     }
 
     public void setPagesList(ArrayList<Page> pagesList) {
-        this.pagesList = pagesList;
+        this.pagesList = new ArrayList<>(pagesList);
     }
 
     public int getNumPages() {
@@ -87,7 +87,7 @@ public class Stories implements Parcelable {
     }
 
     public void setSharedPrefKey(String key) {
-        this.SHARED_PREF_KEY = key;
+        this.SHARED_PREF_KEY = new String(key);
     }
 
     // getters and setters for story values
@@ -167,9 +167,8 @@ public class Stories implements Parcelable {
         String storiesString = "name: " + this.name + "\ndate: " + this.date + "\nSHARED_PREF_KEY:"
                 + this.SHARED_PREF_KEY;
         for (Page page : this.pagesList) {
-            storiesString.concat(page.toString());
+            storiesString.concat("\n" + page.toString());
         }
-
         return storiesString;
     }
 
