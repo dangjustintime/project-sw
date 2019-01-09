@@ -40,24 +40,24 @@ public class Page implements Parcelable {
     };
 
     public void addImage(String imagePath) {
-        imageUris.add(imagePath);
+        this.imageUris.add(imagePath);
     }
 
     public void removeImage(String imagePath) {
-        imageUris.remove(imagePath);
+        this.imageUris.remove(imagePath);
     }
 
     public void addColor(String color) {
-        colors.add(color);
+        this.colors.add(color);
     }
 
     public void removeColor(Integer color) {
-        colors.remove(color);
+        this.colors.remove(color);
     }
 
     // getters and setters
     public ArrayList<String> getImageUris() {
-        return imageUris;
+        return this.imageUris;
     }
 
     public void setImageUris(ArrayList<String> imageUris) {
@@ -65,7 +65,7 @@ public class Page implements Parcelable {
     }
 
     public String getTemplateName() {
-        return templateName;
+        return this.templateName;
     }
 
     public void setTemplateName(String templateName) {
@@ -73,15 +73,15 @@ public class Page implements Parcelable {
     }
 
     public ArrayList<String> getColors() {
-        return colors;
+        return this.colors;
     }
 
     public void setColors(ArrayList<String> colors) {
-        this.colors = colors;
+        this.colors = new ArrayList<>(colors);
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -89,7 +89,7 @@ public class Page implements Parcelable {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {

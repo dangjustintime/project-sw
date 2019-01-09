@@ -24,6 +24,12 @@ public class Stories implements Parcelable {
         Date currentTime = new Date();
         this.date = formatter.format(currentTime);
     }
+    public Stories(Stories stories) {
+        this.pagesList = new ArrayList<>(stories.getPagesList());
+        this.name = stories.getName();
+        this.date = stories.getDate();
+        this.SHARED_PREF_KEY = stories.getSharedPrefKey();
+    }
 
     public Stories(String name) {
         this.name = name;
@@ -55,7 +61,7 @@ public class Stories implements Parcelable {
 
     // getters and setters
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -63,7 +69,7 @@ public class Stories implements Parcelable {
     }
 
     public String getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(String date) {
@@ -83,7 +89,7 @@ public class Stories implements Parcelable {
     }
 
     public String getSharedPrefKey() {
-        return SHARED_PREF_KEY;
+        return this.SHARED_PREF_KEY;
     }
 
     public void setSharedPrefKey(String key) {
@@ -108,7 +114,7 @@ public class Stories implements Parcelable {
     }
 
     public ArrayList<String> getImageUris(int index)  {
-        return pagesList.get(index).getImageUris();
+        return this.pagesList.get(index).getImageUris();
     }
 
     public void setImageUris(int index, ArrayList<String> imageUris) {
@@ -165,9 +171,11 @@ public class Stories implements Parcelable {
 
     public String toString() {
         String storiesString = "name: " + this.name + "\ndate: " + this.date + "\nSHARED_PREF_KEY:"
-                + this.SHARED_PREF_KEY;
+                + this.SHARED_PREF_KEY + "\nnum pages: " + String.valueOf(this.getNumPages());
+
         for (Page page : this.pagesList) {
-            storiesString.concat("\n" + page.toString());
+            storiesString.concat("\nPage\n");
+            storiesString.concat(page.toString());
         }
         return storiesString;
     }
