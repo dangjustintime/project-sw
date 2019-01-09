@@ -1,17 +1,21 @@
 package com.example.justindang.storywell.free_templates;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
@@ -19,6 +23,7 @@ import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +41,9 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
     private static final int IMAGE_GALLERY_REQUEST_INNER = 27;
+
+    // view model
+    StoriesViewModel storiesViewModel;
 
     // image uri and color strings
     String innerMediaUriString;
@@ -61,6 +69,19 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
         // initialize page
         page = new Page();
+
+        // view model
+        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
+        storiesViewModel.getStories().observe(this, new Observer<Stories>() {
+            @Override
+            public void onChanged(@Nullable Stories stories) {
+                // Toast.makeText(getContext(), stories.toString(), Toast.LENGTH_SHORT).show();
+                /*
+                outerLayerColor = Integer.valueOf(stories.getColors(0).get(0));
+                outerLayerImageView.setBackgroundColor(outerLayerColor);
+                */
+            }
+        });
 
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
@@ -124,8 +145,8 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
 
     @Override
     public void receiveColorFromColorPicker(int color) {
-        outerLayerColor = color;
-        outerLayerImageView.setBackgroundColor(outerLayerColor);
+        // outerLayerColor = color;
+        // outerLayerImageView.setBackgroundColor(outerLayerColor);
     }
 
     @Override

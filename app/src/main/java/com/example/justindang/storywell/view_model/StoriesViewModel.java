@@ -7,7 +7,7 @@ import android.arch.lifecycle.ViewModel;
 import com.example.justindang.storywell.model.Stories;
 
 public class StoriesViewModel extends ViewModel {
-    private final MutableLiveData<Stories> mutableLiveData = new MutableLiveData<Stories>();
+    private MutableLiveData<Stories> mutableLiveData = new MutableLiveData<>();
 
     public void setStories(Stories stories) {
         mutableLiveData.setValue(stories);
@@ -15,5 +15,9 @@ public class StoriesViewModel extends ViewModel {
 
     public LiveData<Stories> getStories() {
         return mutableLiveData;
+    }
+
+    private void loadStories() {
+        // fetch data asynchronously
     }
 }

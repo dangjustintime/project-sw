@@ -96,6 +96,11 @@ public class Page implements Parcelable {
         this.text = text;
     }
 
+    public String toString() {
+        return "template: " + this.templateName + "\ntitle: " + this.title + "\ntext: " + this.text
+                + "\nURIs: " + this.imageUris.toString() + "\ncolors: " + this.colors.toString();
+    }
+
     @Override
     public int describeContents() {
         return 0;

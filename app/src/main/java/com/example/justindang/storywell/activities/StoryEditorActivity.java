@@ -1,12 +1,15 @@
 package com.example.justindang.storywell.activities;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.icu.text.UnicodeSetSpanner;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +39,7 @@ import com.example.justindang.storywell.presenter.StoriesPresenter;
 import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,6 +68,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // model of story
     private StoriesPresenter storiesPresenter;
+    private StoriesViewModel storiesViewModel;
 
     public interface OnSaveImageListener {
         void hideUI();
@@ -194,6 +199,20 @@ public class StoryEditorActivity extends AppCompatActivity
             fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templateManager.getTemplate(template));
             fragmentTransaction.commit();
         }
+
+        // put stories in view model
+        storiesViewModel = ViewModelProviders.of(this).get(StoriesViewModel.class);
+        storiesViewModel.setStories(storiesPresenter.getPages());
+        Toast.makeText(StoryEditorActivity.this,
+                storiesViewModel.getStories().getValue().toString(), Toast.LENGTH_SHORT).show();
+
+        storiesViewModel.getStories().observe(this, new Observer<Stories>() {
+            @Override
+            public void onChanged(@Nullable Stories stories) {
+                // update UI
+
+            }
+        });
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
