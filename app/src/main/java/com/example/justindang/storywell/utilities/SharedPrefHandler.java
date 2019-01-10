@@ -23,7 +23,7 @@ public class SharedPrefHandler {
     // empty constructor
     private SharedPrefHandler() {}
 
-    public static void putStories(Context context, StoriesPresenter storiesPresenter, boolean isNewStories) {
+    public static void putStories(Context context, Stories stories, boolean isNewStories) {
         // initialize shared preferences
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.saved_stories), 0);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -33,30 +33,30 @@ public class SharedPrefHandler {
             int serialID = sharedPreferences.getInt(context.getResources().getString(R.string.serial_id), 0);
 
             // generate key
-            storiesPresenter.generateSharedPrefKey(serialID);
+            stories.generateSharedPrefKey(serialID);
 
             // increment number of stories
             sharedPreferencesEditor.putInt(context.getResources().getString(R.string.saved_num_stories_keys), ++numStories);
             sharedPreferencesEditor.putInt(context.getResources().getString(R.string.serial_id), ++serialID);
         }
 
-        String key = storiesPresenter.getSharedPrefKey();
+        String key = stories.getSharedPrefKey();
 
         // put values in shared preferences
-        sharedPreferencesEditor.putString(key + "_name", storiesPresenter.getPages().getName());
-        sharedPreferencesEditor.putString(key + "_date", storiesPresenter.getPages().getDate());
-        sharedPreferencesEditor.putInt(key + "_num_pages", storiesPresenter.getNumPages());
+        sharedPreferencesEditor.putString(key + "_name", stories.getName());
+        sharedPreferencesEditor.putString(key + "_date", stories  .getDate());
+        sharedPreferencesEditor.putInt(key + "_num_pages", stories.getNumPages());
 
         // put values of pages
-        for (int i = 0; i < storiesPresenter.getNumPages(); i++) {
+        for (int i = 0; i < stories.getNumPages(); i++) {
             String pageKey = key + "_" + String.valueOf(i);
 
-            sharedPreferencesEditor.putString(pageKey + "_template", storiesPresenter.getPage(i).getTemplateName());
-            sharedPreferencesEditor.putString(pageKey + "_title", storiesPresenter.getPage(i).getTitle());
-            sharedPreferencesEditor.putString(pageKey + "_text", storiesPresenter.getPage(i).getText());
+            sharedPreferencesEditor.putString(pageKey + "_template", stories.getPage(i).getTemplateName());
+            sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage(i).getTitle());
+            sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage(i).getText());
 
             // image uris
-            ArrayList<String> imageUris = storiesPresenter.getPage(i).getImageUris();
+            ArrayList<String> imageUris = stories.getPage(i).getImageUris();
             for (int j = 0; j < 9; j++) {
                 if (j < imageUris.size()) {
                     sharedPreferencesEditor.putString(pageKey + "_image_uri_" + String.valueOf(j), imageUris.get(j));
@@ -64,7 +64,7 @@ public class SharedPrefHandler {
             }
 
             // colors
-            ArrayList<String> colors = storiesPresenter.getPage(i).getColors();
+            ArrayList<String> colors = stories.getPage(i).getColors();
             for (int j = 0; j < 2; j++) {
                 if (j < colors.size()) {
                     sharedPreferencesEditor.putString(pageKey + "_color_" + String.valueOf(j), colors.get(j));

@@ -67,7 +67,6 @@ public class StoryEditorActivity extends AppCompatActivity
     boolean isColorPickerOn;
 
     // model of story
-    private StoriesPresenter storiesPresenter;
     private StoriesViewModel storiesViewModel;
 
     public interface OnSaveImageListener {
@@ -119,10 +118,8 @@ public class StoryEditorActivity extends AppCompatActivity
     // save photo to storage
     public void saveImage() {
         Toast.makeText(getBaseContext(), "saving image to device...", Toast.LENGTH_SHORT).show();
-        ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout, storiesPresenter.getPages().getName());
-
-        // get values from template fragments
-        storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
+        ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout,
+                storiesViewModel.getStories().getValue().getName());
 
         // put stories in shared pref
         SharedPrefHandler.putStories(this, storiesPresenter, isNewStories);

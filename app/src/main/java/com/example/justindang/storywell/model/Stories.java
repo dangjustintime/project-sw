@@ -59,6 +59,12 @@ public class Stories implements Parcelable {
         }
     };
 
+    // key generator
+    public void generateSharedPrefKey(int serialId) {
+        String key = "stories_" + String.valueOf(serialId);
+        this.setSharedPrefKey(key);
+    }
+
     // getters and setters
     public String getName() {
         return this.name;
