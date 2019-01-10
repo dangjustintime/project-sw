@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
-import com.example.justindang.storywell.presenter.StoriesPresenter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -51,12 +50,12 @@ public class SharedPrefHandler {
         for (int i = 0; i < stories.getNumPages(); i++) {
             String pageKey = key + "_" + String.valueOf(i);
 
-            sharedPreferencesEditor.putString(pageKey + "_template", stories.getPage(i).getTemplateName());
-            sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage(i).getTitle());
-            sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage(i).getText());
+            sharedPreferencesEditor.putString(pageKey + "_template", stories.getPage().getTemplateName());
+            sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage().getTitle());
+            sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage().getText());
 
             // image uris
-            ArrayList<String> imageUris = stories.getPage(i).getImageUris();
+            ArrayList<String> imageUris = stories.getPage().getImageUris();
             for (int j = 0; j < 9; j++) {
                 if (j < imageUris.size()) {
                     sharedPreferencesEditor.putString(pageKey + "_image_uri_" + String.valueOf(j), imageUris.get(j));
@@ -64,13 +63,15 @@ public class SharedPrefHandler {
             }
 
             // colors
-            ArrayList<String> colors = stories.getPage(i).getColors();
+            ArrayList<String> colors = stories.getPage().getColors();
             for (int j = 0; j < 2; j++) {
                 if (j < colors.size()) {
                     sharedPreferencesEditor.putString(pageKey + "_color_" + String.valueOf(j), colors.get(j));
                 }
             }
+            stories.nextPage();
         }
+
         sharedPreferencesEditor.apply();
     }
 

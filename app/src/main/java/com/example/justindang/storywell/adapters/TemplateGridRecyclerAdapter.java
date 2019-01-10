@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
     // member data
     private Context context;
     private List<String> templateNames;
+
+    // view model
+    private StoriesViewModel storiesViewModel;
 
     // constructor
     public TemplateGridRecyclerAdapter(Context context, List<String> templateNames) {
@@ -81,9 +85,13 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Activity activity = (Activity) context;
                 onTemplateListener = (OnTemplateListener) activity;
                 onTemplateListener.sendTemplate(templateName);
+                */
+                Toast.makeText(context, templateName, Toast.LENGTH_SHORT).show();
+
             }
         });
     }

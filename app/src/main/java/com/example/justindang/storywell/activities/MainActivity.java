@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
