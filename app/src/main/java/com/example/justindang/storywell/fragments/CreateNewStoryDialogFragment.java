@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CreateNewStoryDialogFragment extends DialogFragment implements ChooseATemplateFragment.OnCancelListener {
+public class CreateNewStoryDialogFragment extends DialogFragment {
 
     // views
     @BindView(R.id.edit_text_enter_a_name) EditText editTextEnterAName;
@@ -68,10 +68,5 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
             }
         });
         return view;
-    }
-
-    @Override
-    public void cancelStory() {
-        editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
     }
 }

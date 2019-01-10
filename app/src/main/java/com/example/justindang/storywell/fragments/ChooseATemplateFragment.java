@@ -38,12 +38,6 @@ public class ChooseATemplateFragment extends Fragment {
     private TemplateGridRecyclerAdapter templateGridRecyclerAdapter;
     private List<String> templateNames;
 
-    // interface listener
-    public interface OnCancelListener {
-        void cancelStory();
-    }
-    OnCancelListener onCancelListener;
-
     // fragment manager
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -77,7 +71,6 @@ public class ChooseATemplateFragment extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ChooseATemplateFragment.this);
                 fragmentTransaction.commit();
-                onCancelListener.cancelStory();
             }
         });
         shoppingCartIconImageView.setOnClickListener(new View.OnClickListener() {

@@ -85,7 +85,7 @@ public class StoryEditorActivity extends AppCompatActivity
     TemplateManager templateManager = new TemplateManager();
 
     // views
-    @BindView(R.id.image_view_story_editor_aa_icon) ImageView aaIconImageView;
+    @BindView(R.id.image_view_story_editor_aa_icon)ImageView aaIconImageView;
     @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
     @BindView(R.id.image_view_story_editor_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_story_editor_three_circle_icon) ImageView threeCircleIconImageView;
