@@ -85,13 +85,10 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
                 Activity activity = (Activity) context;
                 onTemplateListener = (OnTemplateListener) activity;
                 onTemplateListener.sendTemplate(templateName);
-                */
                 Toast.makeText(context, templateName, Toast.LENGTH_SHORT).show();
-
             }
         });
     }

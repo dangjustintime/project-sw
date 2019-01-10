@@ -412,8 +412,9 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
-        /*
-        storiesPresenter.updateTemplateName(currentPageIndex, template);
+        Stories newStories = new Stories(storiesViewModel.getStories().getValue());
+        newStories.setTemplateName(template);
+
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
@@ -421,7 +422,7 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.remove(chooseATemplateFragment);
 
         // add empty page to bundle
-        Page page = storiesPresenter.getPage(currentPageIndex);
+        Page page = newStories.getPage();
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
         bundle.putBoolean(BUNDLE_IS_NEW_PAGE, true);
@@ -431,7 +432,6 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        */
     }
 
     // Colorpicker listener
