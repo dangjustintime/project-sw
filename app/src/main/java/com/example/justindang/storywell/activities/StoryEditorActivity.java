@@ -101,12 +101,10 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
     @BindView(R.id.frame_layout_fragment_placeholder_inserter) FrameLayout fragmentPlaceholderInserter;
     @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
-    // @BindView(R.id.color_picker_story_editor) ColorPicker colorPicker;
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
     @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
-    // @BindView(R.id.linear_layout_shape_stickers) LinearLayout shapeStickersLinearLayout;
 
     // fragments
     FragmentManager fragmentManager;
@@ -156,10 +154,8 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-        // colorPicker.setVisibility(View.INVISIBLE);
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
-        // shapeStickersLinearLayout.setVisibility(View.INVISIBLE);
 
         // get data from intent
         Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
@@ -353,17 +349,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-
-        /*
-        // color picker
-        colorPicker.setGradientView(R.drawable.color_gradient);
-        colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
-            @Override
-            public void onColorSelected(int color, boolean isTapUp) {
-                onSaveImageListener.receiveColorFromColorPicker(color);
-            }
-        });
-        */
 
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override

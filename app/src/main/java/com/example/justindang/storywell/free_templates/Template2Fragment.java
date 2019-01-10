@@ -75,7 +75,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         storiesViewModel.getStories().observe(this, new Observer<Stories>() {
             @Override
             public void onChanged(@Nullable Stories stories) {
-                // Toast.makeText(getContext(), stories.toString(), Toast.LENGTH_SHORT).show();
                 if (stories.getColors(0).size() != 0) {
                     outerLayerColor = Integer.parseInt(stories.getPage(0).getColors().get(0));
                     outerLayerImageView.setBackgroundColor(outerLayerColor);
