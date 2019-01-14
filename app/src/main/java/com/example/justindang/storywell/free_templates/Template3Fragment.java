@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.free_templates;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +38,9 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
     private static final int IMAGE_GALLERY_REQUEST_TOP = 29;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 28;
+
+    // view model
+    StoriesViewModel storiesViewModel;
 
     // image uri strings
     // index 0 = top media
@@ -67,6 +72,10 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         // initialize page
         page = new Page();
 
+        // view model
+        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
+
+        // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             addBottomMediaImageView.setVisibility(View.INVISIBLE);
             addTopMediaImageView.setVisibility(View.INVISIBLE);
@@ -135,6 +144,12 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
+            ArrayList<String> updatedImageUris = new ArrayList<>();
+            updatedImageUris.add(topMediaUriString);
+            updatedImageUris.add(bottomMediaUriString);
+            Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+            updatedStories.setImageUris(updatedImageUris);
+            storiesViewModel.setStories(updatedStories);
         }
     }
 

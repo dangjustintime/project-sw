@@ -100,7 +100,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             innerMediaUriString = page.getImageUris().get(0);
             Uri innerImageUri = Uri.parse(innerMediaUriString);
             ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
-
         }
 
         // clicklisteners
