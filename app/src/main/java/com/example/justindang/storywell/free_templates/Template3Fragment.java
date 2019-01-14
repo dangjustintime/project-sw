@@ -149,20 +149,4 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     public void receiveColorFromColorPicker(int color) {
         Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public Page sendPage() {
-        page.setTemplateName("free template 3");
-        page.setTitle(null);
-        page.setTitle(null);
-        // set array data
-        ArrayList<String> imageUriStrings = new ArrayList<String>();
-        imageUriStrings.add(topMediaUriString);
-        imageUriStrings.add(bottomMediaUriString);
-        page.setImageUris(imageUriStrings);
-        ArrayList<String> colors = new ArrayList<String>();
-        colors.add("0");
-        page.setColors(colors);
-        return page;
-    }
 }

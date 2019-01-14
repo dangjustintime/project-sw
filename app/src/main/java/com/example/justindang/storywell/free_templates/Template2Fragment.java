@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,6 +132,10 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             if (requestCode == IMAGE_GALLERY_REQUEST_INNER) {
                 innerMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+                Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+                ArrayList<String> updatedUris = new ArrayList<>();
+                updatedUris.add(innerMediaUriString);
+                updatedStories.setImageUris(updatedUris);
             }
         }
     }
@@ -146,23 +151,5 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     public void receiveColorFromColorPicker(int color) {
         // outerLayerColor = color;
         // outerLayerImageView.setBackgroundColor(outerLayerColor);
-    }
-
-    @Override
-    public Page sendPage() {
-        page.setTemplateName("free template 2");
-        page.setTitle(null);
-        page.setText(null);
-        // set array data
-        ArrayList<String> imageUriStrings = new ArrayList<>();
-        imageUriStrings.add(innerMediaUriString);
-        page.setImageUris(imageUriStrings);
-        ArrayList<String> colors = new ArrayList<String>();
-        if (outerLayerColor == null) {
-            outerLayerColor = 0;
-        }
-        colors.add(outerLayerColor.toString());
-        page.setColors(colors);
-        return page;
     }
 }

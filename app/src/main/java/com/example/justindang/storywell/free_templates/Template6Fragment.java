@@ -173,25 +173,4 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         backgroundColor = color;
         containerConstraintLayout.setBackgroundColor(backgroundColor);
     }
-
-    @Override
-    public Page sendPage() {
-        page.setTemplateName("free template 6");
-        title = addTitleEditText.getText().toString();
-        page.setTitle(title);
-        text = tapToAddEditText.getText().toString();
-        page.setText(text);
-        // set array data
-        ArrayList<String> imageUriStrings = new ArrayList<>();
-        imageUriStrings.add(outerMediaUriString);
-        imageUriStrings.add(innerMediaUriString);
-        page.setImageUris(imageUriStrings);
-        ArrayList<String> colors = new ArrayList<String>();
-        if (backgroundColor == null) {
-            backgroundColor = 0;
-        }
-        colors.add(backgroundColor.toString());
-        page.setColors(colors);
-        return page;
-    }
 }

@@ -99,8 +99,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendInput(String input) {
         Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        Stories newStories= new Stories(input);
+        Stories newStories = new Stories(input);
         intent.putExtra(EXTRA_SAVED_STORIES, newStories);
+        Log.i("intent stories", "INTENT STORIES HERE!!!\n\n\n" + newStories.toString());
         intent.putExtra(EXTRA_IS_NEW_STORIES, true);
         startActivity(intent);
     }
@@ -112,7 +113,8 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         // request read permissions
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
         loadRecyclerView();
 

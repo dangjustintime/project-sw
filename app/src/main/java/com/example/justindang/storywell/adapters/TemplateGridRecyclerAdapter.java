@@ -1,9 +1,12 @@
 package com.example.justindang.storywell.adapters;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.util.List;
@@ -86,9 +91,15 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
             @Override
             public void onClick(View v) {
                 Activity activity = (Activity) context;
-                onTemplateListener = (OnTemplateListener) activity;
-                onTemplateListener.sendTemplate(templateName);
-                Toast.makeText(context, templateName, Toast.LENGTH_SHORT).show();
+                storiesViewModel = ViewModelProviders.of((FragmentActivity) activity).get(StoriesViewModel.class);
+
+                Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+
+                Log.i("recyclerview stories", "\n\n\n\nRECYCLER VIEW STORIES HERE!!!\n" + updatedStories.toString());
+                /*
+                updatedStories.setTemplateName(templateName);
+                storiesViewModel.setStories(updatedStories);
+                */
             }
         });
     }

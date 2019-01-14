@@ -2,6 +2,7 @@ package com.example.justindang.storywell.free_templates;
 
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,7 @@ import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.util.ArrayList;
 
@@ -35,10 +37,11 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     // index 1 = outer Media
     String innerMediaUriString;
     String outerMediaUriString;
-    Page page;
+
+    // view model
+    StoriesViewModel storiesViewModel;
 
     // static data
-    private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
     private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
     private static final int IMAGE_GALLERY_REQUEST_INNER = 21;
@@ -88,8 +91,8 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        // initialize page
-        page = new Page();
+        // initialize view model
+        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
@@ -97,12 +100,9 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeInnerMediaImageView.setVisibility(View.VISIBLE);
 
-            // get page from bundle
-            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
-
             // put images into image views
-            innerMediaUriString = page.getImageUris().get(0);
-            outerMediaUriString = page.getImageUris().get(1);
+            innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
+            outerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
             Uri innerImageUri = Uri.parse(innerMediaUriString);
             Uri outerImageUri = Uri.parse(outerMediaUriString);
             ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
@@ -171,6 +171,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
+
         }
     }
 
@@ -184,21 +185,5 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     @Override
     public void receiveColorFromColorPicker(int color) {
         Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public Page sendPage() {
-        page.setTemplateName("free template 1");
-        page.setTitle(null);
-        page.setText(null);
-        // set array data
-        ArrayList<String> imageUriStrings = new ArrayList<>();
-        imageUriStrings.add(innerMediaUriString);
-        imageUriStrings.add(outerMediaUriString);
-        page.setImageUris(imageUriStrings);
-        ArrayList<String> colors = new ArrayList<String>();
-        colors.add("0");
-        page.setColors(colors);
-        return page;
     }
 }

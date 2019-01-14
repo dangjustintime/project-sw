@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
@@ -48,7 +49,6 @@ import butterknife.ButterKnife;
 
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
-        TemplateGridRecyclerAdapter.OnTemplateListener,
         ColorPickerFragment.ColorPickerListener {
 
     // static data
@@ -57,21 +57,19 @@ public class StoryEditorActivity extends AppCompatActivity
     private static final String DIALOG_SAVE_STORY = "save story";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
-    private static final String BUNDLE_STORY = "current story";
 
-    private int currentPageIndex;
     boolean isNewStories;
     boolean isShapeInserterOn;
     boolean isColorPickerOn;
 
     // model of story
+    private Stories savedStories;
     private StoriesViewModel storiesViewModel;
 
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
         void receiveColorFromColorPicker(int color);
-        Page sendPage();
     }
     OnSaveImageListener onSaveImageListener;
 
@@ -116,12 +114,14 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // save photo to storage
     public void saveImage() {
-        Toast.makeText(getBaseContext(), "saving image to device...",
+        Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
         ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout,
                 storiesViewModel.getStories().getValue().getName());
 
         // put stories in shared pref
+        Toast.makeText(StoryEditorActivity.this, storiesViewModel.getStories().getValue().toString(),
+                Toast.LENGTH_SHORT).show();
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
     }
@@ -160,31 +160,21 @@ public class StoryEditorActivity extends AppCompatActivity
         eyeImageView.setVisibility(View.INVISIBLE);
 
         // get data from intent
-        Stories savedStories = getIntent().getParcelableExtra(EXTRA_SAVED_STORIES);
+        Intent intent = getIntent();
+        savedStories = new Stories((Stories) intent.getParcelableExtra(EXTRA_SAVED_STORIES));
+        isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
 
         // initialize view model
-        storiesViewModel = ViewModelProviders.of(this).get(StoriesViewModel.class);
+        storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(savedStories);
-        storiesViewModel.getStories().observe(this, new Observer<Stories>() {
-            @Override
-            public void onChanged(@Nullable Stories stories) {
-                // update UI
-            }
-        });
+        Log.i("saved stories", "SAVED STORIES HERE!!!\n\n\n" + storiesViewModel.getStories().getValue().toString());
 
-        currentPageIndex = 0;
-        pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
-        isNewStories = getIntent().getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
 
         // fragment booleans
         isShapeInserterOn = false;
         isColorPickerOn = false;
 
         if (isNewStories) {
-            Stories newStories = new Stories();
-            newStories.addPage(new Page());
-            storiesViewModel.setStories(newStories);
-
             // add Choose a template fragment
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -212,6 +202,12 @@ public class StoryEditorActivity extends AppCompatActivity
                     templateManager.getTemplate(template));
             fragmentTransaction.commit();
         }
+
+        // page number
+        /*
+        pageNumberTextView.setText(
+                String.valueOf(storiesViewModel.getStories().getValue().getCurrentIndex() + 1));
+        */
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -296,7 +292,6 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert color", Toast.LENGTH_SHORT).show();
-                /*
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -309,7 +304,6 @@ public class StoryEditorActivity extends AppCompatActivity
                     isColorPickerOn = false;
                 }
                 fragmentTransaction.commit();
-                */
             }
         });
 
@@ -409,6 +403,7 @@ public class StoryEditorActivity extends AppCompatActivity
         finish();
     }
 
+    /*
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
@@ -433,6 +428,7 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+    */
 
     // Colorpicker listener
     @Override

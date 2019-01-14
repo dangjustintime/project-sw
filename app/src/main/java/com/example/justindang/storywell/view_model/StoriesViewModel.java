@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 
 public class StoriesViewModel extends ViewModel {

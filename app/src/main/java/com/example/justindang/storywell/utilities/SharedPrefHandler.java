@@ -71,7 +71,6 @@ public class SharedPrefHandler {
             }
             stories.nextPage();
         }
-
         sharedPreferencesEditor.apply();
     }
 

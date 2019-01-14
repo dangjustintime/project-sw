@@ -1,6 +1,5 @@
 package com.example.justindang.storywell.fragments;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +25,6 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SaveStoryDialogFragment extends DialogFragment {
 
     // TAG

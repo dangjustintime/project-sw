@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Stories implements Parcelable {
 
@@ -25,12 +26,17 @@ public class Stories implements Parcelable {
         Date currentTime = new Date();
         this.date = formatter.format(currentTime);
     }
+
     public Stories(Stories stories) {
-        this.pagesList = new ArrayList<>(stories.getPagesList());
+        if (stories.pagesList == null) {
+            this.pagesList = new ArrayList<>();
+        } else {
+            this.pagesList = new ArrayList<>(stories.getPagesList());
+        }
         this.name = stories.getName();
         this.date = stories.getDate();
         this.SHARED_PREF_KEY = stories.getSharedPrefKey();
-        this.currentIndex = stories.currentIndex;
+        this.currentIndex = stories.getCurrentIndex();
     }
 
     public Stories(String name) {
@@ -75,7 +81,7 @@ public class Stories implements Parcelable {
     }
 
     public void setName(String name) {
-        this.name = new String(name);
+        this.name = name;
     }
 
     public String getDate() {
@@ -83,10 +89,10 @@ public class Stories implements Parcelable {
     }
 
     public void setDate(String date) {
-        this.date = new String(date);
+        this.date = date;
     }
 
-    public ArrayList<Page> getPagesList() {
+    public List<Page> getPagesList() {
         return pagesList;
     }
 
@@ -103,7 +109,7 @@ public class Stories implements Parcelable {
     }
 
     public void setSharedPrefKey(String key) {
-        this.SHARED_PREF_KEY = new String(key);
+        this.SHARED_PREF_KEY = key;
     }
 
     public int getCurrentIndex() {
@@ -201,11 +207,6 @@ public class Stories implements Parcelable {
         String storiesString = "name: " + this.name + "\ndate: " + this.date + "\nSHARED_PREF_KEY:"
                 + this.SHARED_PREF_KEY + "\ncurrent index: " + String.valueOf(this.currentIndex)
                 + "\nnum pages: " + String.valueOf(this.getNumPages());
-
-        for (Page page : this.pagesList) {
-            storiesString.concat("\nPage\n");
-            storiesString.concat(page.toString());
-        }
         return storiesString;
     }
 
@@ -218,6 +219,7 @@ public class Stories implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(date);
+        dest.writeInt(currentIndex);
         dest.writeString(SHARED_PREF_KEY);
         dest.writeTypedList(pagesList);
     }
