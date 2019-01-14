@@ -49,6 +49,7 @@ import butterknife.ButterKnife;
 
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
+        TemplateGridRecyclerAdapter.OnTemplateListener,
         ColorPickerFragment.ColorPickerListener {
 
     // static data
@@ -403,21 +404,26 @@ public class StoryEditorActivity extends AppCompatActivity
         finish();
     }
 
-    /*
     // OnTemplateListener
     @Override
     public void sendTemplate(String template) {
-        Stories newStories = new Stories(storiesViewModel.getStories().getValue());
-        newStories.setTemplateName(template);
+        // instantiate new page
+        Page page = new Page();
+        page.setTemplateName(template);
 
+        // add page to stories
+        Stories newStories = new Stories(storiesViewModel.getStories().getValue());
+        newStories.addPage(page);
+        storiesViewModel.setStories(newStories);
+
+        // remove choose a template fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.remove(chooseATemplateFragment);
 
-        // add empty page to bundle
-        Page page = newStories.getPage();
+        // add new page to bundle
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
         bundle.putBoolean(BUNDLE_IS_NEW_PAGE, true);
@@ -428,7 +434,6 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-    */
 
     // Colorpicker listener
     @Override

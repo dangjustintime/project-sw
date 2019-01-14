@@ -26,9 +26,6 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
     private Context context;
     private List<String> templateNames;
 
-    // view model
-    private StoriesViewModel storiesViewModel;
-
     // constructor
     public TemplateGridRecyclerAdapter(Context context, List<String> templateNames) {
         this.context = context;
@@ -91,15 +88,8 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
             @Override
             public void onClick(View v) {
                 Activity activity = (Activity) context;
-                storiesViewModel = ViewModelProviders.of((FragmentActivity) activity).get(StoriesViewModel.class);
-
-                Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
-
-                Log.i("recyclerview stories", "\n\n\n\nRECYCLER VIEW STORIES HERE!!!\n" + updatedStories.toString());
-                /*
-                updatedStories.setTemplateName(templateName);
-                storiesViewModel.setStories(updatedStories);
-                */
+                onTemplateListener = (OnTemplateListener) activity;
+                onTemplateListener.sendTemplate(templateName);
             }
         });
     }
