@@ -167,10 +167,4 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
     }
-
-    @Override
-    public void receiveColorFromColorPicker(int color) {
-        backgroundColor = color;
-        containerConstraintLayout.setBackgroundColor(backgroundColor);
-    }
 }

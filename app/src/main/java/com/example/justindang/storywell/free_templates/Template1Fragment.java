@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
+import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
 
@@ -37,6 +38,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     // index 1 = outer Media
     String innerMediaUriString;
     String outerMediaUriString;
+    Page page;
 
     // view model
     StoriesViewModel storiesViewModel;
@@ -91,11 +93,15 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
+        page = new Page();
+
         // initialize view model
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
+
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
+            addOuterMediaImageView.setVisibility(View.INVISIBLE);
             removeOuterMediaImageView.setVisibility(View.VISIBLE);
             addInnerMediaImageView.setVisibility(View.INVISIBLE);
             removeInnerMediaImageView.setVisibility(View.VISIBLE);
@@ -171,7 +177,12 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
-
+            ArrayList<String> updatedImageUris = new ArrayList<>();
+            updatedImageUris.add(innerMediaUriString);
+            updatedImageUris.add(outerMediaUriString);
+            Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+            updatedStories.setImageUris(updatedImageUris);
+            storiesViewModel.setStories(updatedStories);
         }
     }
 
@@ -180,10 +191,5 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         removeOuterMediaImageView.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void receiveColorFromColorPicker(int color) {
-        Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
     }
 }

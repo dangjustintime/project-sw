@@ -49,8 +49,7 @@ import butterknife.ButterKnife;
 
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
-        TemplateGridRecyclerAdapter.OnTemplateListener,
-        ColorPickerFragment.ColorPickerListener {
+        TemplateGridRecyclerAdapter.OnTemplateListener {
 
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
@@ -70,7 +69,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
-        void receiveColorFromColorPicker(int color);
     }
     OnSaveImageListener onSaveImageListener;
 
@@ -205,10 +203,8 @@ public class StoryEditorActivity extends AppCompatActivity
         }
 
         // page number
-        /*
         pageNumberTextView.setText(
                 String.valueOf(storiesViewModel.getStories().getValue().getCurrentIndex() + 1));
-        */
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -433,12 +429,6 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    // Colorpicker listener
-    @Override
-    public void getSelectedColor(int color) {
-        onSaveImageListener.receiveColorFromColorPicker(color);
     }
 
     public void loadSavedPageToTemplate() {

@@ -144,9 +144,4 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
         removeTopMediaImageView.setVisibility(View.INVISIBLE);
     }
-
-    @Override
-    public void receiveColorFromColorPicker(int color) {
-        Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
-    }
 }
