@@ -33,19 +33,19 @@ import static android.app.Activity.RESULT_OK;
 
 public class Template1Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
 
+    // static data
+    private static final String BUNDLE_IS_NEW_PAGE = "new page";
+    private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
+    private static final int IMAGE_GALLERY_REQUEST_INNER = 21;
+
+    // view model
+    StoriesViewModel storiesViewModel;
+
     // uri strings
     // index 0 = inner Media
     // index 1 = outer Media
     String innerMediaUriString;
     String outerMediaUriString;
-
-    // view model
-    StoriesViewModel storiesViewModel;
-
-    // static data
-    private static final String BUNDLE_IS_NEW_PAGE = "new page";
-    private static final int IMAGE_GALLERY_REQUEST_OUTER = 20;
-    private static final int IMAGE_GALLERY_REQUEST_INNER = 21;
 
     // views
     @BindView(R.id.image_view_template1_inner_media) ImageView innerMediaImageView;
@@ -59,10 +59,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     private ScaleGestureDetector scaleGestureDetector;
     private float scaleFactor = 1.5f;
     private Matrix outerMediaMatrix = new Matrix();
-
-    public Template1Fragment() {
-        // Required empty public constructor
-    }
 
     // scalelistener
     private class OnScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -82,7 +78,10 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    public Template1Fragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,15 +91,13 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        // initialize view model
+        // instantiate view model
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             outerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
-
-            Toast.makeText(getContext(), outerMediaUriString, Toast.LENGTH_SHORT).show();
 
             if (innerMediaUriString.equals("")) {
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
@@ -174,6 +171,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 return true;
             }
         });
+
         return view;
     }
 
