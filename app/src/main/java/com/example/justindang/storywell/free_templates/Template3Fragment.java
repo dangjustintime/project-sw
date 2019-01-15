@@ -45,9 +45,8 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     // image uri strings
     // index 0 = top media
     // index 1 = bottom media
-    String bottomMediaUriString;
     String topMediaUriString;
-    Page page;
+    String bottomMediaUriString;
 
     // views
     @BindView(R.id.image_view_template3_add_bottom_media) ImageView addBottomMediaImageView;
@@ -69,29 +68,33 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        // initialize page
-        page = new Page();
-
         // view model
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            addBottomMediaImageView.setVisibility(View.INVISIBLE);
-            addTopMediaImageView.setVisibility(View.INVISIBLE);
-            removeBottomMediaImageView.setVisibility(View.VISIBLE);
-            removeTopMediaImageView.setVisibility(View.VISIBLE);
+            topMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
+            bottomMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
 
-            // get page from bundle
-            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
+            if (topMediaUriString.equals("")) {
+                addTopMediaImageView.setVisibility(View.VISIBLE);
+                removeTopMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addTopMediaImageView.setVisibility(View.INVISIBLE);
+                removeTopMediaImageView.setVisibility(View.VISIBLE);
+                Uri topImageUri = Uri.parse(topMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            }
 
-            // get saved stories and put data into views
-            topMediaUriString = page.getImageUris().get(0);
-            bottomMediaUriString = page.getImageUris().get(1);
-            Uri topImageUri = Uri.parse(topMediaUriString);
-            Uri bottomImageUri = Uri.parse(bottomMediaUriString);
-            ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
-            ImageHandler.setImageToImageView(getContext(), bottomImageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            if (bottomMediaUriString.equals("")) {
+                addBottomMediaImageView.setVisibility(View.VISIBLE);
+                removeBottomMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addBottomMediaImageView.setVisibility(View.INVISIBLE);
+                removeBottomMediaImageView.setVisibility(View.VISIBLE);
+                Uri bottomImageUri = Uri.parse(bottomMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), bottomImageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            }
         }
 
         // clicklisteners
@@ -117,18 +120,23 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 topMediaImageView.setImageBitmap(null);
+                topMediaUriString = "";
                 addTopMediaImageView.setVisibility(View.VISIBLE);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
+                updateViewModel();
             }
         });
         removeBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomMediaImageView.setImageBitmap(null);
+                bottomMediaUriString = "";
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
+                updateViewModel();
             }
         });
+
         return view;
     }
 
@@ -144,12 +152,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
-            ArrayList<String> updatedImageUris = new ArrayList<>();
-            updatedImageUris.add(topMediaUriString);
-            updatedImageUris.add(bottomMediaUriString);
-            Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
-            updatedStories.setImageUris(updatedImageUris);
-            storiesViewModel.setStories(updatedStories);
+            updateViewModel();
         }
     }
 
@@ -158,5 +161,14 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
         removeTopMediaImageView.setVisibility(View.INVISIBLE);
+    }
+
+    private void updateViewModel() {
+        ArrayList<String> updatedImageUris = new ArrayList<>();
+        updatedImageUris.add(topMediaUriString);
+        updatedImageUris.add(bottomMediaUriString);
+        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+        updatedStories.setImageUris(updatedImageUris);
+        storiesViewModel.setStories(updatedStories);
     }
 }
