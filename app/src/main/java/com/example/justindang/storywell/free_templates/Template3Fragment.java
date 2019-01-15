@@ -163,6 +163,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
         removeTopMediaImageView.setVisibility(View.INVISIBLE);
     }
 
+    // update data for view model
     private void updateViewModel() {
         ArrayList<String> updatedImageUris = new ArrayList<>();
         updatedImageUris.add(topMediaUriString);
