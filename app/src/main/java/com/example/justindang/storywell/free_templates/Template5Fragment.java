@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.free_templates;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +39,9 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
     private static final int IMAGE_GALLERY_REQUEST_MEDIA = 13;
+
+    // view model
+    StoriesViewModel storiesViewModel;
 
     // image uri strings, color, title, text
     String mediaUriString;
@@ -74,6 +79,10 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         // initialize page
         page = new Page();
 
+        // view model
+        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
+
+        // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             addMediaImageView.setVisibility(View.INVISIBLE);
             removeMediaImageView.setVisibility(View.VISIBLE);
@@ -127,6 +136,11 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 mediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, mediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
+            ArrayList<String> updatedImageUris = new ArrayList<>();
+            updatedImageUris.add(mediaUriString);
+            Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+            updatedStories.setImageUris(updatedImageUris);
+            storiesViewModel.setStories(updatedStories);
         }
     }
 

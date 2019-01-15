@@ -38,7 +38,6 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     // index 1 = outer Media
     String innerMediaUriString;
     String outerMediaUriString;
-    Page page;
 
     // view model
     StoriesViewModel storiesViewModel;
@@ -93,26 +92,35 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        page = new Page();
-
         // initialize view model
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
-
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            addOuterMediaImageView.setVisibility(View.INVISIBLE);
-            removeOuterMediaImageView.setVisibility(View.VISIBLE);
-            addInnerMediaImageView.setVisibility(View.INVISIBLE);
-            removeInnerMediaImageView.setVisibility(View.VISIBLE);
-
-            // put images into image views
             innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             outerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
-            Uri innerImageUri = Uri.parse(innerMediaUriString);
-            Uri outerImageUri = Uri.parse(outerMediaUriString);
-            ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
-            ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.MATRIX);
+
+            Toast.makeText(getContext(), outerMediaUriString, Toast.LENGTH_SHORT).show();
+
+            if (innerMediaUriString.equals("")) {
+                addInnerMediaImageView.setVisibility(View.VISIBLE);
+                removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addInnerMediaImageView.setVisibility(View.INVISIBLE);
+                removeInnerMediaImageView.setVisibility(View.VISIBLE);
+                Uri innerImageUri = Uri.parse(innerMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            }
+
+            if (outerMediaUriString.equals("")) {
+                addOuterMediaImageView.setVisibility(View.VISIBLE);
+                removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addOuterMediaImageView.setVisibility(View.INVISIBLE);
+                removeOuterMediaImageView.setVisibility(View.VISIBLE);
+                Uri outerImageUri = Uri.parse(outerMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.MATRIX);
+            }
         }
 
         // gesture listener
@@ -141,16 +149,20 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View view) {
                 innerMediaImageView.setImageBitmap(null);
+                innerMediaUriString = "";
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+                updateViewModel();
             }
         });
         removeOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 outerMediaImageView.setImageBitmap(null);
+                outerMediaUriString = "";
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+                updateViewModel();
             }
         });
 
@@ -177,12 +189,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
-            ArrayList<String> updatedImageUris = new ArrayList<>();
-            updatedImageUris.add(innerMediaUriString);
-            updatedImageUris.add(outerMediaUriString);
-            Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
-            updatedStories.setImageUris(updatedImageUris);
-            storiesViewModel.setStories(updatedStories);
+            updateViewModel();
         }
     }
 
@@ -191,5 +198,15 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+    }
+
+    // update data for view model
+    private void updateViewModel() {
+        ArrayList<String> updatedImageUris = new ArrayList<>();
+        updatedImageUris.add(innerMediaUriString);
+        updatedImageUris.add(outerMediaUriString);
+        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+        updatedStories.setImageUris(updatedImageUris);
+        storiesViewModel.setStories(updatedStories);
     }
 }

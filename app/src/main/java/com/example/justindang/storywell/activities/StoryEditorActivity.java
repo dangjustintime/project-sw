@@ -166,7 +166,6 @@ public class StoryEditorActivity extends AppCompatActivity
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(savedStories);
-        Log.i("saved stories", "SAVED STORIES HERE!!!\n\n\n" + storiesViewModel.getStories().getValue().toString());
 
 
         // fragment booleans
