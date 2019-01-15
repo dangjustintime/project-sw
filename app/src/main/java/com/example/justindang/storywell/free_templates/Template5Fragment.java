@@ -134,6 +134,8 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 updateViewModel();
             }
         });
+
+        // text changed listeners
         addTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
