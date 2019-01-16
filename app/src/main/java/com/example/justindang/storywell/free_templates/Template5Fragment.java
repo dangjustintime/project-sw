@@ -81,10 +81,12 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         storiesViewModel.getStories().observe(this, new Observer<Stories>() {
             @Override
             public void onChanged(@Nullable Stories stories) {
-                if (stories.getColors().size() != 0) {
+                if (stories.getPage().getColors().get(0).equals("NOT FOUND")) {
+                    backgroundColor = 0;
+                } else {
                     backgroundColor = Integer.valueOf(storiesViewModel.getStories().getValue().getColors().get(0));
-                    containerConstraintLayout.setBackgroundColor(backgroundColor);
                 }
+                containerConstraintLayout.setBackgroundColor(backgroundColor);
             }
         });
 
@@ -93,9 +95,13 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             mediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             title = storiesViewModel.getStories().getValue().getTitle();
             text = storiesViewModel.getStories().getValue().getText();
-            backgroundColor = Integer.valueOf(storiesViewModel.getStories().getValue().getColors().get(0));
+            if (storiesViewModel.getStories().getValue().getColors().get(0).equals("NOT FOUND")) {
+                backgroundColor = 0;
+            } else {
+                backgroundColor = Integer.valueOf(storiesViewModel.getStories().getValue().getColors().get(0));
+            }
 
-            if (mediaUriString.equals("")) {
+            if (mediaUriString.equals("") || mediaUriString.equals("NOT FOUND")) {
                 addMediaImageView.setVisibility(View.VISIBLE);
                 removeMediaImageView.setVisibility(View.INVISIBLE);
             } else {

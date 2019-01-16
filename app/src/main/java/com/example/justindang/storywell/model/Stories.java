@@ -19,6 +19,8 @@ public class Stories implements Parcelable {
 
     // constructors
     public Stories() {
+        this.name = "";
+        this.SHARED_PREF_KEY = "";
         this.pagesList = new ArrayList<>();
         this.currentIndex = 0;
         // format the current date
@@ -41,6 +43,7 @@ public class Stories implements Parcelable {
 
     public Stories(String name) {
         this.name = name;
+        this.SHARED_PREF_KEY = "";
         this.pagesList = new ArrayList<>();
         this.currentIndex = 0;
         // format the current date

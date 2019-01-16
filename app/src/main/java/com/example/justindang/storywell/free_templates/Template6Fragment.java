@@ -104,7 +104,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
             text = storiesViewModel.getStories().getValue().getText();
             backgroundColor = Integer.valueOf(storiesViewModel.getStories().getValue().getColors().get(0));
 
-            if (outerMediaUriString.equals("")) {
+            if (outerMediaUriString.equals("") || outerMediaUriString.equals("NOT FOUND")) {
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
             } else {
@@ -114,7 +114,7 @@ public class Template6Fragment extends Fragment implements StoryEditorActivity.O
                 ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
 
-            if (innerMediaUriString.equals("")) {
+            if (innerMediaUriString.equals("") || innerMediaUriString.equals("NOT FOUND")) {
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
             } else {

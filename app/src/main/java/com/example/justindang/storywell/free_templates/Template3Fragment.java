@@ -76,7 +76,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
             topMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             bottomMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
 
-            if (topMediaUriString.equals("")) {
+            if (topMediaUriString.equals("") || topMediaUriString.equals("NOT FOUND")) {
                 addTopMediaImageView.setVisibility(View.VISIBLE);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
             } else {
@@ -86,7 +86,7 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
 
-            if (bottomMediaUriString.equals("")) {
+            if (bottomMediaUriString.equals("") || bottomMediaUriString.equals("NOT FOUND")) {
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
             } else {

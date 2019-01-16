@@ -98,8 +98,10 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             outerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
+            Toast.makeText(getContext(), outerMediaUriString, Toast.LENGTH_SHORT).show();
 
-            if (innerMediaUriString.equals("")) {
+
+            if (innerMediaUriString.equals("") || innerMediaUriString.equals("NOT FOUND")) {
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
             } else {
@@ -109,7 +111,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
 
-            if (outerMediaUriString.equals("")) {
+            if (outerMediaUriString.equals("") || outerMediaUriString.equals("NOT FOUND")) {
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
             } else {

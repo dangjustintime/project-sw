@@ -16,6 +16,9 @@ public class Page implements Parcelable {
 
     // constructors
     public Page() {
+        this.templateName = "";
+        this.title = "";
+        this.text = "";
         this.imageUris = new ArrayList<>();
         this.colors = new ArrayList<>();
     }

@@ -77,7 +77,7 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
             topMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             bottomMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
 
-            if (topMediaUriString.equals("")) {
+            if (topMediaUriString.equals("") || topMediaUriString.equals("NOT FOUND")) {
                 addTopMediaImageView.setVisibility(View.VISIBLE);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
             } else {
@@ -88,7 +88,7 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
 
             }
 
-            if (bottomMediaUriString.equals("")) {
+            if (bottomMediaUriString.equals("") || bottomMediaUriString.equals("NOT FOUND")) {
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
             } else {
