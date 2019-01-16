@@ -9,8 +9,10 @@ import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class SharedPrefHandler {
 
         // put values in shared preferences
         sharedPreferencesEditor.putString(key + "_name", stories.getName());
-        sharedPreferencesEditor.putString(key + "_date", stories  .getDate());
+        sharedPreferencesEditor.putString(key + "_date", stories.getDate());
         sharedPreferencesEditor.putInt(key + "_num_pages", stories.getNumPages());
 
         // put values of pages
@@ -51,8 +53,12 @@ public class SharedPrefHandler {
             String pageKey = key + "_" + String.valueOf(i);
 
             sharedPreferencesEditor.putString(pageKey + "_template", stories.getPage().getTemplateName());
-            sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage().getTitle());
-            sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage().getText());
+            if (!stories.getPage().getTitle().equals("")) {
+                sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage().getTitle());
+            }
+            if (!stories.getPage().getText().equals("")) {
+                sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage().getText());
+            }
 
             // image uris
             ArrayList<String> imageUris = stories.getPage().getImageUris();
@@ -82,31 +88,33 @@ public class SharedPrefHandler {
         String storiesKey = "stories_" + String.valueOf(serialID);
         newStories.setSharedPrefKey(storiesKey);
 
-        newStories.setName(sharedPreferences.getString(storiesKey + "_name", "NOT FOUND"));
-        newStories.setDate(sharedPreferences.getString(storiesKey + "_date", "NOT FOUND"));
-        int numPages = sharedPreferences.getInt(storiesKey + "_num_pages", -1);
+        newStories.setName(sharedPreferences.getString(storiesKey + "_name", "stories ".concat(String.valueOf(serialID))));
 
-        if (numPages != -1) {
-            for (int i = 0; i < numPages; i++) {
-                String pageKey = storiesKey + "_" + String.valueOf(i);
-                Page page = new Page();
+        // get the current date
+        SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
+        Date currentTime = new Date();
+        newStories.setDate(sharedPreferences.getString(storiesKey + "_date", formatter.format(currentTime)));
+        int numPages = sharedPreferences.getInt(storiesKey + "_num_pages", 1);
 
-                // get image uris
-                for (int j = 0; j < 9; j++) {
-                    page.addImage(sharedPreferences.getString(pageKey + "_image_uri_" + String.valueOf(j), "NOT FOUND"));
-                }
+        for (int i = 0; i < numPages; i++) {
+            String pageKey = storiesKey + "_" + String.valueOf(i);
+            Page page = new Page();
 
-                // get colors
-                for (int j = 0; j < 2; j++) {
-                    page.addColor(sharedPreferences.getString(pageKey + "_color_" + String.valueOf(j), "NOT FOUND"));
-                }
-
-                // get template, title, and text
-                page.setTemplateName(sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
-                page.setTitle(sharedPreferences.getString(pageKey + "_title", "NOT FOUND"));
-                page.setText(sharedPreferences.getString(pageKey + "_text", "NOT FOUND"));
-                newStories.addPage(page);
+            // get image uris
+            for (int j = 0; j < 9; j++) {
+                page.addImage(sharedPreferences.getString(pageKey + "_image_uri_" + String.valueOf(j), "NOT FOUND"));
             }
+
+            // get colors
+            for (int j = 0; j < 2; j++) {
+                page.addColor(sharedPreferences.getString(pageKey + "_color_" + String.valueOf(j), "NOT FOUND"));
+            }
+
+            // get template, title, and text
+            page.setTemplateName(sharedPreferences.getString(pageKey + "_template", "NOT FOUND"));
+            page.setTitle(sharedPreferences.getString(pageKey + "_title", context.getResources().getString(R.string.add_title)));
+            page.setText(sharedPreferences.getString(pageKey + "_text", context.getResources().getString(R.string.tap_to_add_text)));
+            newStories.addPage(page);
         }
 
         return newStories;

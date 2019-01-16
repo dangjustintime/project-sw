@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
         Stories newStories = new Stories(input);
         intent.putExtra(EXTRA_SAVED_STORIES, newStories);
-        Log.i("intent stories", "INTENT STORIES HERE!!!\n\n\n" + newStories.toString());
         intent.putExtra(EXTRA_IS_NEW_STORIES, true);
         startActivity(intent);
     }

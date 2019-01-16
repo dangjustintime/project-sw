@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.UnicodeSetSpanner;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,7 +43,9 @@ import com.example.justindang.storywell.utilities.TemplateManager;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +64,7 @@ public class StoryEditorActivity extends AppCompatActivity
     boolean isNewStories;
     boolean isShapeInserterOn;
     boolean isColorPickerOn;
+    String template;
 
     // model of story
     private Stories savedStories;
@@ -167,7 +171,7 @@ public class StoryEditorActivity extends AppCompatActivity
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(savedStories);
 
-
+        Toast.makeText(getApplicationContext(), savedStories.toString(), Toast.LENGTH_SHORT).show();
         // fragment booleans
         isShapeInserterOn = false;
         isColorPickerOn = false;
@@ -183,7 +187,7 @@ public class StoryEditorActivity extends AppCompatActivity
             // get template fragment for saved page
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            String template = storiesViewModel.getStories()
+            template = storiesViewModel.getStories()
                     .getValue()
                     .getPage()
                     .getTemplateName();
@@ -434,7 +438,7 @@ public class StoryEditorActivity extends AppCompatActivity
         // get template fragment for saved page
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        String template = storiesViewModel.getStories()
+        template = storiesViewModel.getStories()
                 .getValue()
                 .getPage()
                 .getTemplateName();
