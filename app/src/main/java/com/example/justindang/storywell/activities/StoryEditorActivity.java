@@ -230,62 +230,17 @@ public class StoryEditorActivity extends AppCompatActivity
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                // get values from template fragments
-                storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
-
-                // add new page to stories
-                currentPageIndex++;
-                pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
-                storiesPresenter.addPage(new Page());
-
-                // start new template fragment
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-
-                // add fragment to backstack
-                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, chooseATemplateFragment);
-                fragmentTransaction.commit();
-                */
+                Toast.makeText(StoryEditorActivity.this, "new page", Toast.LENGTH_SHORT).show();
             }
         });
         frameLayoutAnywhere.setOnTouchListener(new OnSwipeTouchListener(StoryEditorActivity.this) {
             @Override
             public void onSwipeLeft() {
                 Toast.makeText(StoryEditorActivity.this, "swipe left", Toast.LENGTH_SHORT).show();
-
-                /*
-                if (currentPageIndex != storiesPresenter.getNumPages() - 1) {
-                    // get values from template fragments
-                    storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
-
-                    // update stories in shared pref
-                    SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
-                    currentPageIndex++;
-                    pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
-                    loadSavedPageToTemplate();
-                } else {
-                    Toast.makeText(StoryEditorActivity.this, "last page", Toast.LENGTH_SHORT).show();
-                }
-                */
             }
             @Override
             public void onSwipeRight() {
                 Toast.makeText(StoryEditorActivity.this, "swipe right", Toast.LENGTH_SHORT).show();
-                /*
-                if (currentPageIndex != 0) {
-                    // get values from template fragments
-                    storiesPresenter.updatePage(currentPageIndex, onSaveImageListener.sendPage());
-
-                    // update stories in shared pref
-                    SharedPrefHandler.putStories(StoryEditorActivity.this, storiesPresenter, isNewStories);
-                    currentPageIndex--;
-                    pageNumberTextView.setText(String.valueOf(currentPageIndex + 1));
-                    loadSavedPageToTemplate();
-                } else {
-                    Toast.makeText(StoryEditorActivity.this, "first page", Toast.LENGTH_SHORT).show();
-                }
-                */
             }
         });
         threeCircleIconImageView.setOnClickListener(new View.OnClickListener() {
@@ -312,23 +267,7 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 // change visibility of buttons
-                updateTextView.setVisibility(View.VISIBLE);
-                downloadButtonImageView.setVisibility(View.INVISIBLE);
-                eyeImageView.setVisibility(View.VISIBLE);
-
-                /*
-                // put stories into a bundle
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(BUNDLE_STORY, storiesPresenter.getPages());
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                SelectOrderFragment selectOrderFragment = new SelectOrderFragment();
-                selectOrderFragment.setArguments(bundle);
-                updateOrderListener = (UpdateOrderListener) selectOrderFragment;
-                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, selectOrderFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                */
+                Toast.makeText(StoryEditorActivity.this, "change page order", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -346,7 +285,7 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
-                /*
+
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -359,20 +298,13 @@ public class StoryEditorActivity extends AppCompatActivity
                     isShapeInserterOn = false;
                 }
                 fragmentTransaction.commit();
-                */
             }
         });
 
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (updateOrderListener.allPagesSelected()) {
-                    /*
-                    storiesPresenter.updatePageList(updateOrderListener.getNewPageOrder());
-                    SharedPrefHandler.putStories(getApplicationContext(), storiesPresenter, false);
-                    finish();
-                    */
-                }
+                Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
             }
         });
     }
