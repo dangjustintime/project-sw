@@ -16,9 +16,21 @@ public class Page implements Parcelable {
 
     // constructors
     public Page() {
+        this.templateName = "";
+        this.title = "";
+        this.text = "";
         this.imageUris = new ArrayList<>();
         this.colors = new ArrayList<>();
     }
+
+    public Page(Page page) {
+        this.templateName = page.getTemplateName();
+        this.title = page.getTitle();
+        this.text = page.getText();
+        this.imageUris = new ArrayList<>(page.getImageUris());
+        this.colors = new ArrayList<>(page.getColors());
+    }
+
     protected Page(Parcel in) {
         templateName = in.readString();
         title = in.readString();
@@ -69,7 +81,7 @@ public class Page implements Parcelable {
     }
 
     public void setTemplateName(String templateName) {
-        this.templateName = new String(templateName);
+        this.templateName = templateName;
     }
 
     public ArrayList<String> getColors() {
@@ -85,7 +97,7 @@ public class Page implements Parcelable {
     }
 
     public void setTitle(String title) {
-        this.title = new String(title);
+        this.title = title;
     }
 
     public String getText() {
@@ -93,7 +105,7 @@ public class Page implements Parcelable {
     }
 
     public void setText(String text) {
-        this.text = new String(text);
+        this.text = text;
     }
 
     public String toString() {

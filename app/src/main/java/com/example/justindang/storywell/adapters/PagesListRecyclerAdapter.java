@@ -36,7 +36,6 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     // member data
     Context context;
     Stories stories;
-    int currentPageNumber = 1;
     ArrayList<Page> newOrderPageList = new ArrayList<>();
 
     // constructor
@@ -70,7 +69,7 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     // binder
     @Override
     public void onBindViewHolder(@NonNull final PageViewHolder pageViewHolder, final int i) {
-        Uri imageUri = Uri.parse(stories.getImageUris(i).get(0));
+        Uri imageUri = Uri.parse(stories.getImageUris().get(0));
         InputStream inputStream;
         try {
             inputStream = context.getContentResolver().openInputStream(imageUri);
@@ -86,17 +85,17 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
             @Override
             public void onClick(View v) {
                 if (pageViewHolder.pageNumberTextView.getVisibility() == View.INVISIBLE) {
-                    pageViewHolder.pageNumberTextView.setText(String.valueOf(currentPageNumber));
+                    pageViewHolder.pageNumberTextView.setText(stories.getCurrentIndex());
                     pageViewHolder.pageNumberTextView.setVisibility(View.VISIBLE);
-                    currentPageNumber++;
-                    newOrderPageList.add(stories.getPage(i));
+                    stories.nextPage();
+                    newOrderPageList.add(stories.getPage());
                 }
             }
         });
         pageViewHolder.trashCanImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stories.removePage(stories.getPage(i));
+                stories.removePage(stories.getPage());
                 notifyDataSetChanged();
             }
         });

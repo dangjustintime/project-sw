@@ -27,7 +27,7 @@ public class ColorPickerFragment extends Fragment {
     @BindView(R.id.color_picker) ColorPicker colorPicker;
 
     // view model
-    // private StoriesViewModel storiesViewModel;
+    private StoriesViewModel storiesViewModel;
 
     // fragment manager
     FragmentManager fragmentManager;
@@ -40,9 +40,7 @@ public class ColorPickerFragment extends Fragment {
     ColorPickerListener colorPickerListener;
 
     // constructor
-    public ColorPickerFragment() {
-
-    }
+    public ColorPickerFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +49,8 @@ public class ColorPickerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_color_picker, container, false);
         ButterKnife.bind(this, view);
 
-        StoriesViewModel storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
+        // initialize view model
+        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
         // color picker listener
         colorPicker.setGradientView(R.drawable.color_gradient);
@@ -61,7 +60,7 @@ public class ColorPickerFragment extends Fragment {
                 Stories stories = storiesViewModel.getStories().getValue();
                 ArrayList<String> newColors = new ArrayList<>();
                 newColors.add(String.valueOf(color));
-                stories.setColors(0, newColors);
+                stories.setColors(newColors);
                 storiesViewModel.setStories(stories);
             }
         });

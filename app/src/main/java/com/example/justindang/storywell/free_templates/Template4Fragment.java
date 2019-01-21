@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.free_templates;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,18 +33,21 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class Template4Fragment extends Fragment implements StoryEditorActivity.OnSaveImageListener {
+
     // static data
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
     private static final int IMAGE_GALLERY_REQUEST_TOP = 40;
     private static final int IMAGE_GALLERY_REQUEST_BOTTOM = 48;
 
+    // view model
+    StoriesViewModel storiesViewModel;
+
     // image uri strings
     // index 0 = top Media
     // index 1 = bottom Media
-    String bottomMediaUriString;
     String topMediaUriString;
-    Page page;
+    String bottomMediaUriString;
 
     // views
     @BindView(R.id.image_view_template4_top_media) ImageView topMediaImageView;
@@ -56,7 +61,6 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,25 +69,34 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
 
-        // initialize page
-        page = new Page();
+        // view model
+        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
+        // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            addTopMediaImageView.setVisibility(View.INVISIBLE);
-            addBottomMediaImageView.setVisibility(View.INVISIBLE);
-            removeTopMediaImageView.setVisibility(View.VISIBLE);
-            removeBottomMediaImageView.setVisibility(View.VISIBLE);
+            topMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
+            bottomMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
 
-            // get page from bundle
-            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
+            if (topMediaUriString.equals("") || topMediaUriString.equals("NOT FOUND")) {
+                addTopMediaImageView.setVisibility(View.VISIBLE);
+                removeTopMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addTopMediaImageView.setVisibility(View.INVISIBLE);
+                removeTopMediaImageView.setVisibility(View.VISIBLE);
+                Uri topImageUri = Uri.parse(topMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
 
-            // get data and put into views
-            topMediaUriString = page.getImageUris().get(0);
-            bottomMediaUriString = page.getImageUris().get(1);
-            Uri topImageUri = Uri.parse(topMediaUriString);
-            Uri bottomImageUri = Uri.parse(bottomMediaUriString);
-            ImageHandler.setImageToImageView(getContext(), topImageUri, topMediaImageView, ImageView.ScaleType.CENTER_CROP);
-            ImageHandler.setImageToImageView(getContext(), bottomImageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            }
+
+            if (bottomMediaUriString.equals("") || bottomMediaUriString.equals("NOT FOUND")) {
+                addBottomMediaImageView.setVisibility(View.VISIBLE);
+                removeBottomMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addBottomMediaImageView.setVisibility(View.INVISIBLE);
+                removeBottomMediaImageView.setVisibility(View.VISIBLE);
+                Uri bottomImageUri = Uri.parse(bottomMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), bottomImageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            }
         }
 
         // clicklisteners
@@ -109,16 +122,20 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 topMediaImageView.setImageBitmap(null);
+                topMediaUriString = "";
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
                 addTopMediaImageView.setVisibility(View.VISIBLE);
+                updateViewModel();
             }
         });
         removeBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomMediaImageView.setImageBitmap(null);
+                bottomMediaUriString = "";
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
+                updateViewModel();
             }
         });
 
@@ -137,6 +154,7 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
+            updateViewModel();
         }
     }
 
@@ -146,24 +164,13 @@ public class Template4Fragment extends Fragment implements StoryEditorActivity.O
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void receiveColorFromColorPicker(int color) {
-        Toast.makeText(getContext(), "no color", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public Page sendPage() {
-        page.setTemplateName("free template 4");
-        page.setTitle(null);
-        page.setText(null);
-        // get array data
-        ArrayList<String> imageUriStrings = new ArrayList<>();
-        imageUriStrings.add(topMediaUriString);
-        imageUriStrings.add(bottomMediaUriString);
-        page.setImageUris(imageUriStrings);
-        ArrayList<String> colors = new ArrayList<String>();
-        colors.add("0");
-        page.setColors(colors);
-        return page;
+    // update data for view model
+    private void updateViewModel() {
+        ArrayList<String> updatedImageUris = new ArrayList<>();
+        updatedImageUris.add(topMediaUriString);
+        updatedImageUris.add(bottomMediaUriString);
+        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+        updatedStories.setImageUris(updatedImageUris);
+        storiesViewModel.setStories(updatedStories);
     }
 }

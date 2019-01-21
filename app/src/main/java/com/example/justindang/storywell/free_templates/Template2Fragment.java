@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +49,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     // image uri and color strings
     String innerMediaUriString;
     Integer outerLayerColor;
-    Page page;
 
     // views
     @BindView(R.id.image_view_template2_inner_media) ImageView innerMediaImageView;
@@ -67,39 +67,35 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         View view = inflater.inflate(R.layout.fragment_template2, container, false);
         ButterKnife.bind(this, view);
 
-        // initialize page
-        page = new Page();
+        hideUI();
+        colorPickerImageView.setVisibility(View.VISIBLE);
 
-        // view model
+        // instantiate view model
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
         storiesViewModel.getStories().observe(this, new Observer<Stories>() {
             @Override
             public void onChanged(@Nullable Stories stories) {
-                if (stories.getColors(0).size() != 0) {
-                    outerLayerColor = Integer.parseInt(stories.getPage(0).getColors().get(0));
-                    outerLayerImageView.setBackgroundColor(outerLayerColor);
+                if (stories.getColors().size() == 0 || stories.getColors().get(0).equals("NOT FOUND")) {
+                    outerLayerColor = getContext().getResources().getColor(R.color.colorOffWhite);
+                } else {
+                    outerLayerColor = Integer.parseInt(stories.getPage().getColors().get(0));
                 }
+                outerLayerImageView.setBackgroundColor(outerLayerColor);
             }
         });
 
-        hideUI();
-        colorPickerImageView.setVisibility(View.VISIBLE);
-
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            addInnerMediaImageView.setVisibility(View.INVISIBLE);
-            removeInnerMediaImageView.setVisibility(View.VISIBLE);
-
-            // get page from bundle
-            page = getArguments().getParcelable(BUNDLE_CURRENT_PAGE);
-
-            // put images into image views
-            outerLayerColor = Integer.valueOf(page.getColors().get(0));
-            outerLayerImageView.setBackgroundColor(outerLayerColor);
-            innerMediaUriString = page.getImageUris().get(0);
-            Uri innerImageUri = Uri.parse(innerMediaUriString);
-            ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
-
+            innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
+            if (innerMediaUriString.equals("") || innerMediaUriString.equals("NOT FOUND")) {
+                addInnerMediaImageView.setVisibility(View.VISIBLE);
+                removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+            } else {
+                addInnerMediaImageView.setVisibility(View.INVISIBLE);
+                removeInnerMediaImageView.setVisibility(View.VISIBLE);
+                Uri innerImageUri = Uri.parse(innerMediaUriString);
+                ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            }
         }
 
         // clicklisteners
@@ -116,10 +112,13 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             @Override
             public void onClick(View v) {
                 innerMediaImageView.setImageBitmap(null);
+                innerMediaUriString = "";
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+                updateViewModel();
             }
         });
+
         return view;
     }
 
@@ -132,6 +131,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
+            updateViewModel();
         }
     }
 
@@ -142,27 +142,11 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         colorPickerImageView.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void receiveColorFromColorPicker(int color) {
-        // outerLayerColor = color;
-        // outerLayerImageView.setBackgroundColor(outerLayerColor);
-    }
-
-    @Override
-    public Page sendPage() {
-        page.setTemplateName("free template 2");
-        page.setTitle(null);
-        page.setText(null);
-        // set array data
-        ArrayList<String> imageUriStrings = new ArrayList<>();
-        imageUriStrings.add(innerMediaUriString);
-        page.setImageUris(imageUriStrings);
-        ArrayList<String> colors = new ArrayList<String>();
-        if (outerLayerColor == null) {
-            outerLayerColor = 0;
-        }
-        colors.add(outerLayerColor.toString());
-        page.setColors(colors);
-        return page;
+    // update data for view model
+    private void updateViewModel() {
+        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
+        ArrayList<String> updatedUris = new ArrayList<>();
+        updatedUris.add(innerMediaUriString);
+        updatedStories.setImageUris(updatedUris);
     }
 }
