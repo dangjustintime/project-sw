@@ -29,7 +29,6 @@ public class PageItemRecyclerAdapter extends RecyclerView.Adapter<PageItemRecycl
     // view holder
     public static class PageItemViewHolder extends RecyclerView.ViewHolder {
         FrameLayout fragmentPlaceholderPageItemFrameLayout;
-
         public PageItemViewHolder(@NonNull View itemView) {
             super(itemView);
         }

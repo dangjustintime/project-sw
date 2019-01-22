@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -65,6 +66,10 @@ public class StoryEditorActivity extends AppCompatActivity
     boolean isShapeInserterOn;
     boolean isColorPickerOn;
     String template;
+
+    // frame layout IDs
+    ArrayList<FrameLayout> frameLayoutArrayLists = new ArrayList<>();
+    ArrayList<Integer> frameLayoutIds = new ArrayList<>();
 
     // model of story
     private Stories savedStories;
@@ -94,7 +99,6 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.image_view_story_editor_back_button) ImageView backButtonImageView;
     @BindView(R.id.image_view_story_editor_download_icon) ImageView downloadButtonImageView;
     @BindView(R.id.constraint_layout_icon_container) ConstraintLayout iconContainerConstraintLayout;
-    @BindView(R.id.frame_layout_fragment_placeholder_story_editor) FrameLayout fragmentPlaceholderFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
     @BindView(R.id.frame_layout_fragment_placeholder_inserter) FrameLayout fragmentPlaceholderInserter;
@@ -103,6 +107,7 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
     @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
+    @BindView(R.id.linear_layout_fragment_placeholder_story_editor) LinearLayout fragmentPlaceholderLinearLayout;
 
     // fragments
     FragmentManager fragmentManager;
@@ -119,7 +124,8 @@ public class StoryEditorActivity extends AppCompatActivity
     public void saveImage() {
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
-        ImageHandler.writeFile(StoryEditorActivity.this, fragmentPlaceholderFrameLayout,
+
+        ImageHandler.writeFile(StoryEditorActivity.this, frameLayoutArrayLists.get(0),
                 storiesViewModel.getStories().getValue().getName());
 
         // put stories in shared pref
@@ -200,7 +206,11 @@ public class StoryEditorActivity extends AppCompatActivity
             bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
             bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
             templatePlaceholderFragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor,
+
+            addNewFrameLayoutToLinearLayout();
+
+            // add fragment
+            fragmentTransaction.add(frameLayoutIds.get(0),
                     templateManager.getTemplate(template));
             fragmentTransaction.commit();
         }
@@ -347,6 +357,8 @@ public class StoryEditorActivity extends AppCompatActivity
         newStories.addPage(page);
         storiesViewModel.setStories(newStories);
 
+        addNewFrameLayoutToLinearLayout();
+
         // remove choose a template fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -361,7 +373,7 @@ public class StoryEditorActivity extends AppCompatActivity
         templatePlaceholderFragment.setArguments(bundle);
 
         // add fragment to backstack
-        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
+        fragmentTransaction.add(frameLayoutIds.get(0), templatePlaceholderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -384,9 +396,21 @@ public class StoryEditorActivity extends AppCompatActivity
         bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
         templatePlaceholderFragment.setArguments(bundle);
 
+        addNewFrameLayoutToLinearLayout();
+
         // add fragment to backstack
-        fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_story_editor, templatePlaceholderFragment);
+        fragmentTransaction.replace(frameLayoutIds.get(0), templatePlaceholderFragment);
         fragmentTransaction.commit();
+    }
+
+    // create a framelayout
+    public void addNewFrameLayoutToLinearLayout() {
+        FrameLayout frameLayout = new FrameLayout(StoryEditorActivity.this);
+        frameLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        frameLayoutIds.add(frameLayout.generateViewId());
+        frameLayout.setId(frameLayoutIds.get(0));
+        frameLayoutArrayLists.add(frameLayout);
+        fragmentPlaceholderLinearLayout.addView(frameLayout);
     }
 }
 
