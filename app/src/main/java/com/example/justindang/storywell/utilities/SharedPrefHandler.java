@@ -88,7 +88,7 @@ public class SharedPrefHandler {
         String storiesKey = "stories_" + String.valueOf(serialID);
         newStories.setSharedPrefKey(storiesKey);
 
-        newStories.setName(sharedPreferences.getString(storiesKey + "_name", "stories ".concat(String.valueOf(serialID))));
+        newStories.setName(sharedPreferences.getString(storiesKey + "_name", "NOT FOUND"));
 
         // get the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");

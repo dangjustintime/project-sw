@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity
             showSavedStoriesRecyclerView();
             for (int i = 0; i < serialID; i++) {
                 Stories newStories = SharedPrefHandler.getStories(MainActivity.this, i);
-                if (newStories.getName() != "NOT FOUND") {
+                if (!newStories.getName().equals("NOT FOUND")) {
                     savedStoriesList.add(newStories);
                 }
             }
