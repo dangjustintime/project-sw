@@ -64,8 +64,8 @@
             app:layout_constraintTop_toBottomOf="@id/edit_text_template5_add_title"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
-        <EditText
-            android:id="@+id/edit_text_template5_tip"
+        <TextView
+            android:id="@+id/text_view_template5_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tip"

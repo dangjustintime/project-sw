@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.colorpicker.shishank.colorpicker.ColorPicker;
 import com.example.justindang.storywell.R;
@@ -59,7 +60,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     @BindView(R.id.image_view_template5_remove_media) ImageView removeMediaImageView;
     @BindView(R.id.edit_text_template5_add_title) EditText addTitleEditText;
     @BindView(R.id.edit_text_template5_tap_to_add) EditText tapToAddEditText;
-    @BindView(R.id.edit_text_template5_tip) EditText tipEditText;
+    @BindView(R.id.text_view_template5_tip) TextView tipTextView;
     @BindView(R.id.image_view_template5_color_picker) ImageView colorPickerImageView;
     @BindView(R.id.constraint_layout_template5_container) ConstraintLayout containerConstraintLayout;
 
@@ -75,6 +76,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
         hideUI();
         colorPickerImageView.setVisibility(View.VISIBLE);
+        tipTextView.setVisibility(View.VISIBLE);
 
         // view model
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
@@ -102,14 +104,14 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             } else {
                 addMediaImageView.setVisibility(View.INVISIBLE);
                 removeMediaImageView.setVisibility(View.VISIBLE);
-                tipEditText.setVisibility(View.INVISIBLE);
+                tipTextView.setVisibility(View.INVISIBLE);
                 Uri imageUri = Uri.parse(mediaUriString);
                 ImageHandler.setImageToImageView(getContext(), imageUri, mediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
 
             addTitleEditText.setText(title);
             tapToAddEditText.setText(text);
-            tipEditText.setVisibility(View.INVISIBLE);
+            tipTextView.setVisibility(View.INVISIBLE);
         }
 
         // clickListeners
@@ -180,6 +182,8 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeMediaImageView.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
+        tipTextView.setVisibility(View.INVISIBLE);
+
     }
 
     // update data for view model
