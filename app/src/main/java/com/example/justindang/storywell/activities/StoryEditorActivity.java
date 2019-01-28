@@ -41,6 +41,7 @@ import com.example.justindang.storywell.listeners.OnSwipeTouchListener;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.utilities.ImageHandler;
+import com.example.justindang.storywell.utilities.InstagramHandler;
 import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
@@ -65,8 +66,6 @@ public class StoryEditorActivity extends AppCompatActivity
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
     private static final String DIALOG_SAVE_STORY = "save story";
-    private static final String BUNDLE_CURRENT_PAGE = "current page";
-    private static final String BUNDLE_IS_NEW_PAGE = "new page";
     private static final int IMAGE_GALLERY_REQUEST = 98;
 
     boolean isNewStories;
@@ -77,12 +76,6 @@ public class StoryEditorActivity extends AppCompatActivity
     String mediaString;
     int currentViewId;
     int currentMediaIndex;
-
-
-    // frame layout IDs
-    ArrayList<FrameLayout> frameLayoutArrayLists = new ArrayList<>();
-    ArrayList<Integer> frameLayoutIds = new ArrayList<>();
-    ArrayList<TemplateView> templateViews =  new ArrayList<>();
 
     // model of story
     private Stories savedStories;
@@ -138,38 +131,17 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
 
+        /*
         ImageHandler.writeFile(StoryEditorActivity.this,
                 frameLayoutArrayLists.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
                 storiesViewModel.getStories().getValue().getName());
+        */
 
         // put stories in shared pref
         Toast.makeText(StoryEditorActivity.this, storiesViewModel.getStories().getValue().toString(),
                 Toast.LENGTH_SHORT).show();
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
-    }
-
-    // creates intent that launches instagram app to post story
-    void createInstagramIntent() {
-        // create URI from media
-        File media = new File(Environment.getExternalStorageDirectory()
-                + "/Pictures/storywell/"
-                + storiesViewModel.getStories().getValue().getName()
-                + ".jpg");
-        Uri uri = FileProvider.getUriForFile(StoryEditorActivity.this,
-                "com.example.justindang.storywell.fileprovider", media);
-
-        // create new intent to open instagram
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setType("image/*");
-
-        // verify that intent will resolve to an activity
-        if (intent.resolveActivity(this.getPackageManager()) != null) {
-            startActivity(Intent.createChooser(intent, "Share Story"));
-        }
     }
 
     @Override
@@ -205,53 +177,6 @@ public class StoryEditorActivity extends AppCompatActivity
         isShapeInserterOn = false;
         isColorPickerOn = false;
 
-        templateViews.add(new FreeTemplate1View(StoryEditorActivity.this));
-        templateViews.add(new FreeTemplate1View(StoryEditorActivity.this));
-        templateViews.add(new FreeTemplate1View(StoryEditorActivity.this));
-
-        fragmentPlaceholderLinearLayout.addView(templateViews.get(0));
-        fragmentPlaceholderLinearLayout.addView(templateViews.get(1));
-        fragmentPlaceholderLinearLayout.addView(templateViews.get(2));
-
-        /*
-        addNewFrameLayoutToLinearLayout(0);
-        addNewFrameLayoutToLinearLayout(1);
-
-        addTemplateToFrameLayout("free template 1", 0);
-        addTemplateToFrameLayout("free template 2", 1);
-        */
-
-        /*
-        if (isNewStories) {
-            // add Choose a template fragment
-            addChooseATemplateFragment();
-         } else {
-            // get template fragment for saved page
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            template = storiesViewModel.getStories()
-                    .getValue()
-                    .getPage()
-                    .getTemplateName();
-            templatePlaceholderFragment = templateManager.getTemplate(template);
-            onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-
-            // put page in bundle for template fragment
-            Page page = storiesViewModel.getStories().getValue().getPage();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
-            bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
-            templatePlaceholderFragment.setArguments(bundle);
-
-            addNewFrameLayoutToLinearLayout();
-
-            // add fragment
-            fragmentTransaction.add(frameLayoutIds.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
-                    templateManager.getTemplate(template));
-            fragmentTransaction.commit();
-        }
-        */
-
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -283,6 +208,8 @@ public class StoryEditorActivity extends AppCompatActivity
                 storiesViewModel.setStories(updatedStories);
             }
         });
+
+        // color picker
         threeCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -370,7 +297,13 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
         onSaveImageListener.hideUI();
         saveImage();
-        createInstagramIntent();
+        Intent instagramIntent = InstagramHandler.createInstagramIntent(
+                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName());
+
+        // verify that intent will resolve to an activity
+        if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
+            startActivity(Intent.createChooser(instagramIntent, "Share Story"));
+        }
         finish();
     }
 
@@ -386,76 +319,12 @@ public class StoryEditorActivity extends AppCompatActivity
         newStories.addPage(page);
         storiesViewModel.setStories(newStories);
 
-        addNewFrameLayoutToLinearLayout(0);
-
         // remove choose a template fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         templatePlaceholderFragment = templateManager.getTemplate(template);
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.remove(chooseATemplateFragment);
-
-        // add new page to bundle
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
-        bundle.putBoolean(BUNDLE_IS_NEW_PAGE, true);
-        templatePlaceholderFragment.setArguments(bundle);
-
-        // add fragment to backstack
-        fragmentTransaction.add(
-                frameLayoutIds.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
-                templatePlaceholderFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
-
-    public void loadSavedPageToTemplate() {
-        // get template fragment for saved page
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        template = storiesViewModel.getStories()
-                .getValue()
-                .getPage()
-                .getTemplateName();
-        templatePlaceholderFragment = templateManager.getTemplate(template);
-        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
-
-        // put page in bundle for template fragment
-        Page page = storiesViewModel.getStories().getValue().getPage();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BUNDLE_CURRENT_PAGE, page);
-        bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
-        templatePlaceholderFragment.setArguments(bundle);
-
-        addNewFrameLayoutToLinearLayout(0);
-
-        // add fragment to backstack
-        fragmentTransaction.replace(
-                frameLayoutIds.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
-                templatePlaceholderFragment);
-        fragmentTransaction.commit();
-    }
-
-    // create a framelayout
-    public void addNewFrameLayoutToLinearLayout(int index) {
-        FrameLayout frameLayout = new FrameLayout(StoryEditorActivity.this);
-        frameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-        frameLayoutIds.add(frameLayout.generateViewId());
-        frameLayout.setId(frameLayoutIds.get(index));
-        frameLayoutArrayLists.add(frameLayout);
-        fragmentPlaceholderLinearLayout.addView(frameLayout);
-    }
-
-    // add template to frame layout
-    public void addTemplateToFrameLayout(String template, int index) {
-        templatePlaceholderFragment = templateManager.getTemplate(template);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(frameLayoutIds.get(index),
-                templatePlaceholderFragment);
-        fragmentTransaction.commit();
-
     }
 
     // add choose a template fragment to backstack

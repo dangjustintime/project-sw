@@ -53,7 +53,6 @@ public class ImageHandler {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
             return false;
         } else {
-
             // create bitmap from fragmentPlaceholderFrameLayout
             Bitmap bitmap = Bitmap.createBitmap(
                     frameLayout.getWidth(),
