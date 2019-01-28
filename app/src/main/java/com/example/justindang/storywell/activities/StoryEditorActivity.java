@@ -476,8 +476,7 @@ public class StoryEditorActivity extends AppCompatActivity
                 mediaString = data.toUri(0);
                 Log.e("checking", "RESULT OK\n media string: ".concat(mediaString));
                 TemplateView templateView = findViewById(currentViewId);
-                Pair<Integer, Uri> pair = new Pair<>(currentMediaIndex, data.getData());
-                templateView.setMediaImageView(pair);
+                templateView.setMediaImageView(currentMediaIndex, data.getData());
             }
         }
     }
@@ -490,9 +489,9 @@ public class StoryEditorActivity extends AppCompatActivity
     }
 
     @Override
-    public void getGalleryPhoto(Pair<Integer, Integer> pair) {
-        currentViewId = pair.first;
-        currentMediaIndex = pair.second;
+    public void getGalleryPhoto(int viewId, int mediaIndex) {
+        currentViewId = viewId;
+        currentMediaIndex = mediaIndex;
         Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
         startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
     }

@@ -76,6 +76,7 @@ public class FreeTemplate1View extends TemplateView {
             public void onClick(View view) {
                 addOuterMediaImageView.setVisibility(View.INVISIBLE);
                 removeOuterMediaImageView.setVisibility(View.VISIBLE);
+                mediaHandler.getGalleryPhoto(getId(), 1);
             }
         });
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -83,8 +84,7 @@ public class FreeTemplate1View extends TemplateView {
             public void onClick(View view) {
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
-                Pair<Integer, Integer> pair = new Pair<>(getId(), 0);
-                mediaHandler.getGalleryPhoto(pair);
+                mediaHandler.getGalleryPhoto(getId(), 0);
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -106,16 +106,13 @@ public class FreeTemplate1View extends TemplateView {
     }
 
     @Override
-    public void setMediaImageView(Pair<Integer, Uri> pair) {
-        if (pair.first == 0) {
-            ImageHandler.setImageToImageView(getContext(), pair.second, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+    public void setMediaImageView(int mediaIndex, Uri uri) {
+        // 0 == inner media
+        if (mediaIndex == 0) {
+            ImageHandler.setImageToImageView(getContext(), uri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+        // 1 == outter media
+        } else if (mediaIndex == 1) {
+            ImageHandler.setImageToImageView(getContext(), uri, outerMediaImageView, ImageView.ScaleType.CENTER_CROP);
         }
     }
-
-    /*
-    public void setInnerMediaImageView(Uri uri) {
-        ImageHandler.setImageToImageView(getContext(), uri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
-    }
-    */
-
 }

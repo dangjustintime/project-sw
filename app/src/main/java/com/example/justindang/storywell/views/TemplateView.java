@@ -17,17 +17,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class TemplateView extends ConstraintLayout {
-    List<String> mediaUriList;
-    StoriesViewModel storiesViewModel;
-    String uriString;
 
     // interface
     public interface MediaHandler {
         // Pair
         // key = viewId
         // value = media index
-        void getGalleryPhoto(Pair<Integer, Integer> pair);
-        String getUriString();
+        void getGalleryPhoto(int viewId, int mediaIndex);
     }
     MediaHandler mediaHandler;
 
@@ -36,23 +32,12 @@ public class TemplateView extends ConstraintLayout {
         super(context);
         Activity activity = (Activity) getContext();
         this.mediaHandler = (MediaHandler) activity;
-        storiesViewModel = ViewModelProviders.of((FragmentActivity) getContext()).get(StoriesViewModel.class);
 
         // set id
-        int newId = generateViewId();
-        this.setId(newId);
+        this.setId(generateViewId());
     }
 
-    // getter and setter
-    public List<String> getMediaUriList() {
-        return mediaUriList;
-    }
-
-    public void setMediaUriList(List<String> mediaUriList) {
-        this.mediaUriList = mediaUriList;
-    }
-
-    public void setMediaImageView(Pair<Integer, Uri> pair) {
+    public void setMediaImageView(int mediaIndex, Uri uri) {
         // empty, must override
-    };
+    }
 }
