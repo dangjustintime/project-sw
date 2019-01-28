@@ -37,7 +37,7 @@ public class ImageHandler {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), albumName);
         if (!file.mkdirs()) {
-            Log.e(TAG, "Directory not created");
+            Log.e(TAG, "directory not created");
         }
         return file;
     };
@@ -47,7 +47,7 @@ public class ImageHandler {
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.e(TAG,"permission not granted");
+            Log.e(TAG,"write file permission not granted");
 
             // ask for permission
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
@@ -70,9 +70,7 @@ public class ImageHandler {
                 FileOutputStream outputStream = new FileOutputStream(imageFile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                 outputStream.close();
-                Log.e(TAG, "Success");
             } catch (IOException e) {
-                Log.e(TAG, "Failed");
                 e.printStackTrace();
             }
             return true;

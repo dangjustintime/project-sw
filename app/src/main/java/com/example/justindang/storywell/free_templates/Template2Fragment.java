@@ -84,6 +84,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
             }
         });
 
+        /*
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
@@ -97,6 +98,7 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 ImageHandler.setImageToImageView(getContext(), innerImageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
         }
+        */
 
         // clicklisteners
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {

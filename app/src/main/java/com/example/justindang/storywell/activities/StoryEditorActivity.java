@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -10,6 +11,7 @@ import android.icu.text.UnicodeSetSpanner;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
@@ -41,6 +44,8 @@ import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
+import com.example.justindang.storywell.views.FreeTemplate1View;
+import com.example.justindang.storywell.views.TemplateView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -53,7 +58,8 @@ import butterknife.ButterKnife;
 
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
-        TemplateGridRecyclerAdapter.OnTemplateListener {
+        TemplateGridRecyclerAdapter.OnTemplateListener,
+        TemplateView.MediaHandler {
 
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
@@ -61,15 +67,22 @@ public class StoryEditorActivity extends AppCompatActivity
     private static final String DIALOG_SAVE_STORY = "save story";
     private static final String BUNDLE_CURRENT_PAGE = "current page";
     private static final String BUNDLE_IS_NEW_PAGE = "new page";
+    private static final int IMAGE_GALLERY_REQUEST = 98;
 
     boolean isNewStories;
     boolean isShapeInserterOn;
     boolean isColorPickerOn;
     String template;
 
+    String mediaString;
+    int currentViewId;
+    int currentMediaIndex;
+
+
     // frame layout IDs
     ArrayList<FrameLayout> frameLayoutArrayLists = new ArrayList<>();
     ArrayList<Integer> frameLayoutIds = new ArrayList<>();
+    ArrayList<TemplateView> templateViews =  new ArrayList<>();
 
     // model of story
     private Stories savedStories;
@@ -125,7 +138,8 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
 
-        ImageHandler.writeFile(StoryEditorActivity.this, frameLayoutArrayLists.get(0),
+        ImageHandler.writeFile(StoryEditorActivity.this,
+                frameLayoutArrayLists.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
                 storiesViewModel.getStories().getValue().getName());
 
         // put stories in shared pref
@@ -158,7 +172,6 @@ public class StoryEditorActivity extends AppCompatActivity
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,25 +184,48 @@ public class StoryEditorActivity extends AppCompatActivity
         // get data from intent
         Intent intent = getIntent();
         savedStories = new Stories((Stories) intent.getParcelableExtra(EXTRA_SAVED_STORIES));
+        savedStories.addPage(new Page("free template 1"));
+        savedStories.addPage(new Page("free template 2"));
+
         isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
 
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(savedStories);
+        storiesViewModel.getStories().observeForever(new Observer<Stories>() {
+            @Override
+            public void onChanged(@Nullable Stories stories) {
+                // page number
+                pageNumberTextView.setText(
+                        String.valueOf(storiesViewModel.getStories().getValue().getCurrentIndex()));
+            }
+        });
 
-        Toast.makeText(getApplicationContext(), savedStories.toString(), Toast.LENGTH_SHORT).show();
         // fragment booleans
         isShapeInserterOn = false;
         isColorPickerOn = false;
 
+        templateViews.add(new FreeTemplate1View(StoryEditorActivity.this));
+        templateViews.add(new FreeTemplate1View(StoryEditorActivity.this));
+        templateViews.add(new FreeTemplate1View(StoryEditorActivity.this));
+
+        fragmentPlaceholderLinearLayout.addView(templateViews.get(0));
+        fragmentPlaceholderLinearLayout.addView(templateViews.get(1));
+        fragmentPlaceholderLinearLayout.addView(templateViews.get(2));
+
+        /*
+        addNewFrameLayoutToLinearLayout(0);
+        addNewFrameLayoutToLinearLayout(1);
+
+        addTemplateToFrameLayout("free template 1", 0);
+        addTemplateToFrameLayout("free template 2", 1);
+        */
+
+        /*
         if (isNewStories) {
             // add Choose a template fragment
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose,
-                    chooseATemplateFragment);
-            fragmentTransaction.commit();
-        } else {
+            addChooseATemplateFragment();
+         } else {
             // get template fragment for saved page
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
@@ -210,14 +246,11 @@ public class StoryEditorActivity extends AppCompatActivity
             addNewFrameLayoutToLinearLayout();
 
             // add fragment
-            fragmentTransaction.add(frameLayoutIds.get(0),
+            fragmentTransaction.add(frameLayoutIds.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
                     templateManager.getTemplate(template));
             fragmentTransaction.commit();
         }
-
-        // page number
-        pageNumberTextView.setText(
-                String.valueOf(storiesViewModel.getStories().getValue().getCurrentIndex() + 1));
+        */
 
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -241,16 +274,13 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "new page", Toast.LENGTH_SHORT).show();
-            }
-        });
-        frameLayoutAnywhere.setOnTouchListener(new OnSwipeTouchListener(StoryEditorActivity.this) {
-            @Override
-            public void onSwipeLeft() {
-                Toast.makeText(StoryEditorActivity.this, "swipe left", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onSwipeRight() {
-                Toast.makeText(StoryEditorActivity.this, "swipe right", Toast.LENGTH_SHORT).show();
+                // add Choose a template fragment
+                addChooseATemplateFragment();
+
+                // go to next page
+                Stories updatedStories = storiesViewModel.getStories().getValue();
+                updatedStories.nextPage();
+                storiesViewModel.setStories(updatedStories);
             }
         });
         threeCircleIconImageView.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +318,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         // shape inserter
         squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
@@ -353,11 +382,11 @@ public class StoryEditorActivity extends AppCompatActivity
         page.setTemplateName(template);
 
         // add page to stories
-        Stories newStories = new Stories(storiesViewModel.getStories().getValue());
+        Stories newStories = storiesViewModel.getStories().getValue();
         newStories.addPage(page);
         storiesViewModel.setStories(newStories);
 
-        addNewFrameLayoutToLinearLayout();
+        addNewFrameLayoutToLinearLayout(0);
 
         // remove choose a template fragment
         fragmentManager = getSupportFragmentManager();
@@ -373,7 +402,9 @@ public class StoryEditorActivity extends AppCompatActivity
         templatePlaceholderFragment.setArguments(bundle);
 
         // add fragment to backstack
-        fragmentTransaction.add(frameLayoutIds.get(0), templatePlaceholderFragment);
+        fragmentTransaction.add(
+                frameLayoutIds.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
+                templatePlaceholderFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -396,21 +427,74 @@ public class StoryEditorActivity extends AppCompatActivity
         bundle.putBoolean(BUNDLE_IS_NEW_PAGE, false);
         templatePlaceholderFragment.setArguments(bundle);
 
-        addNewFrameLayoutToLinearLayout();
+        addNewFrameLayoutToLinearLayout(0);
 
         // add fragment to backstack
-        fragmentTransaction.replace(frameLayoutIds.get(0), templatePlaceholderFragment);
+        fragmentTransaction.replace(
+                frameLayoutIds.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
+                templatePlaceholderFragment);
         fragmentTransaction.commit();
     }
 
     // create a framelayout
-    public void addNewFrameLayoutToLinearLayout() {
+    public void addNewFrameLayoutToLinearLayout(int index) {
         FrameLayout frameLayout = new FrameLayout(StoryEditorActivity.this);
-        frameLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        frameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080,
+                LinearLayout.LayoutParams.MATCH_PARENT));
         frameLayoutIds.add(frameLayout.generateViewId());
-        frameLayout.setId(frameLayoutIds.get(0));
+        frameLayout.setId(frameLayoutIds.get(index));
         frameLayoutArrayLists.add(frameLayout);
         fragmentPlaceholderLinearLayout.addView(frameLayout);
+    }
+
+    // add template to frame layout
+    public void addTemplateToFrameLayout(String template, int index) {
+        templatePlaceholderFragment = templateManager.getTemplate(template);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(frameLayoutIds.get(index),
+                templatePlaceholderFragment);
+        fragmentTransaction.commit();
+
+    }
+
+    // add choose a template fragment to backstack
+    public void addChooseATemplateFragment() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose,
+                chooseATemplateFragment);
+        fragmentTransaction.commit();
+    }
+
+    // return selected image from gallery
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IMAGE_GALLERY_REQUEST) {
+            Log.e("checking", "REQUEST CODE CHECKED");
+            if (resultCode == RESULT_OK) {
+                mediaString = data.toUri(0);
+                Log.e("checking", "RESULT OK\n media string: ".concat(mediaString));
+                TemplateView templateView = findViewById(currentViewId);
+                Pair<Integer, Uri> pair = new Pair<>(currentMediaIndex, data.getData());
+                templateView.setMediaImageView(pair);
+            }
+        }
+    }
+
+    // media handler
+    public String getUriString() {
+        Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+        startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
+        return mediaString;
+    }
+
+    @Override
+    public void getGalleryPhoto(Pair<Integer, Integer> pair) {
+        currentViewId = pair.first;
+        currentMediaIndex = pair.second;
+        Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
+        startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
     }
 }
 

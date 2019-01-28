@@ -95,6 +95,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
         storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
 
         // load previously saved page
+        /*
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
             innerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
             outerMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
@@ -119,6 +120,7 @@ public class Template1Fragment extends Fragment implements StoryEditorActivity.O
                 ImageHandler.setImageToImageView(getContext(), outerImageUri, outerMediaImageView, ImageView.ScaleType.MATRIX);
             }
         }
+        */
 
         // gesture listener
         scaleGestureDetector = new ScaleGestureDetector(getContext(), new OnScaleListener());
