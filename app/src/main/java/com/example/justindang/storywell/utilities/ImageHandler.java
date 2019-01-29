@@ -8,11 +8,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -43,7 +45,7 @@ public class ImageHandler {
     };
 
     // creates bitmap and writes file
-    public static boolean writeFile(Activity activity, FrameLayout frameLayout, String fileName) {
+    public static boolean writeFile(Activity activity, ViewGroup viewGroup, String fileName) {
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -55,11 +57,11 @@ public class ImageHandler {
         } else {
             // create bitmap from fragmentPlaceholderFrameLayout
             Bitmap bitmap = Bitmap.createBitmap(
-                    frameLayout.getWidth(),
-                    frameLayout.getHeight(),
+                    viewGroup.getWidth(),
+                    viewGroup.getHeight(),
                     Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            frameLayout.draw(canvas);
+            viewGroup.draw(canvas);
 
             // create file
             File pictureDir = getPublicAlbumStorageDir("storywell");
@@ -81,8 +83,12 @@ public class ImageHandler {
         try {
             inputStream = context.getContentResolver().openInputStream(imageUri);
             Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap, 0, 0,
+                    imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
             imageView.setScaleType(scaleType);
-            imageView.setImageBitmap(imageBitmap);
+            imageView.setImageBitmap(rotatedBitmap);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

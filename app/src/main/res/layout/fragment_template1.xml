@@ -11,7 +11,7 @@
         android:id="@+id/image_view_template1_outer_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorOffWhite"/>
+        android:background="@color/colorOffWhite" />
     <ImageView
         android:id="@+id/image_view_template1_inner_media"
         android:layout_width="match_parent"

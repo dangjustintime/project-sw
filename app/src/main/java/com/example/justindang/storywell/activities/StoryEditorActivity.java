@@ -72,7 +72,7 @@ public class StoryEditorActivity extends AppCompatActivity
     boolean isColorPickerOn;
     // current page data
     String mediaString;
-    int currentViewId;
+    int currentViewId = 1;
     int currentMediaIndex;
     // model of story
     private Stories savedStories;
@@ -118,11 +118,9 @@ public class StoryEditorActivity extends AppCompatActivity
     public void saveImage() {
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
-        /*
-        ImageHandler.writeFile(StoryEditorActivity.this,
-                frameLayoutArrayLists.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
+        TemplateView templateView = findViewById(currentViewId);
+        ImageHandler.writeFile(StoryEditorActivity.this, templateView,
                 storiesViewModel.getStories().getValue().getName());
-        */
         // put stories in shared pref
         Toast.makeText(StoryEditorActivity.this, storiesViewModel.getStories().getValue().toString(),
                 Toast.LENGTH_SHORT).show();
@@ -164,6 +162,7 @@ public class StoryEditorActivity extends AppCompatActivity
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fragmentManager = getSupportFragmentManager();
                 saveStoryDialogFragment.show(fragmentManager, DIALOG_SAVE_STORY);
             }
         });

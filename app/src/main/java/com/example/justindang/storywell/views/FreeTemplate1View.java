@@ -45,6 +45,8 @@ public class FreeTemplate1View extends TemplateView {
         inflate(getContext(), R.layout.fragment_template1,  this);
         ButterKnife.bind(this);
 
+        hideUi();
+
         // clicklisteners
         addOuterMediaImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,14 +88,19 @@ public class FreeTemplate1View extends TemplateView {
         if (mediaIndex == 0) {
             ImageHandler.setImageToImageView(getContext(), uri, innerMediaImageView,
                     ImageView.ScaleType.CENTER_CROP);
+            addInnerMediaImageView.setVisibility(INVISIBLE);
+            removeInnerMediaImageView.setVisibility(VISIBLE);
         // 1 == outter media
         } else if (mediaIndex == 1) {
             ImageHandler.setImageToImageView(getContext(), uri, outerMediaImageView,
                     ImageView.ScaleType.MATRIX);
+            addOuterMediaImageView.setVisibility(INVISIBLE);
+            removeOuterMediaImageView.setVisibility(VISIBLE);
         }
     }
     @Override
     public void hideUi() {
-
+        removeInnerMediaImageView.setVisibility(View.INVISIBLE);
+        removeOuterMediaImageView.setVisibility(View.INVISIBLE);
     }
 }
