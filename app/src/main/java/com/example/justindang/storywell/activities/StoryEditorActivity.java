@@ -119,6 +119,7 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
         TemplateView templateView = findViewById(currentViewId);
+        templateView.hideUi();
         ImageHandler.writeFile(StoryEditorActivity.this, templateView,
                 storiesViewModel.getStories().getValue().getName());
         // put stories in shared pref
@@ -252,7 +253,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // SaveStoryDialog interface
     @Override
     public void saveStory() {
-        // onSaveImageListener.hideUI();
         saveImage();
         finish();
     }
@@ -266,7 +266,6 @@ public class StoryEditorActivity extends AppCompatActivity
     @Override
     public void shareStoryToInstagram() {
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
-        onSaveImageListener.hideUI();
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
                 StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName());

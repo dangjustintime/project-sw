@@ -13,6 +13,7 @@ import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.listeners.OnScaleListener;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.utilities.ImageHandler;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
@@ -30,6 +32,7 @@ import butterknife.ButterKnife;
 public class FreeTemplate1View extends TemplateView {
 
     private static final int IMAGE_GALLERY_REQUEST = 98;
+    private ScaleGestureDetector scaleGestureDetector;
 
     // views
     @BindView(R.id.image_view_template1_inner_media) ImageView innerMediaImageView;
@@ -44,6 +47,8 @@ public class FreeTemplate1View extends TemplateView {
         super(context);
         inflate(getContext(), R.layout.fragment_template1,  this);
         ButterKnife.bind(this);
+        scaleGestureDetector = new ScaleGestureDetector(getContext(),
+                new OnScaleListener(outerMediaImageView));
 
         hideUi();
 
@@ -78,6 +83,15 @@ public class FreeTemplate1View extends TemplateView {
                 outerMediaImageView.setImageBitmap(null);
                 addOuterMediaImageView.setVisibility(View.VISIBLE);
                 removeOuterMediaImageView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // onScaleListener
+        outerMediaImageView.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                scaleGestureDetector.onTouchEvent(event);
+                return true;
             }
         });
     }

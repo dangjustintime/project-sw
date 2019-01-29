@@ -56,7 +56,7 @@
         android:id="@+id/button_save_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/story"
+        android:text="@string/save_image"
         android:fontFamily="@font/franklingothic_med"
         app:layout_constraintTop_toBottomOf="@id/linear_layout_or_entire_stories"
         app:layout_constraintStart_toStartOf="@id/button_share_story_to_instagram"

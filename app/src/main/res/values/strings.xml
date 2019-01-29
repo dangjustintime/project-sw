@@ -39,6 +39,8 @@
     <string name="story">story</string>
     <string name="stories">stories</string>
     <string name="share_story_to_instagram">share story to instagram</string>
+    <string name="save_image">save image</string>
+
 
     <!-- template fragments -->
     <string name="add_title">add title</string>
