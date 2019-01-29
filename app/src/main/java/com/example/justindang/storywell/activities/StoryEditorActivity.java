@@ -61,38 +61,32 @@ public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
         TemplateGridRecyclerAdapter.OnTemplateListener,
         TemplateView.MediaHandler {
-
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
     private static final String DIALOG_SAVE_STORY = "save story";
     private static final int IMAGE_GALLERY_REQUEST = 98;
-
     // flags
     boolean isNewStories;
     boolean isShapeInserterOn;
     boolean isColorPickerOn;
-
+    // current page data
     String mediaString;
     int currentViewId;
     int currentMediaIndex;
-
     // model of story
     private Stories savedStories;
     private StoriesViewModel storiesViewModel;
-
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
     }
     OnSaveImageListener onSaveImageListener;
-
     public interface UpdateOrderListener {
         boolean allPagesSelected();
         ArrayList<Page> getNewPageOrder();
     }
     UpdateOrderListener updateOrderListener;
-
     // views
     @BindView(R.id.image_view_story_editor_aa_icon)ImageView aaIconImageView;
     @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
@@ -111,54 +105,44 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
     @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
     @BindView(R.id.linear_layout_fragment_placeholder_story_editor) LinearLayout pagesPlaceholderLinearLayout;
-
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Fragment templatePlaceholderFragment;
-
     // initialize fragments
     ShapePickerFragment shapePickerFragment = new ShapePickerFragment();
     ColorPickerFragment colorPickerFragment = new ColorPickerFragment();
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
     ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
-
     // save photo to storage
     public void saveImage() {
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
-
         /*
         ImageHandler.writeFile(StoryEditorActivity.this,
                 frameLayoutArrayLists.get(storiesViewModel.getStories().getValue().getCurrentIndex()),
                 storiesViewModel.getStories().getValue().getName());
         */
-
         // put stories in shared pref
         Toast.makeText(StoryEditorActivity.this, storiesViewModel.getStories().getValue().toString(),
                 Toast.LENGTH_SHORT).show();
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
-
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
-
         // get data from intent
         Intent intent = getIntent();
         savedStories = intent.getParcelableExtra(EXTRA_SAVED_STORIES);
-
-        // set booleans
+        // set flags
         isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
         isShapeInserterOn = false;
         isColorPickerOn = false;
-
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(savedStories);
@@ -168,17 +152,14 @@ public class StoryEditorActivity extends AppCompatActivity
                 // page number
                 pageNumberTextView.setText(
                         String.valueOf(storiesViewModel.getStories().getValue().getCurrentIndex()));
-
             }
         });
-
-        // new stories
+        // render UI based on isNewStories
         if (isNewStories) {
             addChooseATemplateFragment();
         } else {
             loadSavedStories();
         }
-
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +176,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
             }
         });
-
         // new page
         plusIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,14 +183,13 @@ public class StoryEditorActivity extends AppCompatActivity
                 Toast.makeText(StoryEditorActivity.this, "new page", Toast.LENGTH_SHORT).show();
                 // add Choose a template fragment
                 addChooseATemplateFragment();
-
                 // go to next page
                 Stories updatedStories = storiesViewModel.getStories().getValue();
                 updatedStories.nextPage();
                 storiesViewModel.setStories(updatedStories);
+                currentMediaIndex++;
             }
         });
-
         // color picker
         threeCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,7 +208,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-
         // change page order
         angleBracketsIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,7 +216,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 Toast.makeText(StoryEditorActivity.this, "change page order", Toast.LENGTH_SHORT).show();
             }
         });
-
         // text inserter
         aaIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,16 +223,13 @@ public class StoryEditorActivity extends AppCompatActivity
                 Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
             }
         });
-
         // shape inserter
         squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
-
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-
                 if (!isShapeInserterOn) {
                     fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_inserter, shapePickerFragment);
                     fragmentTransaction.addToBackStack(null);
@@ -267,7 +241,7 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-
+        // insert text
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,16 +257,13 @@ public class StoryEditorActivity extends AppCompatActivity
         saveImage();
         finish();
     }
-
     @Override
     public void saveStories() {
         Toast.makeText(getBaseContext(), "saving stories...", Toast.LENGTH_SHORT).show();
-
         // put stories in shared pref
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(), isNewStories);
         finish();
     }
-
     @Override
     public void shareStoryToInstagram() {
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
@@ -300,59 +271,63 @@ public class StoryEditorActivity extends AppCompatActivity
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
                 StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName());
-
         // verify that intent will resolve to an activity
         if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
             startActivity(Intent.createChooser(instagramIntent, "Share Story"));
         }
         finish();
     }
-
-    // OnTemplateListener
+    // OnTemplateListener interface
     @Override
     public void sendTemplate(String template) {
         // instantiate new page
         Page page = new Page();
         page.setTemplateName(template);
-
         // add page to stories
         Stories newStories = storiesViewModel.getStories().getValue();
         newStories.addPage(page);
         storiesViewModel.setStories(newStories);
-
         // remove choose a template fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.remove(chooseATemplateFragment);
         fragmentTransaction.commit();
-
         if (template.equals("free template 1")) {
             pagesPlaceholderLinearLayout.addView(new FreeTemplate1View(StoryEditorActivity.this));
         }
     }
-
     // return selected image from gallery
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == IMAGE_GALLERY_REQUEST) {
-            Log.e("checking", "REQUEST CODE CHECKED");
             if (resultCode == RESULT_OK) {
                 mediaString = data.toUri(0);
                 TemplateView templateView = findViewById(currentViewId);
                 templateView.setMediaImageView(currentMediaIndex, data.getData());
+                // updated view model
+                Stories updatedStories = storiesViewModel.getStories().getValue();
+                ArrayList<String> updatedUris = new ArrayList<>();
+                updatedUris.add("NOT FOUND");
+                updatedUris.add("NOT FOUND");
+                if (updatedStories.getImageUris(currentViewId - 1).size() > 0) {
+                    updatedUris = updatedStories.getImageUris(currentViewId - 1);
+                }
+                updatedUris.set(currentMediaIndex, mediaString);
+                updatedStories.setImageUris(currentViewId - 1, updatedUris);
+                storiesViewModel.setStories(updatedStories);
             }
         }
     }
-
+    // MediaHandler Interface
     @Override
     public void getGalleryPhoto(int viewId, int mediaIndex) {
         currentViewId = viewId;
+        Log.i("currentViewId", "\n\nCURRENT VIEW ID: ".concat(String.valueOf(viewId)).concat("\n\n"));
         currentMediaIndex = mediaIndex;
         Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
         startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
     }
-
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {
         fragmentManager = getSupportFragmentManager();
@@ -361,7 +336,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 chooseATemplateFragment);
         fragmentTransaction.commit();
     }
-
     // load saved stories
     public void loadSavedStories() {
         for(Page page : savedStories.getPagesList()) {
@@ -375,7 +349,6 @@ public class StoryEditorActivity extends AppCompatActivity
                     freeTemplate1View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
                 }
             }
-
         }
     }
 }

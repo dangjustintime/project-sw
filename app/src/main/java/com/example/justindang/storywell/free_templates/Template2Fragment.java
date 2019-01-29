@@ -75,10 +75,10 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
         storiesViewModel.getStories().observe(this, new Observer<Stories>() {
             @Override
             public void onChanged(@Nullable Stories stories) {
-                if (stories.getColors().size() == 0 || stories.getColors().get(0).equals("NOT FOUND")) {
+                if (stories.getColors(storiesViewModel.getStories().getValue().getCurrentIndex()).size() == 0 || stories.getColors(storiesViewModel.getStories().getValue().getCurrentIndex()).get(0).equals("NOT FOUND")) {
                     outerLayerColor = getContext().getResources().getColor(R.color.colorOffWhite);
                 } else {
-                    outerLayerColor = Integer.parseInt(stories.getPage().getColors().get(0));
+                    outerLayerColor = Integer.parseInt(stories.getPage(storiesViewModel.getStories().getValue().getCurrentIndex()).getColors().get(0));
                 }
                 outerLayerImageView.setBackgroundColor(outerLayerColor);
             }
@@ -117,7 +117,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaUriString = "";
                 addInnerMediaImageView.setVisibility(View.VISIBLE);
                 removeInnerMediaImageView.setVisibility(View.INVISIBLE);
-                updateViewModel();
             }
         });
 
@@ -133,7 +132,6 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
                 innerMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
-            updateViewModel();
         }
     }
 
@@ -142,13 +140,5 @@ public class Template2Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeInnerMediaImageView.setVisibility(View.INVISIBLE);
         colorPickerImageView.setVisibility(View.INVISIBLE);
-    }
-
-    // update data for view model
-    private void updateViewModel() {
-        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
-        ArrayList<String> updatedUris = new ArrayList<>();
-        updatedUris.add(innerMediaUriString);
-        updatedStories.setImageUris(updatedUris);
     }
 }

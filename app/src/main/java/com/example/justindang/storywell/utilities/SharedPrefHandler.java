@@ -52,16 +52,16 @@ public class SharedPrefHandler {
         for (int i = 0; i < stories.getNumPages(); i++) {
             String pageKey = key + "_" + String.valueOf(i);
 
-            sharedPreferencesEditor.putString(pageKey + "_template", stories.getPage().getTemplateName());
-            if (!stories.getPage().getTitle().equals("")) {
-                sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage().getTitle());
+            sharedPreferencesEditor.putString(pageKey + "_template", stories.getPage(i).getTemplateName());
+            if (!stories.getPage(i).getTitle().equals("")) {
+                sharedPreferencesEditor.putString(pageKey + "_title", stories.getPage(i).getTitle());
             }
-            if (!stories.getPage().getText().equals("")) {
-                sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage().getText());
+            if (!stories.getPage(i).getText().equals("")) {
+                sharedPreferencesEditor.putString(pageKey + "_text", stories.getPage(i).getText());
             }
 
             // image uris
-            ArrayList<String> imageUris = stories.getPage().getImageUris();
+            ArrayList<String> imageUris = stories.getPage(i).getImageUris();
             for (int j = 0; j < 9; j++) {
                 if (j < imageUris.size()) {
                     sharedPreferencesEditor.putString(pageKey + "_image_uri_" + String.valueOf(j), imageUris.get(j));
@@ -69,7 +69,7 @@ public class SharedPrefHandler {
             }
 
             // colors
-            ArrayList<String> colors = stories.getPage().getColors();
+            ArrayList<String> colors = stories.getPage(i).getColors();
             for (int j = 0; j < 2; j++) {
                 if (j < colors.size()) {
                     sharedPreferencesEditor.putString(pageKey + "_color_" + String.valueOf(j), colors.get(j));

@@ -69,7 +69,7 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     // binder
     @Override
     public void onBindViewHolder(@NonNull final PageViewHolder pageViewHolder, final int i) {
-        Uri imageUri = Uri.parse(stories.getImageUris().get(0));
+        Uri imageUri = Uri.parse(stories.getImageUris(i).get(0));
         InputStream inputStream;
         try {
             inputStream = context.getContentResolver().openInputStream(imageUri);
@@ -88,14 +88,14 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
                     pageViewHolder.pageNumberTextView.setText(stories.getCurrentIndex());
                     pageViewHolder.pageNumberTextView.setVisibility(View.VISIBLE);
                     stories.nextPage();
-                    newOrderPageList.add(stories.getPage());
+                    newOrderPageList.add(stories.getPage(i));
                 }
             }
         });
         pageViewHolder.trashCanImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stories.removePage(stories.getPage());
+                stories.removePage(stories.getPage(i));
                 notifyDataSetChanged();
             }
         });

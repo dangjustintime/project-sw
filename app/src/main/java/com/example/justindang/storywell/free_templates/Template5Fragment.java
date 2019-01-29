@@ -83,10 +83,10 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         storiesViewModel.getStories().observe(this, new Observer<Stories>() {
             @Override
             public void onChanged(@Nullable Stories stories) {
-                if (stories.getColors().size() == 0 || stories.getColors().get(0).equals("NOT FOUND")) {
+                if (stories.getColors(storiesViewModel.getStories().getValue().getCurrentIndex()).size() == 0 || stories.getColors(storiesViewModel.getStories().getValue().getCurrentIndex()).get(0).equals("NOT FOUND")) {
                     backgroundColor = Integer.valueOf(getContext().getResources().getColor(R.color.colorPeach));
                 } else {
-                    backgroundColor = Integer.valueOf(storiesViewModel.getStories().getValue().getColors().get(0));
+                    backgroundColor = Integer.valueOf(storiesViewModel.getStories().getValue().getColors(storiesViewModel.getStories().getValue().getCurrentIndex()).get(0));
                 }
                 containerConstraintLayout.setBackgroundColor(backgroundColor);
             }
@@ -94,9 +94,9 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
 
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            mediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
-            title = storiesViewModel.getStories().getValue().getTitle();
-            text = storiesViewModel.getStories().getValue().getText();
+            mediaUriString = storiesViewModel.getStories().getValue().getImageUris(storiesViewModel.getStories().getValue().getCurrentIndex()).get(0);
+            title = storiesViewModel.getStories().getValue().getTitle(storiesViewModel.getStories().getValue().getCurrentIndex());
+            text = storiesViewModel.getStories().getValue().getText(storiesViewModel.getStories().getValue().getCurrentIndex());
 
             if (mediaUriString.equals("") || mediaUriString.equals("NOT FOUND")) {
                 addMediaImageView.setVisibility(View.VISIBLE);
@@ -131,7 +131,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 mediaUriString = "";
                 addMediaImageView.setVisibility(View.VISIBLE);
                 removeMediaImageView.setVisibility(View.INVISIBLE);
-                updateViewModel();
             }
         });
 
@@ -144,9 +143,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                updateViewModel();
-            }
+            public void afterTextChanged(Editable s) { }
         });
         tapToAddEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -156,9 +153,7 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                updateViewModel();
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         return view;
@@ -173,7 +168,6 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
                 mediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, mediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
-            updateViewModel();
         }
     }
 
@@ -184,21 +178,5 @@ public class Template5Fragment extends Fragment implements StoryEditorActivity.O
         colorPickerImageView.setVisibility(View.INVISIBLE);
         tipTextView.setVisibility(View.INVISIBLE);
 
-    }
-
-    // update data for view model
-    private void updateViewModel() {
-        ArrayList<String> updatedImageUris = new ArrayList<>();
-        updatedImageUris.add(mediaUriString);
-        ArrayList<String> updatedColors = new ArrayList<>();
-        updatedColors.add(String.valueOf(backgroundColor));
-        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
-        updatedStories.setImageUris(updatedImageUris);
-        updatedStories.setColors(updatedColors);
-        title = addTitleEditText.getText().toString();
-        updatedStories.setTitle(title);
-        text = tapToAddEditText.getText().toString();
-        updatedStories.setText(text);
-        storiesViewModel.setStories(updatedStories);
     }
 }

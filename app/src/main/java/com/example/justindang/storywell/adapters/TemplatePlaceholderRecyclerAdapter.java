@@ -52,7 +52,7 @@ public class TemplatePlaceholderRecyclerAdapter extends RecyclerView.Adapter<Tem
     // binder
     @Override
     public void onBindViewHolder(@NonNull TemplateViewHolder templateViewHolder, int i) {
-        templateViewHolder.page = stories.getPage();
+        templateViewHolder.page = stories.getPage(i);
     }
 
     @Override

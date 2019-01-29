@@ -60,7 +60,7 @@ public class ColorPickerFragment extends Fragment {
                 Stories stories = storiesViewModel.getStories().getValue();
                 ArrayList<String> newColors = new ArrayList<>();
                 newColors.add(String.valueOf(color));
-                stories.setColors(newColors);
+                stories.setColors(stories.getCurrentIndex(), newColors);
                 storiesViewModel.setStories(stories);
             }
         });

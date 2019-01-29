@@ -73,8 +73,8 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
 
         // load previously saved page
         if (!getArguments().getBoolean(BUNDLE_IS_NEW_PAGE)) {
-            topMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(0);
-            bottomMediaUriString = storiesViewModel.getStories().getValue().getImageUris().get(1);
+            topMediaUriString = storiesViewModel.getStories().getValue().getImageUris(storiesViewModel.getStories().getValue().getCurrentIndex()).get(0);
+            bottomMediaUriString = storiesViewModel.getStories().getValue().getImageUris(storiesViewModel.getStories().getValue().getCurrentIndex()).get(1);
 
             if (topMediaUriString.equals("") || topMediaUriString.equals("NOT FOUND")) {
                 addTopMediaImageView.setVisibility(View.VISIBLE);
@@ -123,7 +123,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 topMediaUriString = "";
                 addTopMediaImageView.setVisibility(View.VISIBLE);
                 removeTopMediaImageView.setVisibility(View.INVISIBLE);
-                updateViewModel();
             }
         });
         removeBottomMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +132,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaUriString = "";
                 addBottomMediaImageView.setVisibility(View.VISIBLE);
                 removeBottomMediaImageView.setVisibility(View.INVISIBLE);
-                updateViewModel();
             }
         });
 
@@ -152,7 +150,6 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
                 bottomMediaUriString = data.getDataString();
                 ImageHandler.setImageToImageView(getContext(), imageUri, bottomMediaImageView, ImageView.ScaleType.CENTER_CROP);
             }
-            updateViewModel();
         }
     }
 
@@ -161,15 +158,5 @@ public class Template3Fragment extends Fragment implements StoryEditorActivity.O
     public void hideUI() {
         removeBottomMediaImageView.setVisibility(View.INVISIBLE);
         removeTopMediaImageView.setVisibility(View.INVISIBLE);
-    }
-
-    // update data for view model
-    private void updateViewModel() {
-        ArrayList<String> updatedImageUris = new ArrayList<>();
-        updatedImageUris.add(topMediaUriString);
-        updatedImageUris.add(bottomMediaUriString);
-        Stories updatedStories = new Stories(storiesViewModel.getStories().getValue());
-        updatedStories.setImageUris(updatedImageUris);
-        storiesViewModel.setStories(updatedStories);
     }
 }

@@ -45,7 +45,7 @@ public class PageItemRecyclerAdapter extends RecyclerView.Adapter<PageItemRecycl
     // binder
     @Override
     public void onBindViewHolder(@NonNull PageItemViewHolder pageItemViewHolder, int i) {
-        final int itemId = stories.getPage().hashCode();
+        final int itemId = stories.getPage(i).hashCode();
         pageItemViewHolder.fragmentPlaceholderPageItemFrameLayout.setId(itemId);
     }
 

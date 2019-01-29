@@ -142,68 +142,68 @@ public class Stories implements Parcelable {
         currentIndex = (currentIndex == this.pagesList.size()) ? currentIndex-- : currentIndex;
     }
 
-    public Page getPage() {
-        return pagesList.get(currentIndex);
+    public Page getPage(int index) {
+        return pagesList.get(index);
     }
 
     public void setPage(int index, Page page) {
         this.pagesList.set(index, page);
     }
 
-    public ArrayList<String> getImageUris()  {
-        return this.pagesList.get(currentIndex).getImageUris();
+    public ArrayList<String> getImageUris(int index)  {
+        return this.pagesList.get(index).getImageUris();
     }
 
-    public void setImageUris(ArrayList<String> imageUris) {
-        this.pagesList.get(currentIndex).setImageUris(imageUris);
+    public void setImageUris(int index, ArrayList<String> imageUris) {
+        this.pagesList.get(index).setImageUris(imageUris);
     }
 
-    public String getTemplateName() {
-        return pagesList.get(currentIndex).getTemplateName();
+    public String getTemplateName(int index) {
+        return pagesList.get(index).getTemplateName();
     }
 
-    public void setTemplateName(String templateName) {
-        this.pagesList.get(currentIndex).setTemplateName(templateName);
+    public void setTemplateName(int index, String templateName) {
+        this.pagesList.get(index).setTemplateName(templateName);
     }
 
-    public void addImage(String imagePath) {
-        this.pagesList.get(currentIndex).addImage(imagePath);
+    public void addImage(int index, String imagePath) {
+        this.pagesList.get(index).addImage(imagePath);
     }
 
-    public void removeImage(String imagePath) {
-        this.pagesList.get(currentIndex).removeImage(imagePath);
+    public void removeImage(int index, String imagePath) {
+        this.pagesList.get(index).removeImage(imagePath);
     }
 
-    public ArrayList<String> getColors() {
-        return this.pagesList.get(currentIndex).getColors();
+    public ArrayList<String> getColors(int index) {
+        return this.pagesList.get(index).getColors();
     }
 
-    public void setColors(ArrayList<String> colors) {
-        this.pagesList.get(currentIndex).setColors(colors);
+    public void setColors(int index, ArrayList<String> colors) {
+        this.pagesList.get(index).setColors(colors);
     }
 
-    public void addColor(String color) {
-        this.pagesList.get(currentIndex).addColor(color);
+    public void addColor(int index, String color) {
+        this.pagesList.get(index).addColor(color);
     }
 
-    public void removeColor(Integer color) {
-        this.pagesList.get(currentIndex).removeColor(color);
+    public void removeColor(int index, Integer color) {
+        this.pagesList.get(index).removeColor(color);
     }
 
-    public String getTitle() {
-        return this.pagesList.get(currentIndex).getTitle();
+    public String getTitle(int index) {
+        return this.pagesList.get(index).getTitle();
     }
 
-    public void setTitle(String title) {
-        this.pagesList.get(currentIndex).setTitle(title);
+    public void setTitle(int index, String title) {
+        this.pagesList.get(index).setTitle(title);
     }
 
-    public String getText() {
-        return this.pagesList.get(currentIndex).getText();
+    public String getText(int index) {
+        return this.pagesList.get(index).getText();
     }
 
-    public void setText(String text) {
-        this.pagesList.get(currentIndex).setText(text);
+    public void setText(int index, String text) {
+        this.pagesList.get(index).setText(text);
     }
 
     public String toString() {

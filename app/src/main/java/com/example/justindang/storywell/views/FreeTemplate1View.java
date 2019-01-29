@@ -39,11 +39,6 @@ public class FreeTemplate1View extends TemplateView {
     @BindView(R.id.image_view_template1_remove_inner_media) ImageView removeInnerMediaImageView;
     @BindView(R.id.image_view_template1_remove_outer_media) ImageView removeOuterMediaImageView;
 
-    // ScaleGestureDetector
-    private ScaleGestureDetector scaleGestureDetector;
-    private float scaleFactor = 1.5f;
-    private Matrix outerMediaMatrix = new Matrix();
-
     // constructor
     public FreeTemplate1View(Context context) {
         super(context);
@@ -97,7 +92,6 @@ public class FreeTemplate1View extends TemplateView {
                     ImageView.ScaleType.MATRIX);
         }
     }
-
     @Override
     public void hideUi() {
 
