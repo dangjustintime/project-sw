@@ -81,30 +81,6 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Stories> savedStoriesList;
     private int changeNamePosition;
 
-    // OnItemListener interface
-    @Override
-    public void getNewName(int position) {
-        fragmentManager = getSupportFragmentManager();
-        changeStoryNameDialogFragment.show(fragmentManager, DIALOG_CHANGE_NAME);
-        changeNamePosition = position;
-    }
-
-    // OnChangeNameListener interface
-    @Override
-    public void sendNewName(String newName) {
-        savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
-    }
-
-    // OnInputListener interface
-    @Override
-    public void sendInput(String input) {
-        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        Stories newStories = new Stories(input);
-        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
-        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
-        startActivity(intent);
-    }
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +156,30 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         loadRecyclerView();
+    }
+
+    // OnItemListener interface
+    @Override
+    public void getNewName(int position) {
+        fragmentManager = getSupportFragmentManager();
+        changeStoryNameDialogFragment.show(fragmentManager, DIALOG_CHANGE_NAME);
+        changeNamePosition = position;
+    }
+
+    // OnChangeNameListener interface
+    @Override
+    public void sendNewName(String newName) {
+        savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
+    }
+
+    // OnInputListener interface
+    @Override
+    public void sendInput(String input) {
+        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        Stories newStories = new Stories(input);
+        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
+        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
+        startActivity(intent);
     }
 
     public void showSavedStoriesRecyclerView() {

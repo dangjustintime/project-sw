@@ -17,9 +17,6 @@ import com.example.justindang.storywell.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CreateNewStoryDialogFragment extends DialogFragment {
 
     // views
@@ -66,6 +63,7 @@ public class CreateNewStoryDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
+
         return view;
     }
 }

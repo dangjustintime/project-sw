@@ -17,12 +17,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class TemplateView extends ConstraintLayout {
+    int pageIndex;
 
     // interface
     public interface MediaHandler {
-        // Pair
-        // key = viewId
-        // value = media index
         void getGalleryPhoto(int viewId, int mediaIndex);
     }
     MediaHandler mediaHandler;
@@ -31,6 +29,7 @@ public class TemplateView extends ConstraintLayout {
     public TemplateView(Context context) {
         super(context);
         Activity activity = (Activity) getContext();
+        this.pageIndex = pageIndex;
         this.mediaHandler = (MediaHandler) activity;
 
         // set id
@@ -38,6 +37,10 @@ public class TemplateView extends ConstraintLayout {
     }
 
     public void setMediaImageView(int mediaIndex, Uri uri) {
+        // empty, must override
+    }
+
+    public void hideUi() {
         // empty, must override
     }
 }

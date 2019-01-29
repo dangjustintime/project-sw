@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.views;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Matrix;
@@ -42,27 +43,6 @@ public class FreeTemplate1View extends TemplateView {
     private ScaleGestureDetector scaleGestureDetector;
     private float scaleFactor = 1.5f;
     private Matrix outerMediaMatrix = new Matrix();
-
-    // view model
-    StoriesViewModel storiesViewModel;
-
-    // scalelistener
-    private class OnScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
-            Drawable imageDrawable = outerMediaImageView.getDrawable();
-            float offsetX = (outerMediaImageView.getWidth() - imageDrawable.getIntrinsicWidth()) / 2f;
-            float offsetY = (outerMediaImageView.getHeight() - imageDrawable.getIntrinsicHeight()) / 2f;
-            float centerX = outerMediaImageView.getWidth() / 2f;
-            float centerY = outerMediaImageView.getHeight() / 2f;
-            scaleFactor *= scaleGestureDetector.getScaleFactor();
-            scaleFactor = Math.max(1f, Math.min(scaleFactor, 2f));
-            outerMediaMatrix.setScale(scaleFactor, scaleFactor, centerX, centerY);
-            outerMediaMatrix.preTranslate(offsetX, offsetY);
-            outerMediaImageView.setImageMatrix(outerMediaMatrix);
-            return true;
-        }
-    }
 
     // constructor
     public FreeTemplate1View(Context context) {
@@ -109,10 +89,17 @@ public class FreeTemplate1View extends TemplateView {
     public void setMediaImageView(int mediaIndex, Uri uri) {
         // 0 == inner media
         if (mediaIndex == 0) {
-            ImageHandler.setImageToImageView(getContext(), uri, innerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            ImageHandler.setImageToImageView(getContext(), uri, innerMediaImageView,
+                    ImageView.ScaleType.CENTER_CROP);
         // 1 == outter media
         } else if (mediaIndex == 1) {
-            ImageHandler.setImageToImageView(getContext(), uri, outerMediaImageView, ImageView.ScaleType.CENTER_CROP);
+            ImageHandler.setImageToImageView(getContext(), uri, outerMediaImageView,
+                    ImageView.ScaleType.MATRIX);
         }
+    }
+
+    @Override
+    public void hideUi() {
+
     }
 }

@@ -63,7 +63,6 @@ public class ChooseATemplateFragment extends Fragment {
         // initialize model view
         storiesViewModel = ViewModelProviders.of(this.getActivity()).get(StoriesViewModel.class);
 
-
         // create recycler view
         templatesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
         templateNames = new ArrayList<>();
