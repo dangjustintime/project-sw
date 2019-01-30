@@ -143,6 +143,13 @@ public class Stories implements Parcelable {
         currentIndex = (currentIndex == this.pagesList.size()) ? currentIndex-- : currentIndex;
     }
 
+    public void removePageByIndex(int index) {
+        if (index < this.pagesList.size()) {
+            this.pagesList.remove(index);
+            currentIndex = (currentIndex == this.pagesList.size()) ? currentIndex-- : currentIndex;
+        }
+    }
+
     public Page getPage(int index) {
         return pagesList.get(index);
     }

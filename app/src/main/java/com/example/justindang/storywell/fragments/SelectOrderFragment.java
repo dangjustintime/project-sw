@@ -3,6 +3,7 @@ package com.example.justindang.storywell.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.BitmapDrawable;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -54,13 +55,12 @@ public class SelectOrderFragment extends Fragment {
         return view;
     }
 
-    public void getNewOrderPageList() {
-        Stories updatedStores = pagesListRecyclerAdapter.getStories();
-        if (updatedStores == storiesViewModel.getStories().getValue()) {
-            Log.i("STORIES COMPARISON", "SAME VALUES");
-        } else {
-            Log.i("STORIES COMPARISON", "DIFFERENT VALUES");
+    public boolean getNewOrderPageList() {
+        if (pagesListRecyclerAdapter.allPagesSelected()) {
+            Stories updatedStores = pagesListRecyclerAdapter.getStories();
+            storiesViewModel.setStories(updatedStores);
+            return true;
         }
-        // storiesViewModel.setStories(updatedStores);
+        return false;
     }
 }

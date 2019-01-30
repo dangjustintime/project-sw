@@ -204,8 +204,11 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, selectOrderFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                eyeImageView.setVisibility(View.VISIBLE);
+                // change toolbar
                 updateTextView.setVisibility(View.VISIBLE);
+                eyeImageView.setVisibility(View.VISIBLE);
+                downloadButtonImageView.setVisibility(View.INVISIBLE);
+                backButtonImageView.setVisibility(View.INVISIBLE);
             }
         });
         // text inserter
@@ -237,12 +240,20 @@ public class StoryEditorActivity extends AppCompatActivity
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectOrderFragment.getNewOrderPageList();
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.remove(selectOrderFragment);
-                fragmentTransaction.commit();
-                pagesPlaceholderLinearLayout.removeAllViews();
-                loadPages();
+                if (selectOrderFragment.getNewOrderPageList()) {
+                    selectOrderFragment.getNewOrderPageList();
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.remove(selectOrderFragment);
+                    fragmentTransaction.commit();
+                    pagesPlaceholderLinearLayout.removeAllViews();
+                    loadPages();
+                    updateTextView.setVisibility(View.INVISIBLE);
+                    eyeImageView.setVisibility(View.INVISIBLE);
+                    downloadButtonImageView.setVisibility(View.VISIBLE);
+                    backButtonImageView.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(StoryEditorActivity.this, "all pages must be selected", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
