@@ -10,6 +10,7 @@ import com.example.justindang.storywell.free_templates.Template4Fragment;
 import com.example.justindang.storywell.free_templates.Template5Fragment;
 import com.example.justindang.storywell.free_templates.Template6Fragment;
 import com.example.justindang.storywell.views.FreeTemplate1View;
+import com.example.justindang.storywell.views.FreeTemplate2View;
 import com.example.justindang.storywell.views.TemplateView;
 
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class TemplateManager {
 
         // free templates
         hashMap.put("free template 1", new FreeTemplate1View(context));
-        hashMap.put("free template 2", null);
+        hashMap.put("free template 2", new FreeTemplate2View(context));
         hashMap.put("free template 3", null);
         hashMap.put("free template 4", null);
         hashMap.put("free template 5", null);

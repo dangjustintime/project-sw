@@ -40,6 +40,10 @@ public class TemplateView extends ConstraintLayout {
         // empty, must override
     }
 
+    public void setColor(int colorIndex, int color) {
+        // empty, must override
+    }
+
     public void hideUi() {
         // empty, must override
     }

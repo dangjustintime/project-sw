@@ -33,12 +33,6 @@ public class ColorPickerFragment extends Fragment {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
-    // colorpicker listener
-    public interface ColorPickerListener {
-        void getSelectedColor(int color);
-    }
-    ColorPickerListener colorPickerListener;
-
     // constructor
     public ColorPickerFragment() { }
 

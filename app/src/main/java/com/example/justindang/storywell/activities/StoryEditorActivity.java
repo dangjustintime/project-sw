@@ -47,6 +47,7 @@ import com.example.justindang.storywell.utilities.SharedPrefHandler;
 import com.example.justindang.storywell.utilities.TemplateManager;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
 import com.example.justindang.storywell.views.FreeTemplate1View;
+import com.example.justindang.storywell.views.FreeTemplate2View;
 import com.example.justindang.storywell.views.TemplateView;
 
 import java.io.File;
@@ -343,6 +344,7 @@ public class StoryEditorActivity extends AppCompatActivity
     // load saved stories
     public void loadPages() {
         for(Page page : storiesViewModel.getStories().getValue().getPagesList()) {
+            // free template 1
             if (page.getTemplateName().equals("free template 1")) {
                 FreeTemplate1View freeTemplate1View = new FreeTemplate1View(StoryEditorActivity.this);
                 pagesPlaceholderLinearLayout.addView(freeTemplate1View);
@@ -351,6 +353,16 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
                 if (!page.getImageUris().get(1).equals("NOT FOUND")) {
                     freeTemplate1View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
+                }
+            // free template 2
+            } else if (page.getTemplateName().equals("free template 2")) {
+                FreeTemplate2View freeTemplate2View = new FreeTemplate2View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(freeTemplate2View);
+                if (!page.getImageUris().get(0).equals("NOT FOUND")) {
+                    freeTemplate2View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                }
+                if (!page.getColors().get(0).equals("NOT FOUND")) {
+                    freeTemplate2View.setColor(0, Integer.parseInt(page.getColors().get(0)));
                 }
             }
         }
