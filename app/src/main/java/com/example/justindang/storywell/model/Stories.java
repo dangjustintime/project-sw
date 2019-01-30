@@ -96,11 +96,12 @@ public class Stories implements Parcelable {
     }
 
     public List<Page> getPagesList() {
-        return pagesList;
+        return this.pagesList;
     }
 
     public void setPagesList(ArrayList<Page> pagesList) {
-        this.pagesList = new ArrayList<>(pagesList);
+        this.pagesList.clear();
+        this.pagesList.addAll(pagesList);
     }
 
     public int getNumPages() {

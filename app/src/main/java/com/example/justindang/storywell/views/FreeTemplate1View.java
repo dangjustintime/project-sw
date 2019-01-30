@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 
 public class FreeTemplate1View extends TemplateView {
 
-    private static final int IMAGE_GALLERY_REQUEST = 98;
     private ScaleGestureDetector scaleGestureDetector;
 
     // views
@@ -104,7 +103,7 @@ public class FreeTemplate1View extends TemplateView {
                     ImageView.ScaleType.CENTER_CROP);
             addInnerMediaImageView.setVisibility(INVISIBLE);
             removeInnerMediaImageView.setVisibility(VISIBLE);
-        // 1 == outter media
+        // 1 == outer media
         } else if (mediaIndex == 1) {
             ImageHandler.setImageToImageView(getContext(), uri, outerMediaImageView,
                     ImageView.ScaleType.MATRIX);

@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
@@ -75,18 +76,12 @@ public class StoryEditorActivity extends AppCompatActivity
     int currentViewId = 1;
     int currentMediaIndex;
     // model of story
-    private Stories savedStories;
     private StoriesViewModel storiesViewModel;
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
     }
     OnSaveImageListener onSaveImageListener;
-    public interface UpdateOrderListener {
-        boolean allPagesSelected();
-        ArrayList<Page> getNewPageOrder();
-    }
-    UpdateOrderListener updateOrderListener;
     // views
     @BindView(R.id.image_view_story_editor_aa_icon)ImageView aaIconImageView;
     @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
@@ -114,6 +109,7 @@ public class StoryEditorActivity extends AppCompatActivity
     ColorPickerFragment colorPickerFragment = new ColorPickerFragment();
     SaveStoryDialogFragment saveStoryDialogFragment = new SaveStoryDialogFragment();
     ChooseATemplateFragment chooseATemplateFragment = new ChooseATemplateFragment();
+    SelectOrderFragment selectOrderFragment = new SelectOrderFragment();
     // save photo to storage
     public void saveImage() {
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
@@ -137,27 +133,18 @@ public class StoryEditorActivity extends AppCompatActivity
         eyeImageView.setVisibility(View.INVISIBLE);
         // get data from intent
         Intent intent = getIntent();
-        savedStories = intent.getParcelableExtra(EXTRA_SAVED_STORIES);
         // set flags
         isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
         isShapeInserterOn = false;
         isColorPickerOn = false;
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
-        storiesViewModel.setStories(savedStories);
-        storiesViewModel.getStories().observeForever(new Observer<Stories>() {
-            @Override
-            public void onChanged(@Nullable Stories stories) {
-                // page number
-                pageNumberTextView.setText(
-                        String.valueOf(storiesViewModel.getStories().getValue().getCurrentIndex()));
-            }
-        });
+        storiesViewModel.setStories(intent.getParcelableExtra(EXTRA_SAVED_STORIES));
         // render UI based on isNewStories
         if (isNewStories) {
             addChooseATemplateFragment();
         } else {
-            loadSavedStories();
+            loadPages();
         }
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
@@ -170,10 +157,10 @@ public class StoryEditorActivity extends AppCompatActivity
         backButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.popBackStack();
                 if (fragmentManager.getBackStackEntryCount() == 0) {
                     finish();
                 }
+                fragmentManager.popBackStack();
             }
         });
         // new page
@@ -187,7 +174,6 @@ public class StoryEditorActivity extends AppCompatActivity
                 Stories updatedStories = storiesViewModel.getStories().getValue();
                 updatedStories.nextPage();
                 storiesViewModel.setStories(updatedStories);
-                currentMediaIndex++;
             }
         });
         // color picker
@@ -212,8 +198,14 @@ public class StoryEditorActivity extends AppCompatActivity
         angleBracketsIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // change visibility of buttons
                 Toast.makeText(StoryEditorActivity.this, "change page order", Toast.LENGTH_SHORT).show();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.frame_layout_fragment_placeholder_choose, selectOrderFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                eyeImageView.setVisibility(View.VISIBLE);
+                updateTextView.setVisibility(View.VISIBLE);
             }
         });
         // text inserter
@@ -241,15 +233,19 @@ public class StoryEditorActivity extends AppCompatActivity
                 fragmentTransaction.commit();
             }
         });
-        // insert text
+        // update page order
         updateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
+                selectOrderFragment.getNewOrderPageList();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.remove(selectOrderFragment);
+                fragmentTransaction.commit();
+                pagesPlaceholderLinearLayout.removeAllViews();
+                loadPages();
             }
         });
     }
-
     // SaveStoryDialog interface
     @Override
     public void saveStory() {
@@ -321,7 +317,6 @@ public class StoryEditorActivity extends AppCompatActivity
     @Override
     public void getGalleryPhoto(int viewId, int mediaIndex) {
         currentViewId = viewId;
-        Log.i("currentViewId", "\n\nCURRENT VIEW ID: ".concat(String.valueOf(viewId)).concat("\n\n"));
         currentMediaIndex = mediaIndex;
         Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
         startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
@@ -335,8 +330,8 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
     // load saved stories
-    public void loadSavedStories() {
-        for(Page page : savedStories.getPagesList()) {
+    public void loadPages() {
+        for(Page page : storiesViewModel.getStories().getValue().getPagesList()) {
             if (page.getTemplateName().equals("free template 1")) {
                 FreeTemplate1View freeTemplate1View = new FreeTemplate1View(StoryEditorActivity.this);
                 pagesPlaceholderLinearLayout.addView(freeTemplate1View);

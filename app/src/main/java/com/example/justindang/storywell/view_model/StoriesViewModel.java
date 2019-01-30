@@ -20,5 +20,6 @@ public class StoriesViewModel extends ViewModel {
 
     private void loadStories() {
         // fetch data asynchronously
+
     }
 }
