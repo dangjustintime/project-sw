@@ -8,6 +8,10 @@
     android:layout_margin="5dp"
     android:background="@drawable/dark_grey_border">
     <ImageView
+        android:id="@+id/image_view_background_item_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
         android:id="@+id/image_view_recycler_view_page_trash_can"
         android:layout_width="35dp"
         android:layout_height="35dp"

@@ -3,7 +3,11 @@ package com.example.justindang.storywell.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -40,13 +44,15 @@ public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecy
     private Context context;
     private Stories stories;
     private ArrayList<Page> newOrderPageList;
+    private int numChanges;
     private int currentIndex;
 
     // constructor
     public PageOrderRecyclerAdapter(Context context, Stories stories) {
         this.context = context;
         this.stories = stories;
-        this.currentIndex = 0;
+        this.numChanges = 0;
+        this.currentIndex = 1;
         this.newOrderPageList = new ArrayList<>();
     }
 
@@ -55,11 +61,11 @@ public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecy
         @BindView(R.id.constraint_layout_recycler_view_item_page) ConstraintLayout pageItemConstraintLayout;
         @BindView(R.id.text_view_recycler_view_page_number) TextView pageNumberTextView;
         @BindView(R.id.image_view_recycler_view_page_trash_can) ImageView trashCanImageView;
+        @BindView(R.id.image_view_background_item_page) ImageView backgroundImageView;
 
         public PageViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            pageNumberTextView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -75,29 +81,40 @@ public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecy
     // binder
     @Override
     public void onBindViewHolder(@NonNull final PageViewHolder pageViewHolder, final int i) {
-        Uri imageUri = Uri.parse(stories.getImageUris(i).get(0));
-
-        ImageHandler.setImageToViewGroup(context, imageUri, pageViewHolder.pageItemConstraintLayout);
+        ImageHandler.setImageToImageView(context, Uri.parse(stories.getImageUris(i).get(0)),
+                pageViewHolder.backgroundImageView, ImageView.ScaleType.CENTER_CROP);
+        pageViewHolder.pageNumberTextView.setVisibility(View.INVISIBLE);
 
         // clicklistener
         pageViewHolder.pageItemConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pageViewHolder.pageNumberTextView.getVisibility() == View.INVISIBLE) {
-                    pageViewHolder.pageNumberTextView.setText(String.valueOf(currentIndex + 1));
-                    newOrderPageList.add(stories.getPage(i));
-                    currentIndex++;
+                if (pageViewHolder.pageNumberTextView.getVisibility() == View.INVISIBLE &&
+                    pageViewHolder.backgroundImageView.getColorFilter() == null) {
                     pageViewHolder.pageNumberTextView.setVisibility(View.VISIBLE);
+                    pageViewHolder.pageNumberTextView.setText(String.valueOf(currentIndex));
+                    currentIndex++;
+                    numChanges++;
+                    newOrderPageList.add(stories.getPage(i));
+                } else if (newOrderPageList.get(newOrderPageList.size() - 1) == stories.getPage(i)) {
+                    pageViewHolder.pageNumberTextView.setVisibility(View.INVISIBLE);
+                    currentIndex--;
+                    numChanges--;
+                    newOrderPageList.remove(newOrderPageList.size() - 1);
                 }
             }
         });
         pageViewHolder.trashCanImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stories.removePageByIndex(i);
-                notifyDataSetChanged();
-                for (Page page : stories.getPagesList()) {
-
+                if (pageViewHolder.pageNumberTextView.getVisibility() == View.INVISIBLE) {
+                    if (pageViewHolder.backgroundImageView.getColorFilter() != null) {
+                        pageViewHolder.backgroundImageView.clearColorFilter();
+                        numChanges--;
+                    } else {
+                        pageViewHolder.backgroundImageView.setColorFilter(R.color.colorBlack);
+                        numChanges++;
+                    }
                 }
             }
         });
@@ -118,7 +135,7 @@ public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecy
     }
 
     public boolean allPagesSelected() {
-        if (newOrderPageList.size() == stories.getNumPages()) {
+        if (this.numChanges == stories.getNumPages()) {
             return true;
         }
         return false;
