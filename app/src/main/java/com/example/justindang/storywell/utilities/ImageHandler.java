@@ -9,8 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -89,6 +91,22 @@ public class ImageHandler {
                     imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
             imageView.setScaleType(scaleType);
             imageView.setImageBitmap(rotatedBitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setImageToViewGroup(Context context, Uri imageUri, ViewGroup viewGroup) {
+        InputStream inputStream;
+        try {
+            inputStream = context.getContentResolver().openInputStream(imageUri);
+            Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap, 0, 0,
+                    imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
+            BitmapDrawable drawable = new BitmapDrawable(rotatedBitmap);
+            viewGroup.setBackground(drawable);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

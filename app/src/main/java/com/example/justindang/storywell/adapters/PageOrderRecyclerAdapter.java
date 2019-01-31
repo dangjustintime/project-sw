@@ -24,6 +24,7 @@ import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
+import com.example.justindang.storywell.utilities.ImageHandler;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -75,19 +76,8 @@ public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecy
     @Override
     public void onBindViewHolder(@NonNull final PageViewHolder pageViewHolder, final int i) {
         Uri imageUri = Uri.parse(stories.getImageUris(i).get(0));
-        InputStream inputStream;
-        try {
-            inputStream = context.getContentResolver().openInputStream(imageUri);
-            Bitmap imageBitmap = BitmapFactory.decodeStream(inputStream);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-            Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap, 0, 0,
-                    imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
-            BitmapDrawable drawable = new BitmapDrawable(rotatedBitmap);
-            pageViewHolder.pageItemConstraintLayout.setBackground(drawable);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        ImageHandler.setImageToViewGroup(context, imageUri, pageViewHolder.pageItemConstraintLayout);
 
         // clicklistener
         pageViewHolder.pageItemConstraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +96,9 @@ public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecy
             public void onClick(View v) {
                 stories.removePageByIndex(i);
                 notifyDataSetChanged();
+                for (Page page : stories.getPagesList()) {
+
+                }
             }
         });
     }
