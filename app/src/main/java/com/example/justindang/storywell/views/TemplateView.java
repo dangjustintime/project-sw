@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
 import android.util.Pair;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
@@ -20,20 +22,28 @@ public class TemplateView extends ConstraintLayout {
     int pageIndex;
 
     // interface
-    public interface MediaHandler {
+    public interface TemplateHandler {
         void getGalleryPhoto(int viewId, int mediaIndex);
+        void sendViewId(int id);
+
     }
-    MediaHandler mediaHandler;
+    TemplateHandler templateHandler;
 
     // constructor
     public TemplateView(Context context) {
         super(context);
         Activity activity = (Activity) getContext();
         this.pageIndex = pageIndex;
-        this.mediaHandler = (MediaHandler) activity;
-
+        this.templateHandler = (TemplateHandler) activity;
         // set id
         this.setId(generateViewId());
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                templateHandler.sendViewId(getId());
+                return true;
+            }
+        });
     }
 
     public void setMediaImageView(int mediaIndex, Uri uri) {

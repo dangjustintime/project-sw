@@ -26,12 +26,10 @@ public class ColorPickerFragment extends Fragment {
     // views
     @BindView(R.id.color_picker) ColorPicker colorPicker;
 
-    // view model
-    private StoriesViewModel storiesViewModel;
-
-    // fragment manager
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    public interface OnColorListener {
+        void sendColor(int color);
+    }
+    OnColorListener onColorListener;
 
     // constructor
     public ColorPickerFragment() { }
@@ -43,19 +41,14 @@ public class ColorPickerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_color_picker, container, false);
         ButterKnife.bind(this, view);
 
-        // initialize view model
-        storiesViewModel = ViewModelProviders.of(getActivity()).get(StoriesViewModel.class);
+        onColorListener = (OnColorListener) getActivity();
 
         // color picker listener
         colorPicker.setGradientView(R.drawable.color_gradient);
         colorPicker.setColorSelectedListener(new ColorPicker.ColorSelectedListener() {
             @Override
             public void onColorSelected(int color, boolean isTapUp) {
-                Stories stories = storiesViewModel.getStories().getValue();
-                ArrayList<String> newColors = new ArrayList<>();
-                newColors.add(String.valueOf(color));
-                stories.setColors(stories.getCurrentIndex(), newColors);
-                storiesViewModel.setStories(stories);
+                onColorListener.sendColor(color);
             }
         });
 

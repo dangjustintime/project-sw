@@ -57,7 +57,7 @@ public class FreeTemplate1View extends TemplateView {
             public void onClick(View view) {
                 addOuterMediaImageView.setVisibility(View.INVISIBLE);
                 removeOuterMediaImageView.setVisibility(View.VISIBLE);
-                mediaHandler.getGalleryPhoto(getId(), 1);
+                templateHandler.getGalleryPhoto(getId(), 1);
             }
         });
         addInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,7 @@ public class FreeTemplate1View extends TemplateView {
             public void onClick(View view) {
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
-                mediaHandler.getGalleryPhoto(getId(), 0);
+                templateHandler.getGalleryPhoto(getId(), 0);
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {

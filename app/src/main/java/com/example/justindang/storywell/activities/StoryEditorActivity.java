@@ -62,7 +62,8 @@ import butterknife.ButterKnife;
 public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
         TemplateGridRecyclerAdapter.OnTemplateListener,
-        TemplateView.MediaHandler {
+        TemplateView.TemplateHandler,
+        ColorPickerFragment.OnColorListener {
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
@@ -78,6 +79,7 @@ public class StoryEditorActivity extends AppCompatActivity
     int currentMediaIndex;
     // model of story
     private StoriesViewModel storiesViewModel;
+
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
@@ -301,6 +303,8 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.commit();
         if (template.equals("free template 1")) {
             pagesPlaceholderLinearLayout.addView(new FreeTemplate1View(StoryEditorActivity.this));
+        } else if (template.equals("free template 2")) {
+            pagesPlaceholderLinearLayout.addView(new FreeTemplate2View(StoryEditorActivity.this));
         }
     }
     // return selected image from gallery
@@ -325,13 +329,28 @@ public class StoryEditorActivity extends AppCompatActivity
             }
         }
     }
-    // MediaHandler Interface
+    // MediaHandler
     @Override
     public void getGalleryPhoto(int viewId, int mediaIndex) {
         currentViewId = viewId;
         currentMediaIndex = mediaIndex;
         Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
         startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
+    }
+    @Override
+    public void sendViewId(int id) {
+        currentViewId = id;
+    }
+    // OnColorListener
+    @Override
+    public void sendColor(int color) {
+        TemplateView templateView = findViewById(currentViewId);
+        templateView.setColor(0, color);
+        Stories updatedStories = storiesViewModel.getStories().getValue();
+        ArrayList<String> newColorsList = new ArrayList<>();
+        newColorsList.add(String.valueOf(color));
+        updatedStories.setColors(currentViewId - 1, newColorsList);
+        storiesViewModel.setStories(updatedStories);
     }
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {

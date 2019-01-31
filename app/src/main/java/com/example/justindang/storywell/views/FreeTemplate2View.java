@@ -25,6 +25,7 @@ public class FreeTemplate2View extends TemplateView {
         ButterKnife.bind(this);
 
         hideUi();
+        colorPickerImageView.setVisibility(VISIBLE);
 
         // clicklisteners
         addInnerMediaImageView.setOnClickListener(new OnClickListener() {
@@ -32,7 +33,7 @@ public class FreeTemplate2View extends TemplateView {
             public void onClick(View v) {
                 addInnerMediaImageView.setVisibility(View.INVISIBLE);
                 removeInnerMediaImageView.setVisibility(View.VISIBLE);
-                mediaHandler.getGalleryPhoto(getId(), 0);
+                templateHandler.getGalleryPhoto(getId(), 0);
             }
         });
         removeInnerMediaImageView.setOnClickListener(new View.OnClickListener() {
