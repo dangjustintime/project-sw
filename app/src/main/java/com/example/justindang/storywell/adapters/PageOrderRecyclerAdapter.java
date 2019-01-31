@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecyclerAdapter.PageViewHolder> {
+public class PageOrderRecyclerAdapter extends RecyclerView.Adapter<PageOrderRecyclerAdapter.PageViewHolder> {
 
     // member data
     private Context context;
@@ -42,7 +42,7 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     private int currentIndex;
 
     // constructor
-    public PagesListRecyclerAdapter(Context context, Stories stories) {
+    public PageOrderRecyclerAdapter(Context context, Stories stories) {
         this.context = context;
         this.stories = stories;
         this.currentIndex = 0;
@@ -68,7 +68,7 @@ public class PagesListRecyclerAdapter extends RecyclerView.Adapter<PagesListRecy
     public PageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.recycler_view_item_page, viewGroup, false);
-        return new PagesListRecyclerAdapter.PageViewHolder(view);
+        return new PageOrderRecyclerAdapter.PageViewHolder(view);
     }
 
     // binder

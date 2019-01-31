@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
-import com.example.justindang.storywell.adapters.PagesListRecyclerAdapter;
+import com.example.justindang.storywell.adapters.PageOrderRecyclerAdapter;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.model.Stories;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
@@ -32,7 +32,7 @@ public class SelectOrderFragment extends Fragment {
 
     // recycler view
     @BindView(R.id.recycler_view_pages) RecyclerView pagesRecyclerView;
-    private PagesListRecyclerAdapter pagesListRecyclerAdapter;
+    private PageOrderRecyclerAdapter pagesListRecyclerAdapter;
     private StoriesViewModel storiesViewModel;
 
     public SelectOrderFragment() {
@@ -50,7 +50,7 @@ public class SelectOrderFragment extends Fragment {
 
         // create recycler view
         pagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayout.VERTICAL, false));
-        pagesListRecyclerAdapter = new PagesListRecyclerAdapter(getContext(), storiesViewModel.getStories().getValue());
+        pagesListRecyclerAdapter = new PageOrderRecyclerAdapter(getContext(), storiesViewModel.getStories().getValue());
         pagesRecyclerView.setAdapter(pagesListRecyclerAdapter);
         return view;
     }
