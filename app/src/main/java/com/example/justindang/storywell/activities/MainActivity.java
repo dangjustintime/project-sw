@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         loadRecyclerView();
 
         // get shared pref
-        sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
+        // sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {

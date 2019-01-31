@@ -86,7 +86,7 @@
             android:id="@+id/linear_layout_fragment_placeholder_story_editor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
     </HorizontalScrollView>
     <FrameLayout
         android:id="@+id/linear_layout_sticker_layer"

@@ -48,7 +48,6 @@ public class FreeTemplate1View extends TemplateView {
         ButterKnife.bind(this);
         scaleGestureDetector = new ScaleGestureDetector(getContext(),
                 new OnScaleListener(outerMediaImageView));
-
         hideUi();
 
         // clicklisteners
