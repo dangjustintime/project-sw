@@ -120,7 +120,7 @@ public class StoryEditorActivity extends AppCompatActivity
         TemplateView templateView = findViewById(currentViewId);
         templateView.hideUi();
         ImageHandler.writeFile(StoryEditorActivity.this, templateView,
-                storiesViewModel.getStories().getValue().getName());
+                storiesViewModel.getStories().getValue().getName().concat(String.valueOf(currentViewId)));
         // put stories in shared pref
         Toast.makeText(StoryEditorActivity.this, storiesViewModel.getStories().getValue().toString(),
                 Toast.LENGTH_SHORT).show();
