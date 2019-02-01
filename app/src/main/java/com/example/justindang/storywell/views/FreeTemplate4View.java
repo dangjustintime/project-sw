@@ -1,7 +1,6 @@
 package com.example.justindang.storywell.views;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,7 @@ public class FreeTemplate4View extends TemplateView {
 
     public FreeTemplate4View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.fragment_template4, this);
+        inflate(getContext(), R.layout.custom_view_template4, this);
         ButterKnife.bind(this);
         hideUi();
 

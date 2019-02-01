@@ -1,7 +1,6 @@
 package com.example.justindang.storywell.views;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
@@ -35,7 +34,7 @@ public class FreeTemplate6View extends TemplateView {
 
     public FreeTemplate6View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.fragment_template6, this);
+        inflate(getContext(), R.layout.custom_view_template6, this);
         ButterKnife.bind(this);
         hideUi();
         addTitleEditText.setCursorVisible(true);

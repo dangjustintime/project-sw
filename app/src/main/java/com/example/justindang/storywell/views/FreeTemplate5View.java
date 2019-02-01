@@ -1,8 +1,6 @@
 package com.example.justindang.storywell.views;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.utilities.ImageHandler;
-import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +30,7 @@ public class FreeTemplate5View extends TemplateView {
 
     public FreeTemplate5View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.fragment_template5, this);
+        inflate(getContext(), R.layout.custom_view_template5, this);
         ButterKnife.bind(this);
         hideUi();
         addTitleEditText.setCursorVisible(true);

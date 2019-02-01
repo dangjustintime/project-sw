@@ -1,30 +1,15 @@
 package com.example.justindang.storywell.views;
 
-import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.text.Html;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
-import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.listeners.OnScaleListener;
-import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.utilities.ImageHandler;
-import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +29,7 @@ public class FreeTemplate1View extends TemplateView {
     // constructor
     public FreeTemplate1View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.fragment_template1,  this);
+        inflate(getContext(), R.layout.custom_view_template1,  this);
         ButterKnife.bind(this);
         scaleGestureDetector = new ScaleGestureDetector(getContext(),
                 new OnScaleListener(outerMediaImageView));
