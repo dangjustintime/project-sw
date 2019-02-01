@@ -42,8 +42,6 @@ public class FreeTemplate4View extends TemplateView {
                 addBottomMediaImageView.setVisibility(View.INVISIBLE);
                 removeBottomMediaImageView.setVisibility(View.VISIBLE);
                 templateHandler.getGalleryPhoto(getId(), 1);
-
-
             }
         });
         removeTopMediaImageView.setOnClickListener(new View.OnClickListener() {

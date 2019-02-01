@@ -25,7 +25,8 @@ public class TemplateView extends ConstraintLayout {
     public interface TemplateHandler {
         void getGalleryPhoto(int viewId, int mediaIndex);
         void sendViewId(int id);
-
+        void sendTitle(String title);
+        void sendText(String text);
     }
     TemplateHandler templateHandler;
 
@@ -46,6 +47,14 @@ public class TemplateView extends ConstraintLayout {
         });
     }
 
+    public void setTitle(String title) {
+        // empty, must override
+    }
+
+    public void setText(String text) {
+        // empty, must override
+    }
+
     public void setMediaImageView(int mediaIndex, Uri uri) {
         // empty, must override
     }
@@ -57,4 +66,6 @@ public class TemplateView extends ConstraintLayout {
     public void hideUi() {
         // empty, must override
     }
+
+
 }

@@ -50,6 +50,7 @@ import com.example.justindang.storywell.views.FreeTemplate1View;
 import com.example.justindang.storywell.views.FreeTemplate2View;
 import com.example.justindang.storywell.views.FreeTemplate3View;
 import com.example.justindang.storywell.views.FreeTemplate4View;
+import com.example.justindang.storywell.views.FreeTemplate5View;
 import com.example.justindang.storywell.views.TemplateView;
 
 import java.io.File;
@@ -311,6 +312,8 @@ public class StoryEditorActivity extends AppCompatActivity
             pagesPlaceholderLinearLayout.addView(new FreeTemplate3View(StoryEditorActivity.this));
         } else if (template.equals("free template 4")) {
             pagesPlaceholderLinearLayout.addView(new FreeTemplate4View(StoryEditorActivity.this));
+        } else if (template.equals("free template 5")) {
+            pagesPlaceholderLinearLayout.addView(new FreeTemplate5View(StoryEditorActivity.this));
         }
     }
     // return selected image from gallery
@@ -347,6 +350,21 @@ public class StoryEditorActivity extends AppCompatActivity
     public void sendViewId(int id) {
         currentViewId = id;
     }
+
+    @Override
+    public void sendTitle(String title) {
+        Stories updatedStories = storiesViewModel.getStories().getValue();
+        updatedStories.setTitle(currentViewId - 1, title);
+        storiesViewModel.setStories(updatedStories);
+    }
+
+    @Override
+    public void sendText(String text) {
+        Stories updatedStories = storiesViewModel.getStories().getValue();
+        updatedStories.setText(currentViewId - 1, text);
+        storiesViewModel.setStories(updatedStories);
+    }
+
     // OnColorListener
     @Override
     public void sendColor(int color) {
@@ -409,6 +427,18 @@ public class StoryEditorActivity extends AppCompatActivity
                 if (!page.getImageUris().get(1).equals("NOT FOUND")) {
                     freeTemplate4View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
                 }
+            // template 5
+            } else if (page.getTemplateName().equals("free template 5")) {
+                FreeTemplate5View freeTemplate5View = new FreeTemplate5View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(freeTemplate5View);
+                if (!page.getImageUris().get(0).equals("NOT FOUND")) {
+                    freeTemplate5View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                }
+                if (!page.getColors().get(0).equals("NOT FOUND")) {
+                    freeTemplate5View.setColor(0, Integer.parseInt(page.getColors().get(0)));
+                }
+                freeTemplate5View.setTitle(page.getTitle());
+                freeTemplate5View.setText(page.getText());
             }
         }
     }
