@@ -51,6 +51,7 @@ import com.example.justindang.storywell.views.FreeTemplate2View;
 import com.example.justindang.storywell.views.FreeTemplate3View;
 import com.example.justindang.storywell.views.FreeTemplate4View;
 import com.example.justindang.storywell.views.FreeTemplate5View;
+import com.example.justindang.storywell.views.FreeTemplate6View;
 import com.example.justindang.storywell.views.TemplateView;
 
 import java.io.File;
@@ -281,7 +282,7 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
-                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName());
+                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(currentViewId)));
         // verify that intent will resolve to an activity
         if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
             startActivity(Intent.createChooser(instagramIntent, "Share Story"));
@@ -314,6 +315,8 @@ public class StoryEditorActivity extends AppCompatActivity
             pagesPlaceholderLinearLayout.addView(new FreeTemplate4View(StoryEditorActivity.this));
         } else if (template.equals("free template 5")) {
             pagesPlaceholderLinearLayout.addView(new FreeTemplate5View(StoryEditorActivity.this));
+        } else if (template.equals("free template 6")) {
+            pagesPlaceholderLinearLayout.addView(new FreeTemplate6View(StoryEditorActivity.this));
         }
     }
     // return selected image from gallery
@@ -439,6 +442,21 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
                 freeTemplate5View.setTitle(page.getTitle());
                 freeTemplate5View.setText(page.getText());
+            // template 6
+            } else if (page.getTemplateName().equals("free template 6")) {
+                FreeTemplate6View freeTemplate6View = new FreeTemplate6View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(freeTemplate6View);
+                if (!page.getImageUris().get(0).equals("NOT FOUND")) {
+                    freeTemplate6View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                }
+                if (!page.getImageUris().get(1).equals("NOT FOUND")) {
+                    freeTemplate6View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
+                }
+                if (!page.getColors().get(0).equals("NOT FOUND")) {
+                    freeTemplate6View.setColor(0, Integer.parseInt(page.getColors().get(0)));
+                }
+                freeTemplate6View.setTitle(page.getTitle());
+                freeTemplate6View.setText(page.getText());
             }
         }
     }
