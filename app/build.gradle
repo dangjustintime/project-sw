@@ -50,4 +50,7 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+
+    // support annotations
+    implementation "com.android.support:support-annotations:28.0.0"
 }

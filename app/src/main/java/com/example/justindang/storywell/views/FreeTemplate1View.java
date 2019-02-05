@@ -1,5 +1,6 @@
 package com.example.justindang.storywell.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.MotionEvent;
@@ -15,7 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FreeTemplate1View extends TemplateView {
-
     private ScaleGestureDetector scaleGestureDetector;
 
     // views
@@ -27,11 +27,12 @@ public class FreeTemplate1View extends TemplateView {
     @BindView(R.id.image_view_template1_remove_outer_media) ImageView removeOuterMediaImageView;
 
     // constructor
+    @SuppressLint("ClickableViewAccessibility")
     public FreeTemplate1View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.custom_view_template1,  this);
+        inflate(context, R.layout.custom_view_template1, this.templateLayerConstraintLayout);
         ButterKnife.bind(this);
-        scaleGestureDetector = new ScaleGestureDetector(getContext(),
+        scaleGestureDetector = new ScaleGestureDetector(context,
                 new OnScaleListener(outerMediaImageView));
         hideUi();
 

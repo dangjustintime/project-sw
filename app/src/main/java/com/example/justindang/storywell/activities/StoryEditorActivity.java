@@ -84,7 +84,6 @@ public class StoryEditorActivity extends AppCompatActivity
     ArrayList<Integer> templateViewIdList;
     // model of story
     private StoriesViewModel storiesViewModel;
-
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
@@ -123,11 +122,10 @@ public class StoryEditorActivity extends AppCompatActivity
                 Toast.LENGTH_SHORT).show();
         TemplateView templateView = findViewById(currentViewId);
         templateView.hideUi();
-        ImageHandler.writeFile(StoryEditorActivity.this, templateView,
-                storiesViewModel.getStories().getValue().getName().concat(String.valueOf(currentViewId)));
-        // put stories in shared pref
-        Toast.makeText(StoryEditorActivity.this, storiesViewModel.getStories().getValue().toString(),
-                Toast.LENGTH_SHORT).show();
+        int templateLayerId = templateView.getTemplateLayerViewId();
+        // write template layer file
+        ImageHandler.writeFile(StoryEditorActivity.this, findViewById(templateLayerId),
+                storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
     }
@@ -339,11 +337,11 @@ public class StoryEditorActivity extends AppCompatActivity
                 ArrayList<String> updatedUris = new ArrayList<>();
                 updatedUris.add("NOT FOUND");
                 updatedUris.add("NOT FOUND");
-                if (updatedStories.getImageUris(currentViewId - 1).size() > 0) {
-                    updatedUris = updatedStories.getImageUris(currentViewId - 1);
+                if (updatedStories.getImageUris(templateViewIdList.indexOf(currentViewId)).size() > 0) {
+                    updatedUris = updatedStories.getImageUris(templateViewIdList.indexOf(currentViewId));
                 }
                 updatedUris.set(currentMediaIndex, mediaString);
-                updatedStories.setImageUris(currentViewId - 1, updatedUris);
+                updatedStories.setImageUris(templateViewIdList.indexOf(currentViewId), updatedUris);
                 storiesViewModel.setStories(updatedStories);
             }
         }
@@ -364,14 +362,14 @@ public class StoryEditorActivity extends AppCompatActivity
     @Override
     public void sendTitle(String title) {
         Stories updatedStories = storiesViewModel.getStories().getValue();
-        updatedStories.setTitle(currentViewId - 1, title);
+        updatedStories.setTitle(templateViewIdList.indexOf(currentViewId), title);
         storiesViewModel.setStories(updatedStories);
     }
 
     @Override
     public void sendText(String text) {
         Stories updatedStories = storiesViewModel.getStories().getValue();
-        updatedStories.setText(currentViewId - 1, text);
+        updatedStories.setText(templateViewIdList.indexOf(currentViewId), text);
         storiesViewModel.setStories(updatedStories);
     }
 
@@ -383,7 +381,7 @@ public class StoryEditorActivity extends AppCompatActivity
         Stories updatedStories = storiesViewModel.getStories().getValue();
         ArrayList<String> newColorsList = new ArrayList<>();
         newColorsList.add(String.valueOf(color));
-        updatedStories.setColors(currentViewId - 1, newColorsList);
+        updatedStories.setColors(templateViewIdList.indexOf(currentViewId), newColorsList);
         storiesViewModel.setStories(updatedStories);
     }
     // add choose a template fragment to backstack

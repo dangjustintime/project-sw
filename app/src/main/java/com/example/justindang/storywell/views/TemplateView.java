@@ -1,5 +1,6 @@
 package com.example.justindang.storywell.views;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -22,9 +23,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class TemplateView extends ConstraintLayout {
+public class TemplateView extends FrameLayout {
     int pageIndex;
     FrameLayout stickerLayerFrameLayout;
+    ConstraintLayout templateLayerConstraintLayout;
 
     // interface
     public interface TemplateHandler {
@@ -36,6 +38,7 @@ public class TemplateView extends ConstraintLayout {
     TemplateHandler templateHandler;
 
     // constructor
+    @SuppressLint("ClickableViewAccessibility")
     public TemplateView(Context context) {
         super(context);
         Activity activity = (Activity) getContext();
@@ -50,6 +53,21 @@ public class TemplateView extends ConstraintLayout {
                 return true;
             }
         });
+        stickerLayerFrameLayout = new FrameLayout(context);
+        stickerLayerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080, 1920));
+        stickerLayerFrameLayout.setId(generateViewId());
+        templateLayerConstraintLayout = new ConstraintLayout(context);
+        templateLayerConstraintLayout.setId(generateViewId());
+        this.addView(stickerLayerFrameLayout);
+        this.addView(templateLayerConstraintLayout);
+    }
+
+    public int getStickerLayerViewId() {
+        return this.stickerLayerFrameLayout.getId();
+    }
+
+    public int getTemplateLayerViewId() {
+        return this.templateLayerConstraintLayout.getId();
     }
 
     public void setTitle(String title) {
