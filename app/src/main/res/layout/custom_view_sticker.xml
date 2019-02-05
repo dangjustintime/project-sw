@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/sticker_border"
+    android:padding="7dp">
+    <ImageView
+        android:id="@+id/image_view_x_icon_sticker_view"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/x_icon"
+        android:layout_marginLeft="7dp"
+        android:tint="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</android.support.constraint.ConstraintLayout>

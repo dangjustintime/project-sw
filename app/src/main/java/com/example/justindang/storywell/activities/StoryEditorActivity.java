@@ -105,7 +105,6 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
-    @BindView(R.id.text_view_story_editor_page_number) TextView pageNumberTextView;
     @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
     @BindView(R.id.linear_layout_fragment_placeholder_story_editor) LinearLayout pagesPlaceholderLinearLayout;
     // fragments
