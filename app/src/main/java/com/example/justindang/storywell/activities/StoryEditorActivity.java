@@ -81,6 +81,7 @@ public class StoryEditorActivity extends AppCompatActivity
     String mediaString;
     int currentViewId = 1;
     int currentMediaIndex;
+    ArrayList<Integer> templateViewIdList;
     // model of story
     private StoriesViewModel storiesViewModel;
 
@@ -144,6 +145,7 @@ public class StoryEditorActivity extends AppCompatActivity
         isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
         isShapeInserterOn = false;
         isColorPickerOn = false;
+        templateViewIdList = new ArrayList<>();
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(intent.getParcelableExtra(EXTRA_SAVED_STORIES));
@@ -305,19 +307,25 @@ public class StoryEditorActivity extends AppCompatActivity
         onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.remove(chooseATemplateFragment);
         fragmentTransaction.commit();
+
+        TemplateView templateView;
         if (template.equals("free template 1")) {
-            pagesPlaceholderLinearLayout.addView(new FreeTemplate1View(StoryEditorActivity.this));
+            templateView = new FreeTemplate1View(StoryEditorActivity.this);
         } else if (template.equals("free template 2")) {
-            pagesPlaceholderLinearLayout.addView(new FreeTemplate2View(StoryEditorActivity.this));
+            templateView = new FreeTemplate2View(StoryEditorActivity.this);
         } else if (template.equals("free template 3")) {
-            pagesPlaceholderLinearLayout.addView(new FreeTemplate3View(StoryEditorActivity.this));
+            templateView = new FreeTemplate3View(StoryEditorActivity.this);
         } else if (template.equals("free template 4")) {
-            pagesPlaceholderLinearLayout.addView(new FreeTemplate4View(StoryEditorActivity.this));
+            templateView = new FreeTemplate4View(StoryEditorActivity.this);
         } else if (template.equals("free template 5")) {
-            pagesPlaceholderLinearLayout.addView(new FreeTemplate5View(StoryEditorActivity.this));
+            templateView = new FreeTemplate5View(StoryEditorActivity.this);
         } else if (template.equals("free template 6")) {
-            pagesPlaceholderLinearLayout.addView(new FreeTemplate6View(StoryEditorActivity.this));
+            templateView = new FreeTemplate6View(StoryEditorActivity.this);
+        } else {
+            templateView = new TemplateView(getApplicationContext());
         }
+        templateViewIdList.add(templateView.getId());
+        pagesPlaceholderLinearLayout.addView(templateView);
     }
     // return selected image from gallery
     @Override

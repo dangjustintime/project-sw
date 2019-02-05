@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.views.StickerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +32,7 @@ public class ShapePickerFragment extends Fragment {
     FragmentTransaction fragmentTransaction;
 
     // constructor
-    public ShapePickerFragment() {
-    }
+    public ShapePickerFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

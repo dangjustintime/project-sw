@@ -6,9 +6,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
+import android.text.Layout;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
@@ -20,6 +24,7 @@ import java.util.Observer;
 
 public class TemplateView extends ConstraintLayout {
     int pageIndex;
+    FrameLayout stickerLayerFrameLayout;
 
     // interface
     public interface TemplateHandler {
