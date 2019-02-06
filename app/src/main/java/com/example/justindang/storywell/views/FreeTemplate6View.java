@@ -34,7 +34,7 @@ public class FreeTemplate6View extends TemplateView {
 
     public FreeTemplate6View(Context context) {
         super(context);
-        inflate(context, R.layout.custom_view_template6, this);
+        inflate(context, R.layout.custom_view_template6, this.templateLayerConstraintLayout);
         ButterKnife.bind(this);
         hideUi();
         addTitleEditText.setCursorVisible(true);

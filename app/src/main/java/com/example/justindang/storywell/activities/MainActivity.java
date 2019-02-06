@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         loadRecyclerView();
 
         // get shared pref
-        // sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
+        sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
                 Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
                 return false;
             }

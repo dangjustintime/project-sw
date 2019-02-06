@@ -21,7 +21,7 @@ public class FreeTemplate2View extends TemplateView {
 
     public FreeTemplate2View(Context context) {
         super(context);
-        inflate(context, R.layout.custom_view_template2, this);
+        inflate(context, R.layout.custom_view_template2, this.templateLayerConstraintLayout);
         ButterKnife.bind(this);
 
         hideUi();

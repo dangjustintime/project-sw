@@ -27,7 +27,6 @@ public class FreeTemplate1View extends TemplateView {
     @BindView(R.id.image_view_template1_remove_outer_media) ImageView removeOuterMediaImageView;
 
     // constructor
-    @SuppressLint("ClickableViewAccessibility")
     public FreeTemplate1View(Context context) {
         super(context);
         inflate(context, R.layout.custom_view_template1, this.templateLayerConstraintLayout);
