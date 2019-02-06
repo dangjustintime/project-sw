@@ -127,11 +127,12 @@ public class StoryEditorActivity extends AppCompatActivity
         templateView.hideUi();
         int templateLayerId = templateView.getTemplateLayerViewId();
         int stickerLayerId = templateView.getStickerLayerViewId();
-        // write template layer file
         ImageHandler.writeFile(StoryEditorActivity.this, findViewById(templateLayerId),
                 storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
-        // write sticker layer file
-        ImageHandler.writeFile(StoryEditorActivity.this, findViewById(stickerLayerId), "stickerLayer");
+        FrameLayout frameLayout = findViewById(stickerLayerId);
+        if (frameLayout.getChildCount() != 0) {
+            ImageHandler.writeFile(StoryEditorActivity.this, findViewById(stickerLayerId), "stickerLayer");
+        }
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
     }

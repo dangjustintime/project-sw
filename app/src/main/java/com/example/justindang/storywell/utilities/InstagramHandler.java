@@ -11,10 +11,10 @@ import com.example.justindang.storywell.activities.StoryEditorActivity;
 import java.io.File;
 
 public class InstagramHandler {
-    public static Intent createInstagramIntent(Context context, String storiesName) {
+    public static Intent createInstagramIntent(Context context, String filename) {
         // create URI from media
         File media = new File(Environment.getExternalStorageDirectory()
-                + "/Pictures/storywell/" + storiesName + ".jpg");
+                + "/Pictures/storywell/" + filename + ".jpg");
         Uri uri = FileProvider.getUriForFile(context,
                 "com.example.justindang.storywell.fileprovider", media);
 
