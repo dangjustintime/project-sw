@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.views.ShapeStickerView;
 import com.example.justindang.storywell.views.StickerView;
 
 import butterknife.BindView;
@@ -27,9 +28,11 @@ public class ShapePickerFragment extends Fragment {
     @BindView(R.id.image_view_rectangle_solid) ImageView rectangleSolidImageView;
     @BindView(R.id.image_view_rectangle) ImageView rectangleImageView;
 
-    // fragment manager
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    // interface
+    public interface OnShapeListener {
+        void sendShape(@ShapeStickerView.Shape int shape, boolean isSolid);
+    }
+    OnShapeListener onShapeListener;
 
     // constructor
     public ShapePickerFragment() { }
@@ -41,41 +44,43 @@ public class ShapePickerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shape_picker, container, false);
         ButterKnife.bind(this, view);
 
+        onShapeListener = (OnShapeListener) getActivity();
+
         // click listeners
         squareSolidImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onShapeListener.sendShape(ShapeStickerView.SQUARE, true);
             }
         });
         squareImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onShapeListener.sendShape(ShapeStickerView.SQUARE, false);
             }
         });
         circleSolidImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onShapeListener.sendShape(ShapeStickerView.CIRCLE, true);
             }
         });
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onShapeListener.sendShape(ShapeStickerView.CIRCLE, false);
             }
         });
         rectangleSolidImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onShapeListener.sendShape(ShapeStickerView.RECTANGLE, true);
             }
         });
         rectangleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                onShapeListener.sendShape(ShapeStickerView.RECTANGLE, false);
             }
         });
 

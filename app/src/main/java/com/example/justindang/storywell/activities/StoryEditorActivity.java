@@ -52,6 +52,7 @@ import com.example.justindang.storywell.views.FreeTemplate3View;
 import com.example.justindang.storywell.views.FreeTemplate4View;
 import com.example.justindang.storywell.views.FreeTemplate5View;
 import com.example.justindang.storywell.views.FreeTemplate6View;
+import com.example.justindang.storywell.views.ShapeStickerView;
 import com.example.justindang.storywell.views.TemplateView;
 
 import java.io.File;
@@ -67,7 +68,8 @@ public class StoryEditorActivity extends AppCompatActivity
         implements SaveStoryDialogFragment.OnSaveListener,
         TemplateGridRecyclerAdapter.OnTemplateListener,
         TemplateView.TemplateHandler,
-        ColorPickerFragment.OnColorListener {
+        ColorPickerFragment.OnColorListener,
+        ShapePickerFragment.OnShapeListener {
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
@@ -84,6 +86,7 @@ public class StoryEditorActivity extends AppCompatActivity
     ArrayList<Integer> templateViewIdList;
     // model of story
     private StoriesViewModel storiesViewModel;
+
     // interfaces
     public interface OnSaveImageListener {
         void hideUI();
@@ -123,9 +126,12 @@ public class StoryEditorActivity extends AppCompatActivity
         TemplateView templateView = findViewById(currentViewId);
         templateView.hideUi();
         int templateLayerId = templateView.getTemplateLayerViewId();
+        int stickerLayerId = templateView.getStickerLayerViewId();
         // write template layer file
         ImageHandler.writeFile(StoryEditorActivity.this, findViewById(templateLayerId),
                 storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
+        // write sticker layer file
+        ImageHandler.writeFile(StoryEditorActivity.this, findViewById(stickerLayerId), "stickerLayer");
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
     }
@@ -383,6 +389,13 @@ public class StoryEditorActivity extends AppCompatActivity
         newColorsList.add(String.valueOf(color));
         updatedStories.setColors(templateViewIdList.indexOf(currentViewId), newColorsList);
         storiesViewModel.setStories(updatedStories);
+    }
+    // OnShapeListener
+    @Override
+    public void sendShape(@ShapeStickerView.Shape int shape, boolean isSolid) {
+        TemplateView templateView = findViewById(currentViewId);
+        FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
+        stickerLayerFrameLayout.addView(new ShapeStickerView(getApplicationContext(), shape, isSolid));
     }
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {

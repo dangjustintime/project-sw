@@ -9,6 +9,8 @@ import com.example.justindang.storywell.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import butterknife.BindView;
+
 public class ShapeStickerView extends StickerView {
     public static final int SQUARE = 0;
     public static final int CIRCLE = 1;
@@ -22,6 +24,8 @@ public class ShapeStickerView extends StickerView {
 
     public ShapeStickerView(Context context, @Shape int shape, boolean isSolid) {
         super(context);
+
+        shapeImageView = new ImageView(context);
 
         if (isSolid) {
             switch (shape) {

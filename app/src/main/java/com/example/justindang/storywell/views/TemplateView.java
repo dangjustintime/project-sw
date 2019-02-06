@@ -53,13 +53,13 @@ public class TemplateView extends FrameLayout {
                 return true;
             }
         });
+        templateLayerConstraintLayout = new ConstraintLayout(context);
+        templateLayerConstraintLayout.setId(generateViewId());
         stickerLayerFrameLayout = new FrameLayout(context);
         stickerLayerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080, 1920));
         stickerLayerFrameLayout.setId(generateViewId());
-        templateLayerConstraintLayout = new ConstraintLayout(context);
-        templateLayerConstraintLayout.setId(generateViewId());
-        this.addView(stickerLayerFrameLayout);
         this.addView(templateLayerConstraintLayout);
+        this.addView(stickerLayerFrameLayout);
     }
 
     public int getStickerLayerViewId() {
