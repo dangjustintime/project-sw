@@ -131,9 +131,11 @@ public class StoryEditorActivity extends AppCompatActivity
         ImageHandler.writeFile(StoryEditorActivity.this, findViewById(templateLayerId),
                 storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
         // write sticker layer file
+        /*
         ImageHandler.writeFile(StoryEditorActivity.this, findViewById(stickerLayerId), "stickerLayer");
         SharedPrefHandler.putStories(this, storiesViewModel.getStories().getValue(),
                 isNewStories);
+        */
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,7 +289,8 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
-                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(currentViewId)));
+                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
+        Log.i("instagram intent:", instagramIntent.toString());
         // verify that intent will resolve to an activity
         if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
             startActivity(Intent.createChooser(instagramIntent, "Share Story"));
@@ -408,75 +411,78 @@ public class StoryEditorActivity extends AppCompatActivity
     // load saved stories
     public void loadPages() {
         for(Page page : storiesViewModel.getStories().getValue().getPagesList()) {
+            TemplateView templateView = new TemplateView(StoryEditorActivity.this);
             // free template 1
             if (page.getTemplateName().equals("free template 1")) {
-                FreeTemplate1View freeTemplate1View = new FreeTemplate1View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(freeTemplate1View);
+                templateView = new FreeTemplate1View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
-                    freeTemplate1View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                    templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getImageUris().get(1).equals("NOT FOUND")) {
-                    freeTemplate1View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
+                    templateView.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
                 }
             // free template 2
             } else if (page.getTemplateName().equals("free template 2")) {
-                FreeTemplate2View freeTemplate2View = new FreeTemplate2View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(freeTemplate2View);
+                templateView = new FreeTemplate2View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
-                    freeTemplate2View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                    templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getColors().get(0).equals("NOT FOUND")) {
-                    freeTemplate2View.setColor(0, Integer.parseInt(page.getColors().get(0)));
+                    templateView.setColor(0, Integer.parseInt(page.getColors().get(0)));
                 }
             // free template 3
             } else if (page.getTemplateName().equals("free template 3")) {
-                FreeTemplate3View freeTemplate3View = new FreeTemplate3View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(freeTemplate3View);
+                templateView = new FreeTemplate3View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
-                    freeTemplate3View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                    templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getImageUris().get(1).equals("NOT FOUND")) {
-                    freeTemplate3View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
+                    templateView.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
                 }
             // template 4
             } else if (page.getTemplateName().equals("free template 4")) {
-                FreeTemplate4View freeTemplate4View = new FreeTemplate4View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(freeTemplate4View);
+                templateView = new FreeTemplate4View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
-                    freeTemplate4View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                    templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getImageUris().get(1).equals("NOT FOUND")) {
-                    freeTemplate4View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
+                    templateView.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
                 }
             // template 5
             } else if (page.getTemplateName().equals("free template 5")) {
-                FreeTemplate5View freeTemplate5View = new FreeTemplate5View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(freeTemplate5View);
+                templateView = new FreeTemplate5View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
-                    freeTemplate5View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                    templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getColors().get(0).equals("NOT FOUND")) {
-                    freeTemplate5View.setColor(0, Integer.parseInt(page.getColors().get(0)));
+                    templateView.setColor(0, Integer.parseInt(page.getColors().get(0)));
                 }
-                freeTemplate5View.setTitle(page.getTitle());
-                freeTemplate5View.setText(page.getText());
+                templateView.setTitle(page.getTitle());
+                templateView.setText(page.getText());
             // template 6
             } else if (page.getTemplateName().equals("free template 6")) {
-                FreeTemplate6View freeTemplate6View = new FreeTemplate6View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(freeTemplate6View);
+                templateView = new FreeTemplate6View(StoryEditorActivity.this);
+                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
-                    freeTemplate6View.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
+                    templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getImageUris().get(1).equals("NOT FOUND")) {
-                    freeTemplate6View.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
+                    templateView.setMediaImageView(1, Uri.parse(page.getImageUris().get(1)));
                 }
                 if (!page.getColors().get(0).equals("NOT FOUND")) {
-                    freeTemplate6View.setColor(0, Integer.parseInt(page.getColors().get(0)));
+                    templateView.setColor(0, Integer.parseInt(page.getColors().get(0)));
                 }
-                freeTemplate6View.setTitle(page.getTitle());
-                freeTemplate6View.setText(page.getText());
+                templateView.setTitle(page.getTitle());
+                templateView.setText(page.getText());
             }
+            templateViewIdList.add(templateView.getId());
         }
+        currentViewId = templateViewIdList.get(templateViewIdList.size() - 1);
     }
 }
 
