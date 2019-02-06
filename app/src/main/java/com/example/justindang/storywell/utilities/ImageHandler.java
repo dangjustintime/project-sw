@@ -58,9 +58,15 @@ public class ImageHandler {
             return false;
         } else {
             // create bitmap from fragmentPlaceholderFrameLayout
+            int bitmapWidth = viewGroup.getWidth();
+            int bitmapHeight = viewGroup.getHeight();
+            if (fileName.equals("stickerLayer")) {
+                bitmapWidth = 480;
+                bitmapHeight = 640;
+            }
             Bitmap bitmap = Bitmap.createBitmap(
-                    viewGroup.getWidth(),
-                    viewGroup.getHeight(),
+                    bitmapWidth,
+                    bitmapHeight,
                     Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             viewGroup.draw(canvas);
