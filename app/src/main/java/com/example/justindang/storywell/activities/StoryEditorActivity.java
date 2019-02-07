@@ -11,6 +11,7 @@ import android.icu.text.UnicodeSetSpanner;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -129,7 +130,7 @@ public class StoryEditorActivity extends AppCompatActivity
         int stickerLayerId = templateView.getStickerLayerViewId();
         ImageHandler.writeFile(StoryEditorActivity.this, findViewById(templateLayerId),
                 storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
-
+        ImageHandler.writeFile(StoryEditorActivity.this, findViewById(stickerLayerId), "stickerLayer");
         saveStories();
     }
     @Override

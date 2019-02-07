@@ -22,7 +22,7 @@ public class FreeTemplate4View extends TemplateView {
 
     public FreeTemplate4View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.custom_view_template4, this.templateLayerConstraintLayout);
+        inflate(context, R.layout.custom_view_template4, this.templateLayerConstraintLayout);
         ButterKnife.bind(this);
         hideUi();
 

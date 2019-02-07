@@ -23,7 +23,7 @@ public class FreeTemplate3View extends TemplateView {
 
     public FreeTemplate3View(Context context) {
         super(context);
-        inflate(getContext(), R.layout.custom_view_template3, this.templateLayerConstraintLayout);
+        inflate(context, R.layout.custom_view_template3, this.templateLayerConstraintLayout);
         ButterKnife.bind(this);
         hideUi();
 
