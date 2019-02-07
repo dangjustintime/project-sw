@@ -41,7 +41,7 @@ public class TemplateView extends FrameLayout {
     @SuppressLint("ClickableViewAccessibility")
     public TemplateView(Context context) {
         super(context);
-        Activity activity = (Activity) getContext();
+        Activity activity = (Activity) context;
         this.pageIndex = pageIndex;
         this.templateHandler = (TemplateHandler) activity;
         // set id

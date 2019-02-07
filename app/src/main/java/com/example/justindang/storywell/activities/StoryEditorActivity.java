@@ -54,6 +54,7 @@ import com.example.justindang.storywell.views.FreeTemplate4View;
 import com.example.justindang.storywell.views.FreeTemplate5View;
 import com.example.justindang.storywell.views.FreeTemplate6View;
 import com.example.justindang.storywell.views.ShapeStickerView;
+import com.example.justindang.storywell.views.StickerView;
 import com.example.justindang.storywell.views.TemplateView;
 
 import java.io.File;
@@ -70,7 +71,8 @@ public class StoryEditorActivity extends AppCompatActivity
         TemplateGridRecyclerAdapter.OnTemplateListener,
         TemplateView.TemplateHandler,
         ColorPickerFragment.OnColorListener,
-        ShapePickerFragment.OnShapeListener {
+        ShapePickerFragment.OnShapeListener,
+        StickerView.OnStickerListener {
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
@@ -393,7 +395,12 @@ public class StoryEditorActivity extends AppCompatActivity
     public void sendShape(@ShapeStickerView.Shape int shape, boolean isSolid) {
         TemplateView templateView = findViewById(currentViewId);
         FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
-        stickerLayerFrameLayout.addView(new ShapeStickerView(getApplicationContext(), shape, isSolid));
+        stickerLayerFrameLayout.addView(new ShapeStickerView(StoryEditorActivity.this, shape, isSolid));
+    }
+    // OnStickerListener
+    @Override
+    public void sendStickerViewId(int id) {
+        currentViewId = id;
     }
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {

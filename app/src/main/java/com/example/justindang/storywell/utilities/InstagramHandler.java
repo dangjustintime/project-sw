@@ -31,7 +31,6 @@ public class InstagramHandler {
         intent.setDataAndType(mediaUri, "image/*");
         intent.putExtra("interactive_asset_uri", stickerUri);
 
-
         Activity activity = (Activity) context;
         activity.grantUriPermission("com.instagram.android", stickerUri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION);

@@ -57,7 +57,6 @@ public class ShapeStickerView extends StickerView {
 
     @Override
     public void setColor(int color) {
-        super.setColor(color);
-        shapeImageView.setColorFilter(color);
+        this.setBackgroundColor(color);
     }
 }
