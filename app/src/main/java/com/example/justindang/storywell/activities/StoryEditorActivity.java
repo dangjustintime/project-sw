@@ -167,10 +167,7 @@ public class StoryEditorActivity extends AppCompatActivity
         backButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fragmentManager.getBackStackEntryCount() == 0) {
-                    finish();
-                }
-                fragmentManager.popBackStack();
+                finish();
             }
         });
         // new page

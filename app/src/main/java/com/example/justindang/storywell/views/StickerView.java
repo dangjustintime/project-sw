@@ -6,14 +6,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.justindang.storywell.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StickerView extends ConstraintLayout {
+public class StickerView extends LinearLayout {
     int color;
+    @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
     @BindView(R.id.image_view_x_icon_sticker_view) ImageView xIconImageView;
 
     public StickerView(Context context) {

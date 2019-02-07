@@ -52,7 +52,7 @@ public class ShapeStickerView extends StickerView {
                     break;
             }
         }
-        this.addView(shapeImageView);
+        this.containerLinearLayout.addView(shapeImageView);
     }
 
     @Override
