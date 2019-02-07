@@ -283,10 +283,12 @@ public class StoryEditorActivity extends AppCompatActivity
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
                 StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
-        Log.i("instagram intent:", instagramIntent.toString());
+
         // verify that intent will resolve to an activity
         if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
-            startActivity(Intent.createChooser(instagramIntent, "Share Story"));
+            // startActivity(Intent.createChooser(instagramIntent, "Share Story"));
+            startActivityForResult(instagramIntent, 0);
+
         }
         finish();
     }
