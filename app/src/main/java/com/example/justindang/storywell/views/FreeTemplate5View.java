@@ -5,10 +5,13 @@ import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.utilities.ImageHandler;
@@ -54,7 +57,6 @@ public class FreeTemplate5View extends TemplateView {
                 removeMediaImageView.setVisibility(View.INVISIBLE);
             }
         });
-
         // text changed listeners
         addTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override

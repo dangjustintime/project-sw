@@ -407,11 +407,11 @@ public class StoryEditorActivity extends AppCompatActivity
     // load saved stories
     public void loadPages() {
         for(Page page : storiesViewModel.getStories().getValue().getPagesList()) {
-            TemplateView templateView = new TemplateView(StoryEditorActivity.this);
+            new TemplateView(StoryEditorActivity.this);
+            TemplateView templateView;
             // free template 1
             if (page.getTemplateName().equals("free template 1")) {
                 templateView = new FreeTemplate1View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
                     templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
@@ -421,7 +421,6 @@ public class StoryEditorActivity extends AppCompatActivity
             // free template 2
             } else if (page.getTemplateName().equals("free template 2")) {
                 templateView = new FreeTemplate2View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
                     templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
@@ -431,7 +430,6 @@ public class StoryEditorActivity extends AppCompatActivity
             // free template 3
             } else if (page.getTemplateName().equals("free template 3")) {
                 templateView = new FreeTemplate3View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
                     templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
@@ -441,7 +439,6 @@ public class StoryEditorActivity extends AppCompatActivity
             // template 4
             } else if (page.getTemplateName().equals("free template 4")) {
                 templateView = new FreeTemplate4View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
                     templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
@@ -451,19 +448,15 @@ public class StoryEditorActivity extends AppCompatActivity
             // template 5
             } else if (page.getTemplateName().equals("free template 5")) {
                 templateView = new FreeTemplate5View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
                     templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
                 if (!page.getColors().get(0).equals("NOT FOUND")) {
                     templateView.setColor(0, Integer.parseInt(page.getColors().get(0)));
                 }
-                templateView.setTitle(page.getTitle());
-                templateView.setText(page.getText());
             // template 6
             } else if (page.getTemplateName().equals("free template 6")) {
                 templateView = new FreeTemplate6View(StoryEditorActivity.this);
-                pagesPlaceholderLinearLayout.addView(templateView);
                 if (!page.getImageUris().get(0).equals("NOT FOUND")) {
                     templateView.setMediaImageView(0, Uri.parse(page.getImageUris().get(0)));
                 }
@@ -473,12 +466,15 @@ public class StoryEditorActivity extends AppCompatActivity
                 if (!page.getColors().get(0).equals("NOT FOUND")) {
                     templateView.setColor(0, Integer.parseInt(page.getColors().get(0)));
                 }
-                templateView.setTitle(page.getTitle());
-                templateView.setText(page.getText());
+            } else {
+                templateView = new TemplateView(StoryEditorActivity.this);
             }
-            templateViewIdList.add(templateView.getId());
+            currentViewId = templateView.getId();
+            templateViewIdList.add(currentViewId);
+            pagesPlaceholderLinearLayout.addView(templateView);
+            templateView.setTitle(page.getTitle());
+            templateView.setText(page.getText());
         }
-        currentViewId = templateViewIdList.get(templateViewIdList.size() - 1);
     }
 }
 

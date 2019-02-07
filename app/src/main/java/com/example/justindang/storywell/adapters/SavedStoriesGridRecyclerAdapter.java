@@ -113,7 +113,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryDateTextView.setText(savedStories.getDate());
 
         // put Uri into imageView
-        Uri imageUri = Uri.parse(savedStories.getImageUris(i).get(0));
+        Uri imageUri = Uri.parse(savedStories.getImageUris(0).get(0));
         ImageHandler.setImageToImageView(context, imageUri, savedStoryViewHolder.savedStoryImageView, ImageView.ScaleType.CENTER_CROP);
 
         // clicklisteners

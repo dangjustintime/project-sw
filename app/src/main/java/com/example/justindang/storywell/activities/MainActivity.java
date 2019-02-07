@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
-        loadRecyclerView();
+        // loadRecyclerView();
 
         // get shared pref
         sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
