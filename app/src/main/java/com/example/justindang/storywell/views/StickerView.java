@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +59,7 @@ public class StickerView extends LinearLayout {
     }
 
     public void hideUi() {
-        xIconImageView.setVisibility(INVISIBLE);
+        this.xIconImageView.setVisibility(INVISIBLE);
         this.setBackground(null);
     }
 

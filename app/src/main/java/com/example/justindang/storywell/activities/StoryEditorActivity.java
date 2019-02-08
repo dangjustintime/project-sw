@@ -87,14 +87,9 @@ public class StoryEditorActivity extends AppCompatActivity
     int currentViewId = 1;
     int currentMediaIndex;
     ArrayList<Integer> templateViewIdList;
+    ArrayList<Integer> stickerViewIdList;
     // model of story
     private StoriesViewModel storiesViewModel;
-
-    // interfaces
-    public interface OnSaveImageListener {
-        void hideUI();
-    }
-    OnSaveImageListener onSaveImageListener;
     // views
     @BindView(R.id.image_view_story_editor_aa_icon)ImageView aaIconImageView;
     @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
@@ -130,6 +125,10 @@ public class StoryEditorActivity extends AppCompatActivity
         templateView.hideUi();
         int templateLayerId = templateView.getTemplateLayerViewId();
         int stickerLayerId = templateView.getStickerLayerViewId();
+        for (int id : stickerViewIdList) {
+            StickerView stickerView = findViewById(id);
+            stickerView.hideUi();
+        }
         ImageHandler.writeBackgroundLayerFile(StoryEditorActivity.this, findViewById(templateLayerId),
                 storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
         ImageHandler.writeStickerLayerFile(StoryEditorActivity.this, findViewById(stickerLayerId));
@@ -149,6 +148,7 @@ public class StoryEditorActivity extends AppCompatActivity
         isShapeInserterOn = false;
         isColorPickerOn = false;
         templateViewIdList = new ArrayList<>();
+        stickerViewIdList = new ArrayList<>();
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(intent.getParcelableExtra(EXTRA_SAVED_STORIES));
@@ -285,7 +285,6 @@ public class StoryEditorActivity extends AppCompatActivity
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
                 StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
-
         // verify that intent will resolve to an activity
         if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
             // startActivity(Intent.createChooser(instagramIntent, "Share Story"));
@@ -307,7 +306,6 @@ public class StoryEditorActivity extends AppCompatActivity
         // remove choose a template fragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        onSaveImageListener = (OnSaveImageListener) templatePlaceholderFragment;
         fragmentTransaction.remove(chooseATemplateFragment);
         fragmentTransaction.commit();
 
@@ -395,13 +393,16 @@ public class StoryEditorActivity extends AppCompatActivity
     public void sendShape(@ShapeStickerView.Shape int shape, boolean isSolid) {
         TemplateView templateView = findViewById(currentViewId);
         FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
-        stickerLayerFrameLayout.addView(new ShapeStickerView(StoryEditorActivity.this, shape, isSolid));
+        StickerView stickerView = new ShapeStickerView(StoryEditorActivity.this, shape, isSolid);
+        stickerViewIdList.add(stickerView.getId());
+        stickerLayerFrameLayout.addView(stickerView);
     }
     // OnStickerListener
     @Override
     public void sendStickerViewId(int id) {
         currentViewId = id;
     }
+
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {
         fragmentManager = getSupportFragmentManager();

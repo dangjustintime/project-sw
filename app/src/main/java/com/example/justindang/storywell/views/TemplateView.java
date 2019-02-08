@@ -87,8 +87,6 @@ public class TemplateView extends FrameLayout {
     }
 
     public void hideUi() {
-        // empty, must override
+
     }
-
-
 }

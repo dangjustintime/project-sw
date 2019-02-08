@@ -5,6 +5,7 @@ import android.support.annotation.IntDef;
 import android.widget.ImageView;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
