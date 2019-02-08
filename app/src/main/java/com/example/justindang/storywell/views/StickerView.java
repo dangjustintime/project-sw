@@ -35,21 +35,19 @@ public class StickerView extends LinearLayout {
 
         this.setId(generateViewId());
 
+        // clicklistener
         this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onStickerListener.sendStickerViewId(getId());
             }
         });
-
-
         xIconImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideView();
             }
         });
-
         this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +58,7 @@ public class StickerView extends LinearLayout {
 
     public void hideUi() {
         this.xIconImageView.setVisibility(INVISIBLE);
-        this.setBackground(null);
+        this.containerLinearLayout.setBackground(null);
     }
 
     public void hideView() {

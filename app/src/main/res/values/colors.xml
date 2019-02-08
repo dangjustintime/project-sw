@@ -16,4 +16,5 @@
     <color name="colorC02">#8cb4d0</color>
     <color name="colorC03">#b7dbdb</color>
     <color name="colorC04">#fff2e4</color>
+    <color name="colorTransparent">#80000000</color>
 </resources>
