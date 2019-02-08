@@ -21,7 +21,7 @@ public class InstagramHandler {
 
         // create URI from sticker file
         File stickerFile = new File(Environment.getExternalStorageDirectory()
-                + "/Pictures/storywell/stickerLayer.jpg");
+                + "/Pictures/storywell/stickerLayer.png");
         Uri stickerUri = FileProvider.getUriForFile(context,
                 "com.example.justindang.storywell.fileprovider", stickerFile);
 

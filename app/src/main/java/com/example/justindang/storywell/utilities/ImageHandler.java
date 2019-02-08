@@ -16,6 +16,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -47,30 +48,22 @@ public class ImageHandler {
     };
 
     // creates bitmap and writes file
-    public static boolean writeFile(Activity activity, ViewGroup viewGroup, String fileName) {
+    public static boolean writeBackgroundLayerFile(Activity activity, ViewGroup viewGroup, String fileName) {
         // check if write permissions are granted
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             Log.e(TAG,"write file permission not granted");
-
             // ask for permission
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_PERMISSION);
             return false;
         } else {
             // create bitmap from fragmentPlaceholderFrameLayout
-            int bitmapWidth = viewGroup.getWidth();
-            int bitmapHeight = viewGroup.getHeight();
-            if (fileName.equals("stickerLayer")) {
-                bitmapWidth = 480;
-                bitmapHeight = 640;
-            }
-            Bitmap bitmap = Bitmap.createBitmap(
-                    bitmapWidth,
-                    bitmapHeight,
+            Bitmap bitmap = Bitmap.createBitmap(viewGroup.getWidth(), viewGroup.getHeight(),
                     Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             viewGroup.draw(canvas);
-
             // create file
             File pictureDir = getPublicAlbumStorageDir("storywell");
             File imageFile = new File(pictureDir, fileName + ".jpg");
@@ -78,6 +71,36 @@ public class ImageHandler {
                 // place bitmap onto output stream
                 FileOutputStream outputStream = new FileOutputStream(imageFile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+    }
+
+    public static boolean writeStickerLayerFile(Activity activity, ViewGroup viewGroup) {
+        // check if write permissions are granted
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.e(TAG,"write file permission not granted");
+            // ask for permission
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_PERMISSION);
+            return false;
+        } else {
+            // create bitmap from fragmentPlaceholderFrameLayout
+            Bitmap bitmap = Bitmap.createBitmap(480, 640, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            viewGroup.draw(canvas);
+            // create file
+            File pictureDir = getPublicAlbumStorageDir("storywell");
+            File imageFile = new File(pictureDir, "stickerLayer.png");
+            try {
+                // place bitmap onto output stream
+                FileOutputStream outputStream = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                 outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
