@@ -1,7 +1,10 @@
 package com.example.justindang.storywell.views;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.justindang.storywell.R;
@@ -22,42 +25,43 @@ public class ShapeStickerView extends StickerView {
     public @interface Shape { }
 
     ImageView shapeImageView;
+    Drawable drawable;
 
     public ShapeStickerView(Context context, @Shape int shape, boolean isSolid) {
         super(context);
-
         shapeImageView = new ImageView(context);
-
         if (isSolid) {
             switch (shape) {
                 case SQUARE:
-                    shapeImageView.setBackgroundResource(R.drawable.square_solid);
+                    drawable = getResources().getDrawable(R.drawable.square_solid);
                     break;
                 case CIRCLE:
-                    shapeImageView.setBackgroundResource(R.drawable.circle_solid);
+                    drawable = getResources().getDrawable(R.drawable.circle_solid);
                     break;
                 case RECTANGLE:
-                    shapeImageView.setBackgroundResource(R.drawable.rectangle_solid);
+                    drawable = getResources().getDrawable(R.drawable.rectangle_solid);
                     break;
             }
         } else {
             switch (shape) {
                 case SQUARE:
-                    shapeImageView.setBackgroundResource(R.drawable.square);
+                    drawable = getResources().getDrawable(R.drawable.square);
                     break;
                 case CIRCLE:
-                    shapeImageView.setBackgroundResource(R.drawable.circle);
+                    drawable = getResources().getDrawable(R.drawable.circle);
                     break;
                 case RECTANGLE:
-                    shapeImageView.setBackgroundResource(R.drawable.rectangle);
+                    drawable = getResources().getDrawable(R.drawable.rectangle);
                     break;
             }
         }
+        shapeImageView.setImageDrawable(drawable);
         this.containerLinearLayout.addView(shapeImageView);
     }
 
     @Override
     public void setColor(int color) {
-        this.setBackgroundColor(color);
+        Drawable drawable = shapeImageView.getDrawable();
+        drawable.setColorFilter(color, PorterDuff.Mode.SRC);
     }
 }

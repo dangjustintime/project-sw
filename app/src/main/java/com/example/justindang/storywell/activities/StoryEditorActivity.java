@@ -380,13 +380,18 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnColorListener
     @Override
     public void sendColor(int color) {
-        TemplateView templateView = findViewById(currentViewId);
-        templateView.setColor(0, color);
-        Stories updatedStories = storiesViewModel.getStories().getValue();
-        ArrayList<String> newColorsList = new ArrayList<>();
-        newColorsList.add(String.valueOf(color));
-        updatedStories.setColors(templateViewIdList.indexOf(currentViewId), newColorsList);
-        storiesViewModel.setStories(updatedStories);
+        if (templateViewIdList.contains(currentViewId)) {
+            TemplateView templateView = findViewById(currentViewId);
+            templateView.setColor(0, color);
+            Stories updatedStories = storiesViewModel.getStories().getValue();
+            ArrayList<String> newColorsList = new ArrayList<>();
+            newColorsList.add(String.valueOf(color));
+            updatedStories.setColors(templateViewIdList.indexOf(currentViewId), newColorsList);
+            storiesViewModel.setStories(updatedStories);
+        } else if (stickerViewIdList.contains(currentViewId)) {
+            StickerView stickerView = findViewById(currentViewId);
+            stickerView.setColor(color);
+        }
     }
     // OnShapeListener
     @Override

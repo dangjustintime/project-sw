@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
     // views
     @BindView(R.id.toolbar_main_activity) Toolbar toolbar;
     @BindView(R.id.constraint_layout_anywhere) ConstraintLayout constraintLayoutAnywhere;
-    @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
     @BindView(R.id.constraint_layout_bottom_bar) ConstraintLayout bottomBarConstraintLayout;
     @BindView(R.id.image_view_main_activity_pencil_icon) ImageView pencilIconImageView;
     @BindView(R.id.image_view_main_activity_plus_icon) ImageView plusIconImageView;
