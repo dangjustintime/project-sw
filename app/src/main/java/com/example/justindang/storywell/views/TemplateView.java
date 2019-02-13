@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.IntDef;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
 import android.text.Layout;
@@ -14,19 +15,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.model.Page;
 import com.example.justindang.storywell.view_model.StoriesViewModel;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 public class TemplateView extends FrameLayout {
-    int pageIndex;
     FrameLayout stickerLayerFrameLayout;
     ConstraintLayout templateLayerConstraintLayout;
+
+    public static final int TEMPLATE = 0;
+    public static final int STICKER = 1;
+    @IntDef({TEMPLATE, STICKER})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ViewType {}
 
     // interface
     public interface TemplateHandler {
@@ -42,7 +51,6 @@ public class TemplateView extends FrameLayout {
     public TemplateView(Context context) {
         super(context);
         Activity activity = (Activity) context;
-        this.pageIndex = pageIndex;
         this.templateHandler = (TemplateHandler) activity;
         // set id
         this.setId(generateViewId());
@@ -55,11 +63,18 @@ public class TemplateView extends FrameLayout {
         });
         templateLayerConstraintLayout = new ConstraintLayout(context);
         templateLayerConstraintLayout.setId(generateViewId());
+        templateLayerConstraintLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "sticker layer", Toast.LENGTH_SHORT).show();
+            }
+        });
         stickerLayerFrameLayout = new FrameLayout(context);
         stickerLayerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080, 1920));
         stickerLayerFrameLayout.setId(generateViewId());
         this.addView(templateLayerConstraintLayout);
         this.addView(stickerLayerFrameLayout);
+        // hideStickerLayer();
     }
 
     public int getStickerLayerViewId() {
@@ -87,6 +102,14 @@ public class TemplateView extends FrameLayout {
     }
 
     public void hideUi() {
+        // empty, must override
+    }
 
+    public void hideStickerLayer() {
+        this.stickerLayerFrameLayout.setVisibility(INVISIBLE);
+    }
+
+    public void showStickerLayer() {
+        this.stickerLayerFrameLayout.setVisibility(VISIBLE);
     }
 }

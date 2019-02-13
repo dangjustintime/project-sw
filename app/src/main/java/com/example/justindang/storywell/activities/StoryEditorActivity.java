@@ -84,10 +84,9 @@ public class StoryEditorActivity extends AppCompatActivity
     boolean isColorPickerOn;
     // current page data
     String mediaString;
-    int currentViewId = 1;
+    int currentTemplateViewId = 1;
+
     int currentMediaIndex;
-    ArrayList<Integer> templateViewIdList;
-    ArrayList<Integer> stickerViewIdList;
     // model of story
     private StoriesViewModel storiesViewModel;
     // views
@@ -105,12 +104,10 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
-    @BindView(R.id.linear_layout_sticker_layer) FrameLayout stickerLayerLinearLayout;
     @BindView(R.id.linear_layout_fragment_placeholder_story_editor) LinearLayout pagesPlaceholderLinearLayout;
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    Fragment templatePlaceholderFragment;
     // initialize fragments
     ShapePickerFragment shapePickerFragment = new ShapePickerFragment();
     ColorPickerFragment colorPickerFragment = new ColorPickerFragment();
@@ -121,17 +118,17 @@ public class StoryEditorActivity extends AppCompatActivity
     public void saveImage() {
         Toast.makeText(StoryEditorActivity.this, "saving image to device...",
                 Toast.LENGTH_SHORT).show();
-        TemplateView templateView = findViewById(currentViewId);
+        TemplateView templateView = findViewById(currentTemplateViewId);
         templateView.hideUi();
-        int templateLayerId = templateView.getTemplateLayerViewId();
-        int stickerLayerId = templateView.getStickerLayerViewId();
-        for (int id : stickerViewIdList) {
-            StickerView stickerView = findViewById(id);
+        ConstraintLayout templateLayer = findViewById(templateView.getTemplateLayerViewId());
+        FrameLayout stickerLayer = findViewById(templateView.getStickerLayerViewId());
+        for (int i = 0; i < stickerLayer.getChildCount(); i++) {
+            StickerView stickerView = (StickerView) stickerLayer.getChildAt(i);
             stickerView.hideUi();
         }
-        ImageHandler.writeBackgroundLayerFile(StoryEditorActivity.this, findViewById(templateLayerId),
-                storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
-        ImageHandler.writeStickerLayerFile(StoryEditorActivity.this, findViewById(stickerLayerId));
+        ImageHandler.writeBackgroundLayerFile(StoryEditorActivity.this, templateLayer,
+                storiesViewModel.getStories().getValue().getName().concat(String.valueOf(currentTemplateViewId)));
+        ImageHandler.writeStickerLayerFile(StoryEditorActivity.this, stickerLayer);
         saveStories();
     }
     @Override
@@ -147,8 +144,6 @@ public class StoryEditorActivity extends AppCompatActivity
         isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
         isShapeInserterOn = false;
         isColorPickerOn = false;
-        templateViewIdList = new ArrayList<>();
-        stickerViewIdList = new ArrayList<>();
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(intent.getParcelableExtra(EXTRA_SAVED_STORIES));
@@ -265,6 +260,11 @@ public class StoryEditorActivity extends AppCompatActivity
                 }
             }
         });
+        // frameLayoutAnywhere
+        frameLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { }
+        });
     }
     // SaveStoryDialog interface
     @Override
@@ -284,12 +284,11 @@ public class StoryEditorActivity extends AppCompatActivity
         Toast.makeText(getBaseContext(), "sharing to instagram", Toast.LENGTH_SHORT).show();
         saveImage();
         Intent instagramIntent = InstagramHandler.createInstagramIntent(
-                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(templateViewIdList.indexOf(currentViewId))));
+                StoryEditorActivity.this, storiesViewModel.getStories().getValue().getName().concat(String.valueOf(currentTemplateViewId)));
         // verify that intent will resolve to an activity
         if (instagramIntent.resolveActivity(this.getPackageManager()) != null) {
             // startActivity(Intent.createChooser(instagramIntent, "Share Story"));
             startActivityForResult(instagramIntent, 0);
-
         }
         finish();
     }
@@ -325,7 +324,6 @@ public class StoryEditorActivity extends AppCompatActivity
         } else {
             templateView = new TemplateView(getApplicationContext());
         }
-        templateViewIdList.add(templateView.getId());
         pagesPlaceholderLinearLayout.addView(templateView);
     }
     // return selected image from gallery
@@ -334,18 +332,18 @@ public class StoryEditorActivity extends AppCompatActivity
         if (requestCode == IMAGE_GALLERY_REQUEST) {
             if (resultCode == RESULT_OK) {
                 mediaString = data.toUri(0);
-                TemplateView templateView = findViewById(currentViewId);
+                TemplateView templateView = findViewById(currentTemplateViewId);
                 templateView.setMediaImageView(currentMediaIndex, data.getData());
                 // updated view model
                 Stories updatedStories = storiesViewModel.getStories().getValue();
                 ArrayList<String> updatedUris = new ArrayList<>();
                 updatedUris.add("NOT FOUND");
                 updatedUris.add("NOT FOUND");
-                if (updatedStories.getImageUris(templateViewIdList.indexOf(currentViewId)).size() > 0) {
-                    updatedUris = updatedStories.getImageUris(templateViewIdList.indexOf(currentViewId));
+                if (updatedStories.getImageUris(getCurrentPageIndex()).size() > 0) {
+                    updatedUris = updatedStories.getImageUris(getCurrentPageIndex());
                 }
                 updatedUris.set(currentMediaIndex, mediaString);
-                updatedStories.setImageUris(templateViewIdList.indexOf(currentViewId), updatedUris);
+                updatedStories.setImageUris(getCurrentPageIndex(), updatedUris);
                 storiesViewModel.setStories(updatedStories);
             }
         }
@@ -353,60 +351,66 @@ public class StoryEditorActivity extends AppCompatActivity
     // MediaHandler
     @Override
     public void getGalleryPhoto(int viewId, int mediaIndex) {
-        currentViewId = viewId;
+        currentTemplateViewId = viewId;
         currentMediaIndex = mediaIndex;
         Intent photoGalleryIntent = ImageHandler.createPhotoGalleryIntent();
         startActivityForResult(photoGalleryIntent, IMAGE_GALLERY_REQUEST);
     }
     @Override
     public void sendViewId(int id) {
-        currentViewId = id;
+        currentTemplateViewId = id;
     }
 
     @Override
     public void sendTitle(String title) {
         Stories updatedStories = storiesViewModel.getStories().getValue();
-        updatedStories.setTitle(templateViewIdList.indexOf(currentViewId), title);
+        updatedStories.setTitle(getCurrentPageIndex(), title);
         storiesViewModel.setStories(updatedStories);
     }
 
     @Override
     public void sendText(String text) {
         Stories updatedStories = storiesViewModel.getStories().getValue();
-        updatedStories.setText(templateViewIdList.indexOf(currentViewId), text);
+        updatedStories.setText(getCurrentPageIndex(), text);
         storiesViewModel.setStories(updatedStories);
     }
 
     // OnColorListener
     @Override
-    public void sendColor(int color) {
-        if (templateViewIdList.contains(currentViewId)) {
-            TemplateView templateView = findViewById(currentViewId);
+    public void sendColor(int color, @TemplateView.ViewType int viewType) {
+        TemplateView templateView = findViewById(currentTemplateViewId);
+        if (viewType == TemplateView.TEMPLATE) {
             templateView.setColor(0, color);
             Stories updatedStories = storiesViewModel.getStories().getValue();
             ArrayList<String> newColorsList = new ArrayList<>();
             newColorsList.add(String.valueOf(color));
-            updatedStories.setColors(templateViewIdList.indexOf(currentViewId), newColorsList);
+            updatedStories.setColors(getCurrentPageIndex(), newColorsList);
             storiesViewModel.setStories(updatedStories);
-        } else if (stickerViewIdList.contains(currentViewId)) {
-            StickerView stickerView = findViewById(currentViewId);
+        } else if (viewType == TemplateView.STICKER) {
+            FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
+            StickerView stickerView = (StickerView) stickerLayerFrameLayout.getChildAt(stickerLayerFrameLayout.getChildCount() - 1);
             stickerView.setColor(color);
         }
     }
     // OnShapeListener
     @Override
     public void sendShape(@ShapeStickerView.Shape int shape, boolean isSolid) {
-        TemplateView templateView = findViewById(currentViewId);
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_inserter, colorPickerFragment);
+        colorPickerFragment.setTargetViewType(TemplateView.STICKER);
+        fragmentTransaction.commit();
+        isShapeInserterOn = false;
+        isColorPickerOn = true;
+
+        TemplateView templateView = findViewById(currentTemplateViewId);
         FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
         StickerView stickerView = new ShapeStickerView(StoryEditorActivity.this, shape, isSolid);
-        stickerViewIdList.add(stickerView.getId());
         stickerLayerFrameLayout.addView(stickerView);
     }
     // OnStickerListener
     @Override
-    public void sendStickerViewId(int id) {
-        currentViewId = id;
-    }
+    public void sendStickerViewId(int id) { }
 
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {
@@ -481,12 +485,19 @@ public class StoryEditorActivity extends AppCompatActivity
             } else {
                 templateView = new TemplateView(StoryEditorActivity.this);
             }
-            currentViewId = templateView.getId();
-            templateViewIdList.add(currentViewId);
+            currentTemplateViewId = templateView.getId();
             pagesPlaceholderLinearLayout.addView(templateView);
             templateView.setTitle(page.getTitle());
             templateView.setText(page.getText());
         }
     }
-}
 
+    public int getCurrentPageIndex() {
+        TemplateView templateView = findViewById(currentTemplateViewId);
+        for (int i = 0; i < storiesViewModel.getStories().getValue().getNumPages(); i++) {
+            TemplateView templateView1 = (TemplateView) pagesPlaceholderLinearLayout.getChildAt(0);
+            if (templateView == templateView1) return i;
+        }
+        return -1;
+    }
+}

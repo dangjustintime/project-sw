@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +19,8 @@ import butterknife.ButterKnife;
 public class StickerView extends LinearLayout {
     @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
     @BindView(R.id.image_view_x_icon_sticker_view) ImageView xIconImageView;
+
+    ScaleGestureDetector scaleGestureDetector;
 
     public interface OnStickerListener {
         void sendStickerViewId(int id);
@@ -34,6 +37,7 @@ public class StickerView extends LinearLayout {
         ButterKnife.bind(this);
 
         this.setId(generateViewId());
+
 
         // clicklistener
         this.setOnClickListener(new OnClickListener() {
