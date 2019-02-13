@@ -3,12 +3,15 @@ package com.example.justindang.storywell.views;
 import android.app.Activity;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
@@ -20,7 +23,7 @@ public class StickerView extends LinearLayout {
     @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
     @BindView(R.id.image_view_x_icon_sticker_view) ImageView xIconImageView;
 
-    ScaleGestureDetector scaleGestureDetector;
+    float dX, dY;
 
     public interface OnStickerListener {
         void sendStickerViewId(int id);
@@ -29,15 +32,11 @@ public class StickerView extends LinearLayout {
 
     public StickerView(Context context) {
         super(context);
-
         Activity activity = (Activity) context;
         onStickerListener = (OnStickerListener) activity;
-
         inflate(context, R.layout.custom_view_sticker, this);
         ButterKnife.bind(this);
-
         this.setId(generateViewId());
-
 
         // clicklistener
         this.setOnClickListener(new OnClickListener() {

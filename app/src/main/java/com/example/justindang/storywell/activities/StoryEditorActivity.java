@@ -194,6 +194,8 @@ public class StoryEditorActivity extends AppCompatActivity
                 } else {
                     if (colorPickerFragment.getTargetViewType() == TemplateView.STICKER) {
                         colorPickerFragment.setTargetViewType(TemplateView.TEMPLATE);
+                        TemplateView templateView = findViewById(currentTemplateViewId);
+                        // templateView.hideStickerLayer();
                     }
                     fragmentTransaction.remove(colorPickerFragment);
                     isColorPickerOn = false;
@@ -267,7 +269,17 @@ public class StoryEditorActivity extends AppCompatActivity
         // frameLayoutAnywhere
         frameLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { }
+            public void onClick(View v) {
+                // toggle bring front
+                TemplateView templateView = findViewById(currentTemplateViewId);
+                FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
+                ConstraintLayout backgroundLayerConstraintLayout = findViewById(templateView.getTemplateLayerViewId());
+                if (templateView.getChildAt(0).equals(backgroundLayerConstraintLayout)) {
+                    backgroundLayerConstraintLayout.bringToFront();
+                } else {
+                    stickerLayerFrameLayout.bringToFront();
+                }
+            }
         });
     }
     // SaveStoryDialog interface

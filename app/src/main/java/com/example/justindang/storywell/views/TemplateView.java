@@ -63,18 +63,12 @@ public class TemplateView extends FrameLayout {
         });
         templateLayerConstraintLayout = new ConstraintLayout(context);
         templateLayerConstraintLayout.setId(generateViewId());
-        templateLayerConstraintLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "sticker layer", Toast.LENGTH_SHORT).show();
-            }
-        });
         stickerLayerFrameLayout = new FrameLayout(context);
         stickerLayerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080, 1920));
         stickerLayerFrameLayout.setId(generateViewId());
+        stickerLayerFrameLayout.setFocusable(false);
         this.addView(templateLayerConstraintLayout);
         this.addView(stickerLayerFrameLayout);
-        // hideStickerLayer();
     }
 
     public int getStickerLayerViewId() {
@@ -106,7 +100,11 @@ public class TemplateView extends FrameLayout {
     }
 
     public void hideStickerLayer() {
-        this.stickerLayerFrameLayout.setVisibility(INVISIBLE);
+        templateLayerConstraintLayout.bringToFront();
+        for (int i = 0; i < this.stickerLayerFrameLayout.getChildCount(); i++) {
+            StickerView stickerView = (StickerView) this.stickerLayerFrameLayout.getChildAt(i);
+            stickerLayerFrameLayout.bringChildToFront(stickerView);
+        }
     }
 
     public void showStickerLayer() {
