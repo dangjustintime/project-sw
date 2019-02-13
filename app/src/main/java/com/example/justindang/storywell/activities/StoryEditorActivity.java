@@ -192,10 +192,14 @@ public class StoryEditorActivity extends AppCompatActivity
                     fragmentTransaction.addToBackStack(null);
                     isColorPickerOn = true;
                 } else {
+                    if (colorPickerFragment.getTargetViewType() == TemplateView.STICKER) {
+                        colorPickerFragment.setTargetViewType(TemplateView.TEMPLATE);
+                    }
                     fragmentTransaction.remove(colorPickerFragment);
                     isColorPickerOn = false;
                 }
                 fragmentTransaction.commit();
+
             }
         });
         // change page order

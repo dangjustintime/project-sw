@@ -61,6 +61,10 @@ public class ColorPickerFragment extends Fragment {
         return view;
     }
 
+    public @TemplateView.ViewType int getTargetViewType() {
+        return this.targetViewType;
+    }
+
     public void setTargetViewType(@TemplateView.ViewType int viewType) {
         this.targetViewType = viewType;
     }
