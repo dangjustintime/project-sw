@@ -56,7 +56,7 @@ public class ShapeStickerView extends StickerView {
             }
         }
         shapeImageView.setImageDrawable(drawable);
-        this.containerLinearLayout.addView(shapeImageView);
+        containerLinearLayout.addView(shapeImageView);
     }
 
     @Override
