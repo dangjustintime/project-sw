@@ -33,29 +33,28 @@ public class ShapeStickerView extends StickerView {
         if (isSolid) {
             switch (shape) {
                 case SQUARE:
-                    drawable = getResources().getDrawable(R.drawable.square_solid);
+                    shapeImageView.setImageResource(R.drawable.square_solid);
                     break;
                 case CIRCLE:
-                    drawable = getResources().getDrawable(R.drawable.circle_solid);
+                    shapeImageView.setImageResource(R.drawable.circle_solid);
                     break;
                 case RECTANGLE:
-                    drawable = getResources().getDrawable(R.drawable.rectangle_solid);
+                    shapeImageView.setImageResource(R.drawable.rectangle_solid);
                     break;
             }
         } else {
             switch (shape) {
                 case SQUARE:
-                    drawable = getResources().getDrawable(R.drawable.square);
+                    shapeImageView.setImageResource(R.drawable.square);
                     break;
                 case CIRCLE:
-                    drawable = getResources().getDrawable(R.drawable.circle);
+                    shapeImageView.setImageResource(R.drawable.circle);
                     break;
                 case RECTANGLE:
-                    drawable = getResources().getDrawable(R.drawable.rectangle);
+                    shapeImageView.setImageResource(R.drawable.rectangle);
                     break;
             }
         }
-        shapeImageView.setImageDrawable(drawable);
         containerLinearLayout.addView(shapeImageView);
     }
 
