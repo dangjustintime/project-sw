@@ -2,6 +2,8 @@ package com.example.justindang.storywell.views;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
@@ -15,12 +17,36 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.listeners.OnScaleListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StickerView extends LinearLayout {
-    private static final int INVALID_POINTER_ID = -1000;
+    protected class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        private ImageView imageView;
+
+        public ScaleListener(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= detector.getScaleFactor();
+            scaleFactor = Math.max(0.95f, Math.min(scaleFactor, 1.05f));
+
+            imageView.setLayoutParams(new LayoutParams(
+                    Math.round(imageView.getWidth() * scaleFactor),
+                    Math.round(imageView.getHeight() * scaleFactor)));
+
+            invalidate();
+            return true;
+        }
+    }
+
+    public static final int INVALID_POINTER_ID = -1000;
+    private float scaleFactor = 1.5f;
+
 
     @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
     @BindView(R.id.image_view_x_icon_sticker_view) ImageView xIconImageView;
@@ -56,11 +82,11 @@ public class StickerView extends LinearLayout {
                 onStickerListener.sendStickerViewId(getId());
             }
         });
+        /*
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int action = event.getAction();
-
                 switch (action) {
                     case MotionEvent.ACTION_DOWN: {
                         final int pointerIndex = event.getActionIndex();
@@ -122,6 +148,21 @@ public class StickerView extends LinearLayout {
                 return true;
             }
         });
+        */
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Log.i("scale detector", String.valueOf(scaleGestureDetector.onTouchEvent(event)));
+        return true;
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.save();
+        canvas.scale(scaleFactor, scaleFactor);
+        canvas.restore();
     }
 
     public void hideUi() {

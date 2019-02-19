@@ -35,7 +35,9 @@ public class ShapePickerFragment extends Fragment {
     OnShapeListener onShapeListener;
 
     // constructor
-    public ShapePickerFragment() { }
+    public ShapePickerFragment() {
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
