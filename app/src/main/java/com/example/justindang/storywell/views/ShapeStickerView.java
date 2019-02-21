@@ -64,6 +64,7 @@ public class ShapeStickerView extends StickerView {
         containerLinearLayout.addView(shapeImageView);
 
         // click listener
+        /*
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -133,6 +134,7 @@ public class ShapeStickerView extends StickerView {
                 return true;
             }
         });
+        */
     }
 
     @Override

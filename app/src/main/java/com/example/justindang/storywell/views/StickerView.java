@@ -34,17 +34,18 @@ public class StickerView extends LinearLayout {
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();
             scaleFactor = Math.max(0.95f, Math.min(scaleFactor, 1.05f));
-
             imageView.setLayoutParams(new LayoutParams(
                     Math.round(imageView.getWidth() * scaleFactor),
                     Math.round(imageView.getHeight() * scaleFactor)));
-
             invalidate();
             return true;
         }
     }
 
     public static final int INVALID_POINTER_ID = -1000;
+    public static final String TOUCH_EVENT_TAG = "TOUCH EVENT";
+    private float pointer1X, pointer1Y, pointer2X, pointer2Y;
+    private int pointerId;
     private float scaleFactor = 1.5f;
 
 
@@ -82,79 +83,52 @@ public class StickerView extends LinearLayout {
                 onStickerListener.sendStickerViewId(getId());
             }
         });
-        /*
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN: {
-                        final int pointerIndex = event.getActionIndex();
-                        final float x = event.getX(pointerIndex);
-                        final float y = event.getY(pointerIndex);
-                        // remember where drag started
-                        lastTouchX = x;
-                        lastTouchY = y;
-                        // save pointer id
-                        activePointerId = event.getPointerId(0);
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        // find index of active point and its location
-                        final int pointerIndex = event.findPointerIndex(activePointerId);
-                        final float x = event.getX(pointerIndex);
-                        final float y = event.getY(pointerIndex);
-
-                        // calculate distance
-                        final float dx = x - lastTouchX;
-                        final float dy = y - lastTouchY;
-                        posX += dx;
-                        posY += dy;
-
-                        invalidate();
-
-                        // remember position for next touch event
-                        lastTouchX = x;
-                        lastTouchY = y;
-
-                        // move view
-                        v.setLeft((int) posX);
-                        v.setTop((int) posY);
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        activePointerId = INVALID_POINTER_ID;
-                        break;
-                    }
-                    case MotionEvent.ACTION_CANCEL: {
-                        activePointerId = INVALID_POINTER_ID;
-                        break;
-                    }
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        final int pointerIndex = event.getActionIndex();
-                        final int pointerId = event.getPointerId(pointerIndex);
-
-                        if (pointerId == activePointerId) {
-                            // switch active pointer
-                            final int newPointerIndex = pointerIndex == 0 ? 1: 0;
-                            lastTouchX = event.getX(newPointerIndex);
-                            lastTouchY = event.getY(newPointerIndex);
-                            activePointerId = event.getPointerId(newPointerIndex);
-                        }
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-        */
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // Log.i("scale detector", String.valueOf(scaleGestureDetector.onTouchEvent(event)));
-        return true;
+        activePointerId = event.getPointerId(0);
+        int pointerIndex = event.findPointerIndex(activePointerId);
+        int action = event.getActionMasked();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                Log.i(TOUCH_EVENT_TAG, "first finger down");
+                pointer1X = event.getX();
+                pointer1Y = event.getY();
+                Log.i(TOUCH_EVENT_TAG, "pointer 1: " + String.valueOf(pointer1X) + ", " + String.valueOf(pointer1Y));
+                return true;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                Log.i(TOUCH_EVENT_TAG, "second finger down");
+                pointer2X = event.getX(1);
+                pointer2Y = event.getY(1);
+                Log.i(TOUCH_EVENT_TAG, "pointer 2: " + String.valueOf(pointer2X) + ", " + String.valueOf(pointer2Y));
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                Log.i(TOUCH_EVENT_TAG, "movement");
+                float newPointer1X = event.getX();
+                float newPointer1Y = event.getY();
+                float dX = newPointer1X - pointer1X;
+                float dY = newPointer1Y - pointer1Y;
+                setLeft(Math.round(getLeft() + dX));
+                setTop(Math.round(getTop() + dY));
+                return true;
+            case MotionEvent.ACTION_UP:
+                pointer1X = event.getX();
+                pointer1Y = event.getY();
+                Log.i(TOUCH_EVENT_TAG, "first finger up");
+                Log.i(TOUCH_EVENT_TAG, "pointer 1: " + String.valueOf(pointer1X) + ", " + String.valueOf(pointer1Y));
+                return true;
+            case MotionEvent.ACTION_POINTER_UP:
+                pointer2X = event.getX(1);
+                pointer2Y = event.getY(1);
+                Log.i(TOUCH_EVENT_TAG, "second finger up");
+                Log.i(TOUCH_EVENT_TAG, "pointer 2: " + String.valueOf(pointer2X) + ", " + String.valueOf(pointer2Y));
+                return true;
+            default:
+                Log.i(TOUCH_EVENT_TAG, "action not found");
+                break;
+        }
+        return false;
     }
 
     @Override
