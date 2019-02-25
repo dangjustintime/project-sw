@@ -44,7 +44,7 @@ public class StickerView extends LinearLayout {
 
     public static final int INVALID_POINTER_ID = -1000;
     public static final String TOUCH_EVENT_TAG = "TOUCH EVENT";
-    private float pointer1X, pointer1Y, pointer2X, pointer2Y;
+    private float pointer1X, pointer1Y, pointer2X, pointer2Y, angle1, angle2;
     private int pointerId;
     private float scaleFactor = 1.5f;
     ViewConfiguration viewConfiguration;
@@ -108,6 +108,7 @@ public class StickerView extends LinearLayout {
             case MotionEvent.ACTION_POINTER_DOWN:
                 pointer2X = event.getX(1);
                 pointer2Y = event.getY(1);
+                angle1 = getAngle(pointer1X, pointer1Y, pointer2X, pointer2Y);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 newPointer1X = event.getX();
@@ -115,25 +116,14 @@ public class StickerView extends LinearLayout {
                 dX1 = newPointer1X - pointer1X;
                 dY1 = newPointer1Y - pointer1Y;
                 Log.i(TOUCH_EVENT_TAG, "Dragging");
-                /*
+
+                // on rotate
                 if (event.getPointerCount() > 1) {
                     newPointer2X = event.getX(1);
                     newPointer2Y = event.getY(1);
-
-                    distance1 = getDistance(pointer1X, pointer1Y, newPointer1X, newPointer1Y);
-                    distance2 = getDistance(pointer2X, pointer2Y, newPointer2X, newPointer2Y);
-
-                    setLayoutParams(new LayoutParams(
-                            Math.round(getWidth() * (distance2 / distance1)),
-                            Math.round(getHeight() * (distance2 / distance1))));
-                    invalidate();
-
-                    // scale view
-                    setLayoutParams(new LayoutParams((int) (getWidth() + (distance2 - distance1)), (int) (getHeight() + (distance2 - distance1))));
-                    invalidate();
-
+                    angle2 = getAngle(newPointer1X, newPointer1Y, newPointer2X, newPointer2Y);
+                    this.setRotation(angle1 - angle2);
                 }
-                */
 
                 // drag view
                 setLeft(Math.round(getLeft() + dX1));
@@ -178,5 +168,12 @@ public class StickerView extends LinearLayout {
 
     public float getDistance(float x1, float y1, float x2, float y2) {
         return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    public float getAngle(float x1, float y1, float x2, float y2) {
+        double hypotenuse = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double adjacent = x2 - x1;
+        double theta = Math.toDegrees(Math.acos(adjacent / hypotenuse));
+        return (float) theta;
     }
 }
