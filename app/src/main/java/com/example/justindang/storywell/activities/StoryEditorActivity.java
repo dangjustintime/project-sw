@@ -56,6 +56,7 @@ import com.example.justindang.storywell.views.FreeTemplate6View;
 import com.example.justindang.storywell.views.ShapeStickerView;
 import com.example.justindang.storywell.views.StickerView;
 import com.example.justindang.storywell.views.TemplateView;
+import com.example.justindang.storywell.views.TextStickerView;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -226,13 +227,15 @@ public class StoryEditorActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
+                TemplateView templateView = findViewById(currentTemplateViewId);
+                FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
+                stickerLayerFrameLayout.addView(new TextStickerView(StoryEditorActivity.this));
             }
         });
         // shape inserter
         squareCircleIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(StoryEditorActivity.this, "insert shape", Toast.LENGTH_SHORT).show();
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 if (!isShapeInserterOn) {
@@ -418,7 +421,6 @@ public class StoryEditorActivity extends AppCompatActivity
         fragmentTransaction.commit();
         isShapeInserterOn = false;
         isColorPickerOn = true;
-
         TemplateView templateView = findViewById(currentTemplateViewId);
         FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
         StickerView stickerView = new ShapeStickerView(StoryEditorActivity.this, shape, isSolid);

@@ -1,5 +1,6 @@
 package com.example.justindang.storywell.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -33,6 +34,8 @@ public class ShapeStickerView extends StickerView {
 
     public ShapeStickerView(Context context, @Shape int shape, boolean isSolid) {
         super(context);
+        Activity activity = (Activity) context;
+        onStickerListener = (OnStickerListener) activity;
         shapeImageView = new ImageView(context);
         scaleGestureDetector = new ScaleGestureDetector(context, new StickerView.ScaleListener(shapeImageView));
 
@@ -62,6 +65,13 @@ public class ShapeStickerView extends StickerView {
             }
         }
         containerLinearLayout.addView(shapeImageView);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        scaleGestureDetector.onTouchEvent(event);
+        return true;
     }
 
     @Override

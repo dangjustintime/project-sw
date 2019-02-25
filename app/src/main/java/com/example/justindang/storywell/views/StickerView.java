@@ -66,8 +66,6 @@ public class StickerView extends LinearLayout {
 
     public StickerView(Context context) {
         super(context);
-        Activity activity = (Activity) context;
-        onStickerListener = (OnStickerListener) activity;
         inflate(context, R.layout.custom_view_sticker, this);
         ButterKnife.bind(this);
         this.setId(generateViewId());
@@ -92,9 +90,6 @@ public class StickerView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        scaleGestureDetector.onTouchEvent(event);
-
         activePointerId = event.getPointerId(0);
         int pointerIndex = event.findPointerIndex(activePointerId);
         int action = event.getActionMasked();
