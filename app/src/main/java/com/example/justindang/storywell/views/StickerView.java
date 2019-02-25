@@ -11,6 +11,7 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ import butterknife.ButterKnife;
 public class StickerView extends LinearLayout {
     protected class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         private ImageView imageView;
-
         public ScaleListener(ImageView imageView) {
             this.imageView = imageView;
         }
@@ -47,6 +47,8 @@ public class StickerView extends LinearLayout {
     private float pointer1X, pointer1Y, pointer2X, pointer2Y;
     private int pointerId;
     private float scaleFactor = 1.5f;
+    ViewConfiguration viewConfiguration;
+    int touchSlop;
 
 
     @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
@@ -70,6 +72,9 @@ public class StickerView extends LinearLayout {
         ButterKnife.bind(this);
         this.setId(generateViewId());
 
+        viewConfiguration = ViewConfiguration.get(context);
+        touchSlop = viewConfiguration.getScaledTouchSlop();
+
         // clicklistener
         xIconImageView.setOnClickListener(new OnClickListener() {
             @Override
@@ -87,48 +92,67 @@ public class StickerView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        scaleGestureDetector.onTouchEvent(event);
+
         activePointerId = event.getPointerId(0);
         int pointerIndex = event.findPointerIndex(activePointerId);
         int action = event.getActionMasked();
+        float newPointer1X, newPointer1Y, newPointer2X, newPointer2Y, dX1, dY1,
+                dX2, dY2, distance1, distance2;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                Log.i(TOUCH_EVENT_TAG, "first finger down");
                 pointer1X = event.getX();
                 pointer1Y = event.getY();
-                Log.i(TOUCH_EVENT_TAG, "pointer 1: " + String.valueOf(pointer1X) + ", " + String.valueOf(pointer1Y));
                 return true;
             case MotionEvent.ACTION_POINTER_DOWN:
-                Log.i(TOUCH_EVENT_TAG, "second finger down");
                 pointer2X = event.getX(1);
                 pointer2Y = event.getY(1);
-                Log.i(TOUCH_EVENT_TAG, "pointer 2: " + String.valueOf(pointer2X) + ", " + String.valueOf(pointer2Y));
                 return true;
             case MotionEvent.ACTION_MOVE:
-                Log.i(TOUCH_EVENT_TAG, "movement");
-                float newPointer1X = event.getX();
-                float newPointer1Y = event.getY();
-                float dX = newPointer1X - pointer1X;
-                float dY = newPointer1Y - pointer1Y;
-                setLeft(Math.round(getLeft() + dX));
-                setTop(Math.round(getTop() + dY));
+                newPointer1X = event.getX();
+                newPointer1Y = event.getY();
+                dX1 = newPointer1X - pointer1X;
+                dY1 = newPointer1Y - pointer1Y;
+                Log.i(TOUCH_EVENT_TAG, "Dragging");
+                /*
+                if (event.getPointerCount() > 1) {
+                    newPointer2X = event.getX(1);
+                    newPointer2Y = event.getY(1);
+
+                    distance1 = getDistance(pointer1X, pointer1Y, newPointer1X, newPointer1Y);
+                    distance2 = getDistance(pointer2X, pointer2Y, newPointer2X, newPointer2Y);
+
+                    setLayoutParams(new LayoutParams(
+                            Math.round(getWidth() * (distance2 / distance1)),
+                            Math.round(getHeight() * (distance2 / distance1))));
+                    invalidate();
+
+                    // scale view
+                    setLayoutParams(new LayoutParams((int) (getWidth() + (distance2 - distance1)), (int) (getHeight() + (distance2 - distance1))));
+                    invalidate();
+
+                }
+                */
+
+                // drag view
+                setLeft(Math.round(getLeft() + dX1));
+                setTop(Math.round(getTop() + dY1));
+
                 return true;
             case MotionEvent.ACTION_UP:
                 pointer1X = event.getX();
                 pointer1Y = event.getY();
-                Log.i(TOUCH_EVENT_TAG, "first finger up");
-                Log.i(TOUCH_EVENT_TAG, "pointer 1: " + String.valueOf(pointer1X) + ", " + String.valueOf(pointer1Y));
                 return true;
             case MotionEvent.ACTION_POINTER_UP:
                 pointer2X = event.getX(1);
                 pointer2Y = event.getY(1);
-                Log.i(TOUCH_EVENT_TAG, "second finger up");
-                Log.i(TOUCH_EVENT_TAG, "pointer 2: " + String.valueOf(pointer2X) + ", " + String.valueOf(pointer2Y));
                 return true;
             default:
                 Log.i(TOUCH_EVENT_TAG, "action not found");
                 break;
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -150,5 +174,9 @@ public class StickerView extends LinearLayout {
 
     public void setColor(int color) {
         // empty, must override
+    }
+
+    public float getDistance(float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 }
