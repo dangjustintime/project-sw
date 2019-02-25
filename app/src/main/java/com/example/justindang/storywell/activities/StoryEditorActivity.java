@@ -226,10 +226,15 @@ public class StoryEditorActivity extends AppCompatActivity
         aaIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(StoryEditorActivity.this, "insert text", Toast.LENGTH_SHORT).show();
                 TemplateView templateView = findViewById(currentTemplateViewId);
                 FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
                 stickerLayerFrameLayout.addView(new TextStickerView(StoryEditorActivity.this));
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_inserter, colorPickerFragment);
+                colorPickerFragment.setTargetViewType(TemplateView.STICKER);
+                fragmentTransaction.commit();
+                isColorPickerOn = true;
             }
         });
         // shape inserter

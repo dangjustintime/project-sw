@@ -2,6 +2,8 @@ package com.example.justindang.storywell.views;
 
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.justindang.storywell.R;
@@ -11,8 +13,9 @@ public class TextStickerView extends StickerView {
 
     public TextStickerView(Context context) {
         super(context);
-        editText =  new EditText(context);
+        editText = new EditText(context);
         editText.setBackground(null);
+        editText.setText("tap to edit");
         editText.setTextColor(getResources().getColor(R.color.colorWhite));
         containerLinearLayout.addView(editText);
     }
