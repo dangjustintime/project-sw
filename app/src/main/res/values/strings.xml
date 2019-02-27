@@ -41,7 +41,6 @@
     <string name="share_story_to_instagram">share story to instagram</string>
     <string name="save_image">save image</string>
 
-
     <!-- template fragments -->
     <string name="add_title">add title</string>
     <string name="tap_to_add_text">tap to add text to tell your story here in this space</string>
@@ -55,4 +54,14 @@
     <!-- select order fragment -->
     <string name="tap_to_select_order">tap to select order</string>
     <string name="of_your_stories">of your stories, then tap update</string>
+
+    <!-- text sticker editor -->
+    <string name="family">family</string>
+    <string name="size">size</string>
+    <string name="spacing">spacing</string>
+    <string name="height">height</string>
+    <string name="book">Book</string>
+    <string name="light">Light</string>
+    <string name="sans_bold">Sans Bold</string>
+    <string name="serif_italic">Serif Italic</string>
 </resources>
