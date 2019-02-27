@@ -32,6 +32,5 @@ public class TextStickerEditorView extends ConstraintLayout {
         super(context);
         inflate(context, R.layout.custom_view_text_sticker_editor, TextStickerEditorView.this);
         ButterKnife.bind(this);
-        fontFamilyContainerHorizontalScrollView.setVisibility(INVISIBLE);
     }
 }
