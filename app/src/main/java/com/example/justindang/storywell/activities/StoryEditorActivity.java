@@ -74,7 +74,8 @@ public class StoryEditorActivity extends AppCompatActivity
         TemplateView.TemplateHandler,
         ColorPickerFragment.OnColorListener,
         ShapePickerFragment.OnShapeListener,
-        StickerView.OnStickerListener {
+        StickerView.OnStickerListener,
+        TextStickerEditorDialogFragment.OnTextListener {
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
@@ -449,6 +450,33 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnStickerListener
     @Override
     public void sendStickerViewId(int id) { }
+
+
+    // OnTextListener
+    @Override
+    public void sendFontFamily(String font) {
+
+    }
+
+    @Override
+    public void sendTextSize(int size) {
+
+    }
+
+    @Override
+    public void sendSpacing(int spacing) {
+
+    }
+
+    @Override
+    public void sendHeight(int height) {
+
+    }
+
+    @Override
+    public void sendAlignment(int alignment) {
+
+    }
 
     // add choose a template fragment to backstack
     public void addChooseATemplateFragment() {

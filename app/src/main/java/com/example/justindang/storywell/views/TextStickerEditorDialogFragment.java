@@ -1,9 +1,11 @@
 package com.example.justindang.storywell.views;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,7 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
     @TextStickerView.Alignment int alignment = TextStickerView.LEFT;
 
     public interface OnTextListener {
-        void sendFontFamily(String font);
+        void sendFontFamily(Typeface typeface);
         void sendTextSize(int size);
         void sendSpacing(int spacing);
         void sendHeight(int height);
@@ -61,7 +63,7 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         textEditorSeekBar.setVisibility(View.INVISIBLE);
 
-        //onTextListener = (OnTextListener) getActivity();
+        onTextListener = (OnTextListener) getActivity();
 
         // clicklistener
         textAlignmentImageView.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +83,7 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
                         textAlignmentImageView.setImageResource(R.drawable.align_left);
                         break;
                 }
-                //onTextListener.sendAlignment(alignment);
+                onTextListener.sendAlignment(alignment);
             }
         });
         familyTextView.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +112,34 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 textEditorSeekBar.setVisibility(View.VISIBLE);
                 fontFamilyContainerHorizontalScrollView.setVisibility(View.INVISIBLE);
+            }
+        });
+        bookTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
+                        R.font.franklingothic_book));
+            }
+        });
+        lightTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
+                        R.font.freight_big_w01_light_regular));
+            }
+        });
+        sansBoldTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
+                        R.font.franklingothic_med));
+            }
+        });
+        serifItalicTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
+                        R.font.freight_big_w01_book_italic));
             }
         });
 
