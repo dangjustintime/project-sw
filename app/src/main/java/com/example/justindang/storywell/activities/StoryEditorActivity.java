@@ -56,6 +56,7 @@ import com.example.justindang.storywell.views.FreeTemplate6View;
 import com.example.justindang.storywell.views.ShapeStickerView;
 import com.example.justindang.storywell.views.StickerView;
 import com.example.justindang.storywell.views.TemplateView;
+import com.example.justindang.storywell.views.TextStickerEditorDialogFragment;
 import com.example.justindang.storywell.views.TextStickerView;
 
 import java.io.File;
@@ -78,6 +79,7 @@ public class StoryEditorActivity extends AppCompatActivity
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
     private static final String DIALOG_SAVE_STORY = "save story";
+    private static final String DIALOG_TEXT_EDITOR = "text editor";
     private static final int IMAGE_GALLERY_REQUEST = 98;
     // flags
     boolean isNewStories;
@@ -91,7 +93,8 @@ public class StoryEditorActivity extends AppCompatActivity
     // model of story
     private StoriesViewModel storiesViewModel;
     // views
-    @BindView(R.id.image_view_story_editor_aa_icon)ImageView aaIconImageView;
+    @BindView(R.id.constraint_layout_story_editor_activity_container) ConstraintLayout storyEditorActivityContainerConstraintLayout;
+    @BindView(R.id.image_view_story_editor_aa_icon) ImageView aaIconImageView;
     @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
     @BindView(R.id.image_view_story_editor_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_story_editor_three_circle_icon) ImageView threeCircleIconImageView;
@@ -109,6 +112,8 @@ public class StoryEditorActivity extends AppCompatActivity
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    TextStickerEditorDialogFragment textStickerEditorDialogFragment = new TextStickerEditorDialogFragment();
+
     // initialize fragments
     ShapePickerFragment shapePickerFragment = new ShapePickerFragment();
     ColorPickerFragment colorPickerFragment = new ColorPickerFragment();
@@ -228,13 +233,23 @@ public class StoryEditorActivity extends AppCompatActivity
             public void onClick(View v) {
                 TemplateView templateView = findViewById(currentTemplateViewId);
                 FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
-                stickerLayerFrameLayout.addView(new TextStickerView(StoryEditorActivity.this));
+                TextStickerView textStickerView = new TextStickerView((StoryEditorActivity.this));
+
+                stickerLayerFrameLayout.addView(textStickerView);
+
+                fragmentManager = getSupportFragmentManager();
+                textStickerEditorDialogFragment.show(fragmentManager, DIALOG_TEXT_EDITOR);
+                textStickerView.setFocusable(true);
+                textStickerView.requestFocus();
+
+                /*
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_inserter, colorPickerFragment);
                 colorPickerFragment.setTargetViewType(TemplateView.STICKER);
                 fragmentTransaction.commit();
                 isColorPickerOn = true;
+                */
             }
         });
         // shape inserter

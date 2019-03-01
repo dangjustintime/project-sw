@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -66,40 +67,45 @@
         android:layout_height="60dp"
         android:background="@color/colorOffWhite"
         app:layout_constraintTop_toBottomOf="@id/constraint_layout_top_bar"
+        android:orientation="horizontal"
         android:gravity="center">
         <TextView
             android:id="@+id/text_view_family"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/family"
-            android:layout_margin="15dp"
+            android:textSize="15dp"
+            android:layout_margin="10dp"
             android:fontFamily="@font/freight_big_w01_black_italic"/>
         <TextView
             android:id="@+id/text_view_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/size"
-            android:layout_margin="15dp"
+            android:textSize="15dp"
+            android:layout_margin="10dp"
             android:fontFamily="@font/freight_big_w01_black_italic"/>
         <TextView
             android:id="@+id/text_view_spacing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/spacing"
-            android:layout_margin="15dp"
+            android:textSize="15dp"
+            android:layout_margin="10dp"
             android:fontFamily="@font/freight_big_w01_black_italic"/>
         <TextView
             android:id="@+id/text_view_height"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/height"
-            android:layout_margin="15dp"
+            android:textSize="15dp"
+            android:layout_margin="10dp"
             android:fontFamily="@font/freight_big_w01_black_italic"/>
         <ImageView
             android:id="@+id/image_view_text_alignment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/align_left"
-            android:layout_margin="15dp"/>
+            android:layout_margin="10dp"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
