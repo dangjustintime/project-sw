@@ -63,7 +63,6 @@ import com.example.justindang.storywell.views.FreeTemplate6View;
 import com.example.justindang.storywell.views.ShapeStickerView;
 import com.example.justindang.storywell.views.StickerView;
 import com.example.justindang.storywell.views.TemplateView;
-import com.example.justindang.storywell.views.TextStickerEditorDialogFragment;
 import com.example.justindang.storywell.views.TextStickerEditorView;
 import com.example.justindang.storywell.views.TextStickerView;
 
@@ -83,7 +82,7 @@ public class StoryEditorActivity extends AppCompatActivity
         ColorPickerFragment.OnColorListener,
         ShapePickerFragment.OnShapeListener,
         StickerView.OnStickerListener,
-        TextStickerEditorDialogFragment.OnTextListener {
+        TextStickerEditorView.OnTextListener {
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
@@ -97,7 +96,7 @@ public class StoryEditorActivity extends AppCompatActivity
     // current page data
     String mediaString;
     int currentTemplateViewId = 1;
-
+    TextStickerView selectedTextSticker;
     int currentMediaIndex;
     // model of story
     private StoriesViewModel storiesViewModel;
@@ -121,7 +120,6 @@ public class StoryEditorActivity extends AppCompatActivity
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    TextStickerEditorDialogFragment textStickerEditorDialogFragment = new TextStickerEditorDialogFragment();
 
     // initialize fragments
     ShapePickerFragment shapePickerFragment = new ShapePickerFragment();
@@ -246,6 +244,7 @@ public class StoryEditorActivity extends AppCompatActivity
                 TextStickerView textStickerView = new TextStickerView((StoryEditorActivity.this));
                 TextStickerEditorView textStickerEditorView = new TextStickerEditorView(StoryEditorActivity.this);
 
+                selectedTextSticker = textStickerView;
                 anywhereLinearLayout.addView(textStickerEditorView);
                 anywhereLinearLayout.bringToFront();
 
@@ -472,7 +471,7 @@ public class StoryEditorActivity extends AppCompatActivity
     // OnTextListener
     @Override
     public void sendFontFamily(Typeface typeface) {
-
+        selectedTextSticker.setFontFamily(typeface);
     }
 
     @Override

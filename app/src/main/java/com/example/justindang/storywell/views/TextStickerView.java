@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.views;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.IntDef;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -49,6 +50,10 @@ public class TextStickerView extends StickerView {
     @Override
     public void setColor(int color) {
         editText.setTextColor(color);
+    }
+
+    public void setFontFamily(Typeface typeface) {
+        editText.setTypeface(typeface);
     }
 
     @Override

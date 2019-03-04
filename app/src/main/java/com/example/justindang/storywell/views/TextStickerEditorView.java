@@ -43,12 +43,23 @@ public class TextStickerEditorView extends ConstraintLayout {
     int textHeight;
 
 
+    public interface OnTextListener {
+        void sendFontFamily(Typeface typeface);
+        void sendTextSize(int size);
+        void sendSpacing(int spacing);
+        void sendHeight(int height);
+        void sendAlignment(@TextStickerView.Alignment int alignment);
+    }
+    OnTextListener onTextListener;
+
 
     public TextStickerEditorView(Context context) {
         super(context);
         inflate(context, R.layout.fragment_text_sticker_editor, this);
         ButterKnife.bind(this);
         textEditorSeekBar.setVisibility(View.INVISIBLE);
+
+        onTextListener = (OnTextListener) context;
 
         // clicklistener
         textAlignmentImageView.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +79,7 @@ public class TextStickerEditorView extends ConstraintLayout {
                         textAlignmentImageView.setImageResource(R.drawable.align_left);
                         break;
                 }
+                onTextListener.sendAlignment(alignment);
             }
         });
         familyTextView.setOnClickListener(new View.OnClickListener() {
@@ -106,24 +118,28 @@ public class TextStickerEditorView extends ConstraintLayout {
             @Override
             public void onClick(View v) {
                 fontFamily = ResourcesCompat.getFont(getContext(), R.font.franklingothic_book);
+                onTextListener.sendFontFamily(fontFamily);
             }
         });
         lightTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fontFamily = ResourcesCompat.getFont(getContext(), R.font.freight_big_w01_light_regular);
+                onTextListener.sendFontFamily(fontFamily);
             }
         });
         sansBoldTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fontFamily = ResourcesCompat.getFont(getContext(), R.font.franklingothic_med);
+                onTextListener.sendFontFamily(fontFamily);
             }
         });
         serifItalicTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fontFamily = ResourcesCompat.getFont(getContext(), R.font.freight_big_w01_book_italic);
+                onTextListener.sendFontFamily(fontFamily);
             }
         });
 
