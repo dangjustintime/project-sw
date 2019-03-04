@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,7 +102,7 @@ public class StoryEditorActivity extends AppCompatActivity
     // model of story
     private StoriesViewModel storiesViewModel;
     // views
-    @BindView(R.id.constraint_layout_story_editor_activity_container) ConstraintLayout storyEditorActivityContainerConstraintLayout;
+    @BindView(R.id.constraint_layout_story_editor_activity_container) RelativeLayout storyEditorActivityContainerConstraintLayout;
     @BindView(R.id.image_view_story_editor_aa_icon) ImageView aaIconImageView;
     @BindView(R.id.image_view_story_editor_square_circle_icon) ImageView squareCircleIconImageView;
     @BindView(R.id.image_view_story_editor_plus_icon) ImageView plusIconImageView;
@@ -117,7 +118,6 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.linear_layout_fragment_placeholder_story_editor) LinearLayout pagesPlaceholderLinearLayout;
-    @BindView(R.id.scroll_view_container) ScrollView containerScrollView;
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -152,7 +152,6 @@ public class StoryEditorActivity extends AppCompatActivity
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
 
-        containerScrollView.setEnabled(false);
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
         // get data from intent
