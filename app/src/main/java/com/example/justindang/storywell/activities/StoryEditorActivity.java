@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.icu.text.UnicodeSetSpanner;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -23,11 +26,14 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +63,7 @@ import com.example.justindang.storywell.views.ShapeStickerView;
 import com.example.justindang.storywell.views.StickerView;
 import com.example.justindang.storywell.views.TemplateView;
 import com.example.justindang.storywell.views.TextStickerEditorDialogFragment;
+import com.example.justindang.storywell.views.TextStickerEditorView;
 import com.example.justindang.storywell.views.TextStickerView;
 
 import java.io.File;
@@ -106,10 +113,11 @@ public class StoryEditorActivity extends AppCompatActivity
     @BindView(R.id.frame_layout_fragment_placeholder_save_story) FrameLayout fragmentPlaceholderSaveStoryFrameLayout;
     @BindView(R.id.frame_layout_fragment_placeholder_choose) FrameLayout fragmentPlaceholderChoose;
     @BindView(R.id.frame_layout_fragment_placeholder_inserter) FrameLayout fragmentPlaceholderInserter;
-    @BindView(R.id.frame_layout_story_editor_anywhere) FrameLayout frameLayoutAnywhere;
+    @BindView(R.id.linear_layout_story_editor_anywhere) LinearLayout anywhereLinearLayout;
     @BindView(R.id.text_view_story_editor_update_icon) TextView updateTextView;
     @BindView(R.id.image_view_eye_icon) ImageView eyeImageView;
     @BindView(R.id.linear_layout_fragment_placeholder_story_editor) LinearLayout pagesPlaceholderLinearLayout;
+    @BindView(R.id.scroll_view_container) ScrollView containerScrollView;
     // fragments
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -143,6 +151,8 @@ public class StoryEditorActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_editor);
         ButterKnife.bind(this);
+
+        containerScrollView.setEnabled(false);
         updateTextView.setVisibility(View.INVISIBLE);
         eyeImageView.setVisibility(View.INVISIBLE);
         // get data from intent
@@ -235,13 +245,21 @@ public class StoryEditorActivity extends AppCompatActivity
                 TemplateView templateView = findViewById(currentTemplateViewId);
                 FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
                 TextStickerView textStickerView = new TextStickerView((StoryEditorActivity.this));
+                TextStickerEditorView textStickerEditorView = new TextStickerEditorView(StoryEditorActivity.this);
+
+                anywhereLinearLayout.addView(textStickerEditorView);
+                anywhereLinearLayout.bringToFront();
 
                 stickerLayerFrameLayout.addView(textStickerView);
 
+                anywhereLinearLayout.setFitsSystemWindows(true);
+                /*
                 fragmentManager = getSupportFragmentManager();
                 textStickerEditorDialogFragment.show(fragmentManager, DIALOG_TEXT_EDITOR);
-                textStickerView.setFocusable(true);
-                textStickerView.requestFocus();
+                */
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(textStickerView.getEditText(), InputMethodManager.SHOW_IMPLICIT);
 
                 /*
                 fragmentManager = getSupportFragmentManager();
@@ -291,7 +309,7 @@ public class StoryEditorActivity extends AppCompatActivity
             }
         });
         // frameLayoutAnywhere
-        frameLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
+        anywhereLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // toggle bring front
@@ -454,7 +472,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     // OnTextListener
     @Override
-    public void sendFontFamily(String font) {
+    public void sendFontFamily(Typeface typeface) {
 
     }
 
@@ -565,5 +583,16 @@ public class StoryEditorActivity extends AppCompatActivity
             if (templateView == templateView1) return i;
         }
         return -1;
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent keyEvent) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER:
+                Toast.makeText(StoryEditorActivity.this, "Pressed Enter",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onKeyUp(keyCode, keyEvent);
+        }
     }
 }

@@ -2,15 +2,9 @@ package com.example.justindang.storywell.views;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,12 +14,11 @@ import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
 
-import org.w3c.dom.Text;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TextStickerEditorDialogFragment extends DialogFragment {
+public class TextStickerEditorView extends ConstraintLayout {
+
     // views
     @BindView(R.id.constraint_layout_top_bar) ConstraintLayout topBarConstraintLayout;
     @BindView(R.id.linear_layout_bottom_bar) LinearLayout bottomBarLinearLayout;
@@ -41,29 +34,21 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
     @BindView(R.id.text_view_height) TextView heightTextView;
     @BindView(R.id.image_view_text_alignment) ImageView textAlignmentImageView;
 
+
     @TextStickerView.Alignment int alignment = TextStickerView.LEFT;
 
-    public interface OnTextListener {
-        void sendFontFamily(Typeface typeface);
-        void sendTextSize(int size);
-        void sendSpacing(int spacing);
-        void sendHeight(int height);
-        void sendAlignment(@TextStickerView.Alignment int alignment);
-    }
-    OnTextListener onTextListener;
+    Typeface fontFamily;
+    int textSize;
+    int textSpacing;
+    int textHeight;
 
-    public TextStickerEditorDialogFragment() {
-        // Required empty public constructor
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_text_sticker_editor, container, false);
-        ButterKnife.bind(this, view);
+
+    public TextStickerEditorView(Context context) {
+        super(context);
+        inflate(context, R.layout.fragment_text_sticker_editor, this);
+        ButterKnife.bind(this);
         textEditorSeekBar.setVisibility(View.INVISIBLE);
-
-        onTextListener = (OnTextListener) getActivity();
 
         // clicklistener
         textAlignmentImageView.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +68,6 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
                         textAlignmentImageView.setImageResource(R.drawable.align_left);
                         break;
                 }
-                onTextListener.sendAlignment(alignment);
             }
         });
         familyTextView.setOnClickListener(new View.OnClickListener() {
@@ -121,29 +105,25 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
         bookTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
-                        R.font.franklingothic_book));
+                fontFamily = ResourcesCompat.getFont(getContext(), R.font.franklingothic_book);
             }
         });
         lightTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
-                        R.font.freight_big_w01_light_regular));
+                fontFamily = ResourcesCompat.getFont(getContext(), R.font.freight_big_w01_light_regular);
             }
         });
         sansBoldTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
-                        R.font.franklingothic_med));
+                fontFamily = ResourcesCompat.getFont(getContext(), R.font.franklingothic_med);
             }
         });
         serifItalicTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTextListener.sendFontFamily(ResourcesCompat.getFont(getContext(),
-                        R.font.freight_big_w01_book_italic));
+                fontFamily = ResourcesCompat.getFont(getContext(), R.font.freight_big_w01_book_italic);
             }
         });
 
@@ -161,8 +141,47 @@ public class TextStickerEditorDialogFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
-
-
-        return view;
     }
+
+
+    public int getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(int alignment) {
+        this.alignment = alignment;
+    }
+
+    public Typeface getFontFamily() {
+        return fontFamily;
+    }
+
+    public void setFontFamily(Typeface fontFamily) {
+        this.fontFamily = fontFamily;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public int getTextSpacing() {
+        return textSpacing;
+    }
+
+    public void setTextSpacing(int textSpacing) {
+        this.textSpacing = textSpacing;
+    }
+
+    public int getTextHeight() {
+        return textHeight;
+    }
+
+    public void setTextHeight(int textHeight) {
+        this.textHeight = textHeight;
+    }
+
 }

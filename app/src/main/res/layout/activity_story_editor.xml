@@ -71,28 +71,35 @@
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-    <FrameLayout
-        android:id="@+id/frame_layout_story_editor_anywhere"
+    <LinearLayout
+        android:id="@+id/linear_layout_story_editor_anywhere"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <HorizontalScrollView
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom" />
+    <ScrollView
+        android:id="@+id/scroll_view_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/constraint_layout_icon_container"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_story_editor_activity"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/dark_grey_border">
-        <LinearLayout
-            android:id="@+id/linear_layout_fragment_placeholder_story_editor"
+        app:layout_constraintRight_toRightOf="parent">
+        <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-    </HorizontalScrollView>
+            android:background="@drawable/dark_grey_border">
+            <LinearLayout
+                android:id="@+id/linear_layout_fragment_placeholder_story_editor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+    </ScrollView>
     <FrameLayout
         android:id="@+id/frame_layout_fragment_placeholder_save_story"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_icon_container"
         android:layout_width="match_parent"
