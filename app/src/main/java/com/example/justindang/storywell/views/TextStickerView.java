@@ -3,6 +3,7 @@ package com.example.justindang.storywell.views;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.IntDef;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,6 +55,20 @@ public class TextStickerView extends StickerView {
 
     public void setFontFamily(Typeface typeface) {
         editText.setTypeface(typeface);
+    }
+
+    public void setAlignment(@Alignment int alignment) {
+        switch (alignment) {
+            case LEFT:
+                editText.setGravity(Gravity.START);
+                break;
+            case CENTER:
+                editText.setGravity(Gravity.CENTER);
+                break;
+            case RIGHT:
+                editText.setGravity(Gravity.END);
+                break;
+        }
     }
 
     @Override

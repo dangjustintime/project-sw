@@ -491,7 +491,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     @Override
     public void sendAlignment(int alignment) {
-
+        selectedTextSticker.setAlignment(alignment);
     }
 
     // add choose a template fragment to backstack
