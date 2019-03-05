@@ -91,7 +91,8 @@ public class ImageHandler {
             return false;
         } else {
             // create bitmap from fragmentPlaceholderFrameLayout
-            Bitmap bitmap = Bitmap.createBitmap(480, 640, Bitmap.Config.ARGB_8888);
+            // 480 x 640
+            Bitmap bitmap = Bitmap.createBitmap(1080, 1920, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             viewGroup.draw(canvas);
             // create file

@@ -54,6 +54,7 @@ public class TextStickerView extends StickerView {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    editText.clearFocus();
                     onTextStickerListener.editTextInputDone();
                     return true;
                 }
