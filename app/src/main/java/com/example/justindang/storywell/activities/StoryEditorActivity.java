@@ -82,7 +82,8 @@ public class StoryEditorActivity extends AppCompatActivity
         ColorPickerFragment.OnColorListener,
         ShapePickerFragment.OnShapeListener,
         StickerView.OnStickerListener,
-        TextStickerEditorView.OnTextListener {
+        TextStickerEditorView.OnTextListener,
+        TextStickerView.OnTextStickerListener {
     // static data
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
@@ -92,6 +93,7 @@ public class StoryEditorActivity extends AppCompatActivity
     // flags
     boolean isNewStories;
     boolean isShapeInserterOn;
+    boolean isTextInserterOn;
     boolean isColorPickerOn;
     // current page data
     String mediaString;
@@ -158,6 +160,7 @@ public class StoryEditorActivity extends AppCompatActivity
         isNewStories = intent.getBooleanExtra(EXTRA_IS_NEW_STORIES, true);
         isShapeInserterOn = false;
         isColorPickerOn = false;
+        isTextInserterOn = false;
         // initialize view model
         storiesViewModel = ViewModelProviders.of(StoryEditorActivity.this).get(StoriesViewModel.class);
         storiesViewModel.setStories(intent.getParcelableExtra(EXTRA_SAVED_STORIES));
@@ -167,6 +170,7 @@ public class StoryEditorActivity extends AppCompatActivity
         } else {
             loadPages();
         }
+
         // clicklisteners
         downloadButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,7 +213,6 @@ public class StoryEditorActivity extends AppCompatActivity
                     if (colorPickerFragment.getTargetViewType() == TemplateView.STICKER) {
                         colorPickerFragment.setTargetViewType(TemplateView.TEMPLATE);
                         TemplateView templateView = findViewById(currentTemplateViewId);
-                        // templateView.hideStickerLayer();
                     }
                     fragmentTransaction.remove(colorPickerFragment);
                     isColorPickerOn = false;
@@ -239,34 +242,19 @@ public class StoryEditorActivity extends AppCompatActivity
         aaIconImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isTextInserterOn = true;
                 TemplateView templateView = findViewById(currentTemplateViewId);
                 FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
                 TextStickerView textStickerView = new TextStickerView((StoryEditorActivity.this));
                 TextStickerEditorView textStickerEditorView = new TextStickerEditorView(StoryEditorActivity.this);
-
                 selectedTextSticker = textStickerView;
                 anywhereLinearLayout.addView(textStickerEditorView);
                 anywhereLinearLayout.bringToFront();
-
                 stickerLayerFrameLayout.addView(textStickerView);
-
                 anywhereLinearLayout.setFitsSystemWindows(true);
-                /*
-                fragmentManager = getSupportFragmentManager();
-                textStickerEditorDialogFragment.show(fragmentManager, DIALOG_TEXT_EDITOR);
-                */
 
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(textStickerView.getEditText(), InputMethodManager.SHOW_IMPLICIT);
-
-                /*
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_inserter, colorPickerFragment);
-                colorPickerFragment.setTargetViewType(TemplateView.STICKER);
-                fragmentTransaction.commit();
-                isColorPickerOn = true;
-                */
             }
         });
         // shape inserter
@@ -303,21 +291,6 @@ public class StoryEditorActivity extends AppCompatActivity
                     backButtonImageView.setVisibility(View.VISIBLE);
                 } else {
                     Toast.makeText(StoryEditorActivity.this, "all pages must be selected", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        // frameLayoutAnywhere
-        anywhereLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // toggle bring front
-                TemplateView templateView = findViewById(currentTemplateViewId);
-                FrameLayout stickerLayerFrameLayout = findViewById(templateView.getStickerLayerViewId());
-                ConstraintLayout backgroundLayerConstraintLayout = findViewById(templateView.getTemplateLayerViewId());
-                if (templateView.getChildAt(0).equals(backgroundLayerConstraintLayout)) {
-                    backgroundLayerConstraintLayout.bringToFront();
-                } else {
-                    stickerLayerFrameLayout.bringToFront();
                 }
             }
         });
@@ -476,22 +449,37 @@ public class StoryEditorActivity extends AppCompatActivity
 
     @Override
     public void sendTextSize(int size) {
-        selectedTextSticker.set
+        selectedTextSticker.setTextSize(size);
     }
 
     @Override
     public void sendSpacing(int spacing) {
-
+        selectedTextSticker.setTextSpacing((int) Math.round(spacing * 0.1));
     }
 
     @Override
     public void sendHeight(int height) {
-
+        selectedTextSticker.setTextHeight((int) Math.round(height * 5.0));
     }
 
     @Override
     public void sendAlignment(int alignment) {
         selectedTextSticker.setAlignment(alignment);
+    }
+
+    // OnTextStickerListener
+    @Override
+    public void editTextInputDone() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(selectedTextSticker.getWindowToken(), 0);
+        anywhereLinearLayout.removeAllViews();
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_fragment_placeholder_inserter, colorPickerFragment);
+        colorPickerFragment.setTargetViewType(TemplateView.STICKER);
+        fragmentTransaction.commit();
+        isColorPickerOn = true;
     }
 
     // add choose a template fragment to backstack
@@ -581,16 +569,5 @@ public class StoryEditorActivity extends AppCompatActivity
             if (templateView == templateView1) return i;
         }
         return -1;
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent keyEvent) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_ENTER:
-                Toast.makeText(StoryEditorActivity.this, "Pressed Enter",Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onKeyUp(keyCode, keyEvent);
-        }
     }
 }

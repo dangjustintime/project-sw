@@ -3,6 +3,8 @@ package com.example.justindang.storywell.views;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.IntDef;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
@@ -29,6 +32,11 @@ public class TextStickerView extends StickerView {
     @Retention(RetentionPolicy.SOURCE)
     public @interface Alignment { }
 
+    public interface OnTextStickerListener {
+        public void editTextInputDone();
+    }
+    OnTextStickerListener onTextStickerListener;
+
     public TextStickerView(Context context) {
         super(context);
         editText = new EditText(context);
@@ -38,6 +46,21 @@ public class TextStickerView extends StickerView {
         editText.setTextColor(getResources().getColor(R.color.colorWhite));
         containerLinearLayout.addView(editText);
         editText.requestFocus();
+        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        onTextStickerListener = (OnTextStickerListener) context;
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onTextStickerListener.editTextInputDone();
+                    return true;
+                }
+                return true;
+            }
+        });
+
 
         /*
         if (editText.requestFocus()) {

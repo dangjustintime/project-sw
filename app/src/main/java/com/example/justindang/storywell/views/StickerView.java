@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -69,6 +70,8 @@ public class StickerView extends LinearLayout {
         inflate(context, R.layout.custom_view_sticker, this);
         ButterKnife.bind(this);
         this.setId(generateViewId());
+
+        this.setGravity(Gravity.CENTER_HORIZONTAL);
 
         viewConfiguration = ViewConfiguration.get(context);
         touchSlop = viewConfiguration.getScaledTouchSlop();
