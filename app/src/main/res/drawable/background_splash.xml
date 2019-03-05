@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center">
+    <item
+        android:drawable="@color/colorWhite"/>
+    <item
+        android:gravity="center"
+        android:width="180dp"
+        android:height="180dp">
+        <bitmap
+            android:src="@drawable/sw_logo_icon" />
+    </item>
+</layer-list>

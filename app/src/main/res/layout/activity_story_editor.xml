@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
+    android:id="@+id/constraint_layout_story_editor_activity_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,50 +18,88 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
-            <ImageView
-                android:id="@+id/toolbar_text_view_story_editor_storywell_title"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:foregroundGravity="center_vertical"
-                android:src="@drawable/storywell_logo"/>
-            <ImageView
-                android:id="@+id/image_view_story_editor_back_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="left"
-                android:src="@drawable/back_icon" />
-            <ImageView
-                android:id="@+id/image_view_story_editor_download_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/download_icon"/>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/toolbar_text_view_story_editor_storywell_title"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/storywell_logo"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"/>
+                <ImageView
+                    android:id="@+id/image_view_story_editor_back_button"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/back_icon"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+                <ImageView
+                    android:id="@+id/image_view_story_editor_download_icon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/download_icon"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+                <TextView
+                    android:id="@+id/text_view_story_editor_update_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/update"
+                    android:textColor="@color/colorDarkGrey"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+                <ImageView
+                    android:id="@+id/image_view_eye_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/eye_icon"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-    <FrameLayout
-        android:id="@+id/frame_layout_story_editor_anywhere"
+    <LinearLayout
+        android:id="@+id/linear_layout_story_editor_anywhere"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <FrameLayout
-        android:id="@+id/frame_layout_fragment_placeholder_story_editor"
-        android:layout_width="1080px"
-        android:layout_height="1920px"
-        app:layout_constraintBottom_toTopOf="@id/constraint_layout_icon_container"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_story_editor_activity"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/dark_grey_border"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom" />
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dark_grey_border"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/app_bar_story_editor_activity"
+        android:layout_marginTop="80dp"
+        android:fitsSystemWindows="false">
+        <LinearLayout
+            android:id="@+id/linear_layout_fragment_placeholder_story_editor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
     <FrameLayout
         android:id="@+id/frame_layout_fragment_placeholder_save_story"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_layout_icon_container"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorWhite"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
@@ -111,9 +150,9 @@
         android:id="@+id/frame_layout_fragment_placeholder_choose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <com.colorpicker.shishank.colorpicker.ColorPicker
-        android:id="@+id/color_picker_story_editor"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/frame_layout_fragment_placeholder_inserter"
+        android:layout_width="match_parent"
         android:layout_height="125dp"
         app:layout_constraintBottom_toTopOf="@id/constraint_layout_icon_container"/>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

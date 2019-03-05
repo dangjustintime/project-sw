@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Stories implements Parcelable {
 
@@ -13,20 +14,38 @@ public class Stories implements Parcelable {
     private String name;
     private String date;    // format: MM.DD.YY
     private String SHARED_PREF_KEY;
+    private int currentIndex;
     private ArrayList<Page> pagesList;
 
     // constructors
     public Stories() {
+        this.name = "";
+        this.SHARED_PREF_KEY = "";
         this.pagesList = new ArrayList<>();
+        this.currentIndex = 0;
         // format the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
         Date currentTime = new Date();
         this.date = formatter.format(currentTime);
     }
 
+    public Stories(Stories stories) {
+        if (stories.pagesList == null) {
+            this.pagesList = new ArrayList<>();
+        } else {
+            this.pagesList = new ArrayList<>(stories.getPagesList());
+        }
+        this.name = stories.getName();
+        this.date = stories.getDate();
+        this.SHARED_PREF_KEY = stories.getSharedPrefKey();
+        this.currentIndex = stories.getCurrentIndex();
+    }
+
     public Stories(String name) {
         this.name = name;
+        this.SHARED_PREF_KEY = "";
         this.pagesList = new ArrayList<>();
+        this.currentIndex = 0;
         // format the current date
         SimpleDateFormat formatter = new SimpleDateFormat ("MM.dd.yy");
         Date currentTime = new Date();
@@ -36,6 +55,7 @@ public class Stories implements Parcelable {
     protected Stories(Parcel in) {
         name = in.readString();
         date = in.readString();
+        currentIndex = in.readInt();
         SHARED_PREF_KEY = in.readString();
         pagesList = in.createTypedArrayList(Page.CREATOR);
     }
@@ -52,9 +72,15 @@ public class Stories implements Parcelable {
         }
     };
 
+    // key generator
+    public void generateSharedPrefKey(int serialId) {
+        String key = "stories_" + String.valueOf(serialId);
+        this.setSharedPrefKey(key);
+    }
+
     // getters and setters
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -62,19 +88,20 @@ public class Stories implements Parcelable {
     }
 
     public String getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public ArrayList<Page> getPagesList() {
-        return pagesList;
+    public List<Page> getPagesList() {
+        return this.pagesList;
     }
 
     public void setPagesList(ArrayList<Page> pagesList) {
-        this.pagesList = pagesList;
+        this.pagesList.clear();
+        this.pagesList.addAll(pagesList);
     }
 
     public int getNumPages() {
@@ -82,11 +109,28 @@ public class Stories implements Parcelable {
     }
 
     public String getSharedPrefKey() {
-        return SHARED_PREF_KEY;
+        return this.SHARED_PREF_KEY;
     }
 
     public void setSharedPrefKey(String key) {
         this.SHARED_PREF_KEY = key;
+    }
+
+    public int getCurrentIndex() {
+        return this.currentIndex;
+    }
+
+    public void setCurrentIndex(int index) {
+        this.currentIndex = index;
+    }
+
+    // Pages List navigation
+    public void nextPage() {
+        currentIndex = (currentIndex < this.pagesList.size()) ? currentIndex++ : currentIndex;
+    }
+
+    public void previousPage() {
+        currentIndex = (currentIndex > 0) ? currentIndex-- : currentIndex;
     }
 
     // getters and setters for story values
@@ -96,6 +140,14 @@ public class Stories implements Parcelable {
 
     public void removePage(Page page) {
         this.pagesList.remove(page);
+        currentIndex = (currentIndex == this.pagesList.size()) ? currentIndex-- : currentIndex;
+    }
+
+    public void removePageByIndex(int index) {
+        if (index < this.pagesList.size()) {
+            this.pagesList.remove(index);
+            currentIndex = (currentIndex == this.pagesList.size()) ? currentIndex-- : currentIndex;
+        }
     }
 
     public Page getPage(int index) {
@@ -107,7 +159,7 @@ public class Stories implements Parcelable {
     }
 
     public ArrayList<String> getImageUris(int index)  {
-        return pagesList.get(index).getImageUris();
+        return this.pagesList.get(index).getImageUris();
     }
 
     public void setImageUris(int index, ArrayList<String> imageUris) {
@@ -162,6 +214,13 @@ public class Stories implements Parcelable {
         this.pagesList.get(index).setText(text);
     }
 
+    public String toString() {
+        String storiesString = "name: " + this.name + "\ndate: " + this.date + "\nSHARED_PREF_KEY:"
+                + this.SHARED_PREF_KEY + "\ncurrent index: " + String.valueOf(this.currentIndex)
+                + "\nnum pages: " + String.valueOf(this.getNumPages());
+        return storiesString;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -171,6 +230,7 @@ public class Stories implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(date);
+        dest.writeInt(currentIndex);
         dest.writeString(SHARED_PREF_KEY);
         dest.writeTypedList(pagesList);
     }

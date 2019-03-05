@@ -65,42 +65,20 @@ public class MainActivity extends AppCompatActivity
     // views
     @BindView(R.id.toolbar_main_activity) Toolbar toolbar;
     @BindView(R.id.constraint_layout_anywhere) ConstraintLayout constraintLayoutAnywhere;
-    @BindView(R.id.frame_layout_fragment_placeholder) FrameLayout frameLayoutFragmentPlaceholder;
     @BindView(R.id.constraint_layout_bottom_bar) ConstraintLayout bottomBarConstraintLayout;
     @BindView(R.id.image_view_main_activity_pencil_icon) ImageView pencilIconImageView;
     @BindView(R.id.image_view_main_activity_plus_icon) ImageView plusIconImageView;
     @BindView(R.id.image_view_main_activity_trash_icon) ImageView trashIconImageView;
     @BindView(R.id.image_view_main_activity_shopping_cart) ImageView shoppingCartImageView;
 
+    // shared pref
+    @BindView(R.id.text_view_shared_preferences) TextView sharedPrefTextView;
+
     // recycler view
     @BindView(R.id.recycler_view_saved_stories) RecyclerView savedStoriesRecyclerView;
     SavedStoriesGridRecyclerAdapter savedStoriesGridRecyclerAdapter;
     private ArrayList<Stories> savedStoriesList;
     private int changeNamePosition;
-
-    // OnItemListener interface
-    @Override
-    public void getNewName(int position) {
-        fragmentManager = getSupportFragmentManager();
-        changeStoryNameDialogFragment.show(fragmentManager, DIALOG_CHANGE_NAME);
-        changeNamePosition = position;
-    }
-
-    // OnChangeNameListener interface
-    @Override
-    public void sendNewName(String newName) {
-        savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
-    }
-
-    // OnInputListener interface
-    @Override
-    public void sendInput(String input) {
-        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
-        Stories newStories= new Stories(input);
-        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
-        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
-        startActivity(intent);
-    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -109,9 +87,13 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         // request read permissions
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
 
         loadRecyclerView();
+
+        // get shared pref
+        // sharedPrefTextView.setText(SharedPrefHandler.getSharedPrefString(getApplicationContext()));
 
         // clickListeners
         constraintLayoutAnywhere.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(getResources().getString(R.string.saved_stories), 0);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
                 Toast.makeText(getApplicationContext(), "Shared Preferences cleared", Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -169,11 +151,34 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         loadRecyclerView();
+    }
+
+    // OnItemListener interface
+    @Override
+    public void getNewName(int position) {
+        fragmentManager = getSupportFragmentManager();
+        changeStoryNameDialogFragment.show(fragmentManager, DIALOG_CHANGE_NAME);
+        changeNamePosition = position;
+    }
+
+    // OnChangeNameListener interface
+    @Override
+    public void sendNewName(String newName) {
+        savedStoriesGridRecyclerAdapter.changeName(changeNamePosition, newName);
+    }
+
+    // OnInputListener interface
+    @Override
+    public void sendInput(String input) {
+        Intent intent = new Intent(MainActivity.this, StoryEditorActivity.class);
+        Stories newStories = new Stories(input);
+        intent.putExtra(EXTRA_SAVED_STORIES, newStories);
+        intent.putExtra(EXTRA_IS_NEW_STORIES, true);
+        startActivity(intent);
     }
 
     public void showSavedStoriesRecyclerView() {
@@ -205,7 +210,7 @@ public class MainActivity extends AppCompatActivity
             showSavedStoriesRecyclerView();
             for (int i = 0; i < serialID; i++) {
                 Stories newStories = SharedPrefHandler.getStories(MainActivity.this, i);
-                if (newStories.getName() != "NOT FOUND") {
+                if (!newStories.getName().equals("NOT FOUND")) {
                     savedStoriesList.add(newStories);
                 }
             }

@@ -136,7 +136,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         savedStoryViewHolder.savedStoryDeleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deletePage(savedStoryViewHolder.getAdapterPosition());
+                deleteStories(savedStoryViewHolder.getAdapterPosition());
             }
         });
     }
@@ -163,7 +163,7 @@ public class SavedStoriesGridRecyclerAdapter extends RecyclerView.Adapter<SavedS
         notifyItemChanged(postion);
     }
 
-    public void deletePage(int position) {
+    public void deleteStories(int position) {
         // remove story from shared pref
         String sharedPrefKey = savedStoriesList.get(position).getSharedPrefKey();
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.saved_stories), 0);

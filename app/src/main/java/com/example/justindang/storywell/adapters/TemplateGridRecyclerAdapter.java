@@ -1,16 +1,23 @@
 package com.example.justindang.storywell.adapters;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
+import com.example.justindang.storywell.model.Stories;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.util.List;
 
@@ -43,8 +50,38 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
     // data binder
     @Override
     public void onBindViewHolder(TemplateViewHolder viewHolder, int index) {
+        // set image resource according to index
+        int imageResource = 0;
         final String templateName = templateNames.get(index);
-        viewHolder.templateName.setText(templateName);
+
+        switch (index) {
+            case 0:
+                templateName.concat("1");
+                imageResource = R.drawable.template_free_1;
+                break;
+            case 1:
+                templateName.concat("2");
+                imageResource = R.drawable.template_free_2;
+                break;
+            case 2:
+                templateName.concat("3");
+                imageResource = R.drawable.template_free_3;
+                break;
+            case 3:
+                templateName.concat("4");
+                imageResource = R.drawable.template_free_4;
+                break;
+            case 4:
+                templateName.concat("5");
+                imageResource = R.drawable.template_free_5;
+                break;
+            case 5:
+                templateName.concat("6");
+                imageResource = R.drawable.template_free_6;
+                break;
+        }
+
+        viewHolder.templatePreview.setImageResource(imageResource);
 
         // bind clicklistener
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -67,11 +104,11 @@ public class TemplateGridRecyclerAdapter extends RecyclerView.Adapter<TemplateGr
 
     // view holder
     public static class TemplateViewHolder extends RecyclerView.ViewHolder {
-        public TextView templateName;
+        public ImageView templatePreview;
 
         public TemplateViewHolder(@NonNull View itemView) {
             super(itemView);
-            templateName = (TextView) itemView.findViewById(R.id.text_view_template_name);
+            templatePreview = (ImageView) itemView.findViewById(R.id.image_view_template_preview);
         }
 
     }

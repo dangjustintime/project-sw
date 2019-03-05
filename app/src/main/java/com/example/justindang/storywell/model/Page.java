@@ -16,9 +16,29 @@ public class Page implements Parcelable {
 
     // constructors
     public Page() {
+        this.templateName = "";
+        this.title = "";
+        this.text = "";
         this.imageUris = new ArrayList<>();
         this.colors = new ArrayList<>();
     }
+
+    public Page(Page page) {
+        this.templateName = page.getTemplateName();
+        this.title = page.getTitle();
+        this.text = page.getText();
+        this.imageUris = new ArrayList<>(page.getImageUris());
+        this.colors = new ArrayList<>(page.getColors());
+    }
+
+    public Page(String templateName) {
+        this.templateName = templateName;
+        this.title = "";
+        this.text = "";
+        this.imageUris = new ArrayList<>();
+        this.colors = new ArrayList<>();
+    }
+
     protected Page(Parcel in) {
         templateName = in.readString();
         title = in.readString();
@@ -40,32 +60,32 @@ public class Page implements Parcelable {
     };
 
     public void addImage(String imagePath) {
-        imageUris.add(imagePath);
+        this.imageUris.add(imagePath);
     }
 
     public void removeImage(String imagePath) {
-        imageUris.remove(imagePath);
+        this.imageUris.remove(imagePath);
     }
 
     public void addColor(String color) {
-        colors.add(color);
+        this.colors.add(color);
     }
 
     public void removeColor(Integer color) {
-        colors.remove(color);
+        this.colors.remove(color);
     }
 
     // getters and setters
     public ArrayList<String> getImageUris() {
-        return imageUris;
+        return this.imageUris;
     }
 
     public void setImageUris(ArrayList<String> imageUris) {
-        this.imageUris = imageUris;
+        this.imageUris = new ArrayList<>(imageUris);
     }
 
     public String getTemplateName() {
-        return templateName;
+        return this.templateName;
     }
 
     public void setTemplateName(String templateName) {
@@ -73,15 +93,15 @@ public class Page implements Parcelable {
     }
 
     public ArrayList<String> getColors() {
-        return colors;
+        return this.colors;
     }
 
     public void setColors(ArrayList<String> colors) {
-        this.colors = colors;
+        this.colors = new ArrayList<>(colors);
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -89,11 +109,16 @@ public class Page implements Parcelable {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String toString() {
+        return "template: " + this.templateName + "\ntitle: " + this.title + "\ntext: " + this.text
+                + "\nURIs: " + this.imageUris.toString() + "\ncolors: " + this.colors.toString();
     }
 
     @Override

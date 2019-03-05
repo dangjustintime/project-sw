@@ -1,6 +1,7 @@
 package com.example.justindang.storywell.fragments;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.justindang.storywell.R;
+import com.example.justindang.storywell.activities.StoryEditorActivity;
 import com.example.justindang.storywell.adapters.TemplateGridRecyclerAdapter;
 import com.example.justindang.storywell.activities.StarterKitsActivity;
+import com.example.justindang.storywell.model.Stories;
+import com.example.justindang.storywell.view_model.StoriesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +41,8 @@ public class ChooseATemplateFragment extends Fragment {
     private TemplateGridRecyclerAdapter templateGridRecyclerAdapter;
     private List<String> templateNames;
 
-    // interface listener
-    public interface OnCancelListener {
-        void cancelStory();
-    }
-    OnCancelListener onCancelListener;
+    // view model
+    StoriesViewModel storiesViewModel;
 
     // fragment manager
     FragmentManager fragmentManager;
@@ -59,6 +59,9 @@ public class ChooseATemplateFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_choose_atemplate, container, false);
         ButterKnife.bind(this, view);
+
+        // initialize model view
+        storiesViewModel = ViewModelProviders.of(this.getActivity()).get(StoriesViewModel.class);
 
         // create recycler view
         templatesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false));
@@ -77,7 +80,6 @@ public class ChooseATemplateFragment extends Fragment {
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ChooseATemplateFragment.this);
                 fragmentTransaction.commit();
-                onCancelListener.cancelStory();
             }
         });
         shoppingCartIconImageView.setOnClickListener(new View.OnClickListener() {

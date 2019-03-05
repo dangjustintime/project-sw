@@ -17,10 +17,7 @@ import com.example.justindang.storywell.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CreateNewStoryDialogFragment extends DialogFragment implements ChooseATemplateFragment.OnCancelListener {
+public class CreateNewStoryDialogFragment extends DialogFragment {
 
     // views
     @BindView(R.id.edit_text_enter_a_name) EditText editTextEnterAName;
@@ -55,7 +52,6 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
                     Toast.makeText(getContext(), "Enter Name", Toast.LENGTH_SHORT).show();
                 } else {
                     onInputListener.sendInput(storyName);
-                    editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
                     dismiss();
                 }
             }
@@ -67,11 +63,7 @@ public class CreateNewStoryDialogFragment extends DialogFragment implements Choo
                 dismiss();
             }
         });
-        return view;
-    }
 
-    @Override
-    public void cancelStory() {
-        editTextEnterAName.setText("", TextView.BufferType.EDITABLE);
+        return view;
     }
 }
