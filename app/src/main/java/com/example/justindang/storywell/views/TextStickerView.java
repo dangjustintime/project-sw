@@ -39,7 +39,6 @@ public class TextStickerView extends StickerView {
         containerLinearLayout.addView(editText);
         editText.requestFocus();
 
-
         /*
         if (editText.requestFocus()) {
             InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -69,6 +68,18 @@ public class TextStickerView extends StickerView {
                 editText.setGravity(Gravity.END);
                 break;
         }
+    }
+
+    public void setTextSize(int size) {
+        editText.setTextSize(size);
+    }
+
+    public void setTextHeight(int height) {
+        editText.setHeight(height);
+    }
+
+    public void setTextSpacing(int spacing) {
+        editText.setLetterSpacing(spacing);
     }
 
     @Override

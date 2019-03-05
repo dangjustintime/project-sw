@@ -2,6 +2,7 @@ package com.example.justindang.storywell.views;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.IntDef;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,14 +38,21 @@ public class TextStickerEditorView extends ConstraintLayout {
     @BindView(R.id.text_view_height) TextView heightTextView;
     @BindView(R.id.image_view_text_alignment) ImageView textAlignmentImageView;
 
-
     @TextStickerView.Alignment int alignment = TextStickerView.LEFT;
+
+
+    public static final int HEIGHT = 0;
+    public static final int SPACING = 1;
+    public static final int SIZE = 2;
+    @IntDef({HEIGHT, SPACING, SIZE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Setting {}
 
     Typeface fontFamily;
     int textSize;
     int textSpacing;
     int textHeight;
-
+    @Setting int setting;
 
     public interface OnTextListener {
         void sendFontFamily(Typeface typeface);
@@ -96,6 +107,7 @@ public class TextStickerEditorView extends ConstraintLayout {
                 Toast.makeText(getContext(), "Text Size", Toast.LENGTH_SHORT).show();
                 textEditorSeekBar.setVisibility(View.VISIBLE);
                 fontFamilyContainerHorizontalScrollView.setVisibility(View.INVISIBLE);
+                setting = SIZE;
             }
         });
         spacingTextView.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +116,7 @@ public class TextStickerEditorView extends ConstraintLayout {
                 Toast.makeText(getContext(), "Spacing", Toast.LENGTH_SHORT).show();
                 textEditorSeekBar.setVisibility(View.VISIBLE);
                 fontFamilyContainerHorizontalScrollView.setVisibility(View.INVISIBLE);
+                setting = SPACING;
             }
         });
         heightTextView.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +125,7 @@ public class TextStickerEditorView extends ConstraintLayout {
                 Toast.makeText(getContext(), "Height", Toast.LENGTH_SHORT).show();
                 textEditorSeekBar.setVisibility(View.VISIBLE);
                 fontFamilyContainerHorizontalScrollView.setVisibility(View.INVISIBLE);
+                setting = HEIGHT;
             }
         });
         bookTextView.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +162,17 @@ public class TextStickerEditorView extends ConstraintLayout {
         textEditorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Toast.makeText(getContext(), String.valueOf(progress), Toast.LENGTH_SHORT).show();
+                switch (setting) {
+                    case HEIGHT:
+                        onTextListener.sendHeight(progress);
+                        break;
+                    case SIZE:
+                        onTextListener.sendTextSize(progress);
+                        break;
+                    case SPACING:
+                        onTextListener.sendSpacing(progress);
+                        break;
+                }
             }
 
             @Override
