@@ -30,6 +30,9 @@ import java.io.InputStream;
 public class ImageHandler {
     // TAG
     private static final String TAG = "PERMISSION NOT GRANTED";
+    public static final int STICKER_LAYER_WIDTH = 1080;
+    public static final int STICKER_LAYER_HEIGHT = 1920;
+
     // request code
     private static final int REQUEST_WRITE_PERMISSION = 200;
 
@@ -45,7 +48,7 @@ public class ImageHandler {
             Log.e(TAG, "directory not created");
         }
         return file;
-    };
+    }
 
     // creates bitmap and writes file
     public static boolean writeBackgroundLayerFile(Activity activity, ViewGroup viewGroup, String fileName) {
@@ -91,8 +94,7 @@ public class ImageHandler {
             return false;
         } else {
             // create bitmap from fragmentPlaceholderFrameLayout
-            // 480 x 640
-            Bitmap bitmap = Bitmap.createBitmap(1080, 1920, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(STICKER_LAYER_WIDTH, STICKER_LAYER_HEIGHT, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             viewGroup.draw(canvas);
             // create file

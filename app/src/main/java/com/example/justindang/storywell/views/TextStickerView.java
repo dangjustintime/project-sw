@@ -62,13 +62,6 @@ public class TextStickerView extends StickerView {
             }
         });
 
-
-        /*
-        if (editText.requestFocus()) {
-            InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
-        }
-        */
     }
 
     @Override

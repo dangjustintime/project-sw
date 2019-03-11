@@ -30,14 +30,12 @@ public class ShapeStickerView extends StickerView {
     public @interface Shape { }
 
     ImageView shapeImageView;
-    Drawable drawable;
 
     public ShapeStickerView(Context context, @Shape int shape, boolean isSolid) {
         super(context);
         Activity activity = (Activity) context;
         onStickerListener = (OnStickerListener) activity;
         shapeImageView = new ImageView(context);
-        scaleGestureDetector = new ScaleGestureDetector(context, new StickerView.ScaleListener(shapeImageView));
 
         if (isSolid) {
             switch (shape) {
@@ -70,7 +68,6 @@ public class ShapeStickerView extends StickerView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        scaleGestureDetector.onTouchEvent(event);
         return true;
     }
 

@@ -88,7 +88,6 @@ public class StoryEditorActivity extends AppCompatActivity
     private static final String EXTRA_IS_NEW_STORIES = "new stories";
     private static final String EXTRA_SAVED_STORIES = "saved stories";
     private static final String DIALOG_SAVE_STORY = "save story";
-    private static final String DIALOG_TEXT_EDITOR = "text editor";
     private static final int IMAGE_GALLERY_REQUEST = 98;
     // flags
     boolean isNewStories;
@@ -377,6 +376,7 @@ public class StoryEditorActivity extends AppCompatActivity
             }
         }
     }
+
     // MediaHandler
     @Override
     public void getGalleryPhoto(int viewId, int mediaIndex) {
