@@ -70,7 +70,7 @@ public class ShapeStickerView extends StickerView {
 
     @Override
     public void setSize(float scaleFactor) {
-        scaleFactor *= 0.33;
+        scaleFactor *= 0.5;
         int newWidth = Math.round(shapeImageView.getWidth() + scaleFactor);
         int newHeight = Math.round(shapeImageView.getHeight() + scaleFactor);
         shapeImageView.setLayoutParams(new LayoutParams(newWidth, newHeight));

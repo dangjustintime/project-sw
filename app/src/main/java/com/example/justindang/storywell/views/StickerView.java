@@ -37,7 +37,8 @@ public class StickerView extends LinearLayout {
 
     private int activePointerId1 = INVALID_POINTER_ID;
     private int activePointerId2 = INVALID_POINTER_ID;
-    private float lastTouchX1, lastTouchY1, lastTouchX2, lastTouchY2, theta1, theta2;
+    private float lastTouchX1, lastTouchY1, lastTouchX2, lastTouchY2, theta1, theta2, distance1,
+            distance2, centerX, centerY;
 
     public interface OnStickerListener {
         void sendStickerViewId(int id);
@@ -70,7 +71,7 @@ public class StickerView extends LinearLayout {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
         final int pointerIndex1, pointerIndex2;
         final float x1, y1, x2, y2;
@@ -88,31 +89,35 @@ public class StickerView extends LinearLayout {
                 lastTouchY2 = MotionEventCompat.getY(event, pointerIndex2);
                 activePointerId2 = MotionEventCompat.getPointerId(event, pointerIndex2);
                 theta1 = getAngle(lastTouchX1, lastTouchY1, lastTouchX2, lastTouchY2);
+                distance1 = getDistance(lastTouchX1, lastTouchY1, lastTouchX2, lastTouchY2);
                 break;
             case MotionEvent.ACTION_MOVE:
                 pointerIndex1 = MotionEventCompat.findPointerIndex(event, activePointerId1);
-                x1 = MotionEventCompat.getX(event, pointerIndex1);
-                y1 = MotionEventCompat.getY(event, pointerIndex1);
-
-                if (event.getPointerCount() == 1) {
-                    final float dx = x1 - lastTouchX1;
-                    final float dy = y1 - lastTouchY1;
-                    setLeft(Math.round(getLeft() + dx));
-                    setTop(Math.round(getTop() + dy));
-                } else if (event.getPointerCount() >= 2) {
-                    pointerIndex2 = MotionEventCompat.findPointerIndex(event, activePointerId2);
-                    x2 = MotionEventCompat.getX(event, pointerIndex2);
-                    y2 = MotionEventCompat.getY(event, pointerIndex2);
-                    lastTouchX2 = x2;
-                    lastTouchY2 = y2;
-                    theta2 = getAngle(x1, y1, x2, y2);
-                    setRotation(getRotation() + (theta2 - theta1));
+                if (pointerIndex1 != -1) {
+                    x1 = MotionEventCompat.getX(event, pointerIndex1);
+                    y1 = MotionEventCompat.getY(event, pointerIndex1);
+                    if (event.getPointerCount() == 1) {
+                        final float dx = x1 - lastTouchX1;
+                        final float dy = y1 - lastTouchY1;
+                        setLeft(Math.round(getLeft() + dx));
+                        setTop(Math.round(getTop() + dy));
+                    } else if (event.getPointerCount() >= 2) {
+                        pointerIndex2 = MotionEventCompat.findPointerIndex(event, activePointerId2);
+                        if (pointerIndex2 != -1) {
+                            x2 = MotionEventCompat.getX(event, pointerIndex2);
+                            y2 = MotionEventCompat.getY(event, pointerIndex2);
+                            theta2 = getAngle(x1, y1, x2, y2);
+                            distance2 = getDistance(x1, y1, x2, y2);
+                            setSize(distance2 - distance1);
+                            setRotation(getRotation() + (theta2 - theta1));
+                            lastTouchX2 = x2;
+                            lastTouchY2 = y2;
+                        }
+                    }
+                    lastTouchX1 = x1;
+                    lastTouchY1 = y1;
+                    invalidate();
                 }
-
-                invalidate();
-                lastTouchX1 = x1;
-                lastTouchY1 = y1;
-
                 break;
             case MotionEvent.ACTION_UP:
                 activePointerId1 = INVALID_POINTER_ID;
@@ -124,9 +129,10 @@ public class StickerView extends LinearLayout {
                 activePointerId1 = INVALID_POINTER_ID;
                 activePointerId2 = INVALID_POINTER_ID;
                 break;
-
+            default:
+                Log.i(TOUCH_EVENT_TAG, "action not found");
+                break;
         }
-
         return true;
     }
 
