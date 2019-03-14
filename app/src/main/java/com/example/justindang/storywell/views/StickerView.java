@@ -35,8 +35,9 @@ public class StickerView extends LinearLayout {
     @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
     @BindView(R.id.image_view_x_icon_sticker_view) ImageView xIconImageView;
 
-    private int activePointerId = INVALID_POINTER_ID;
-    private float lastTouchX, lastTouchY;
+    private int activePointerId1 = INVALID_POINTER_ID;
+    private int activePointerId2 = INVALID_POINTER_ID;
+    private float lastTouchX1, lastTouchY1, lastTouchX2, lastTouchY2, theta1, theta2;
 
     public interface OnStickerListener {
         void sendStickerViewId(int id);
@@ -71,46 +72,59 @@ public class StickerView extends LinearLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         final int action = MotionEventCompat.getActionMasked(event);
-        final int pointerIndex;
-        final float x, y;
+        final int pointerIndex1, pointerIndex2;
+        final float x1, y1, x2, y2;
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                pointerIndex = MotionEventCompat.getActionIndex(event);
-                x = MotionEventCompat.getX(event, pointerIndex);
-                y = MotionEventCompat.getY(event, pointerIndex);
-                lastTouchX = x;
-                lastTouchY = y;
-                activePointerId = MotionEventCompat.getPointerId(event, 0);
+                pointerIndex1 = MotionEventCompat.getActionIndex(event);
+                lastTouchX1 = MotionEventCompat.getX(event, pointerIndex1);
+                lastTouchY1 = MotionEventCompat.getY(event, pointerIndex1);
+                activePointerId1 = MotionEventCompat.getPointerId(event, 0);
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                pointerIndex2 = MotionEventCompat.getActionIndex(event);
+                lastTouchX2 = MotionEventCompat.getX(event, pointerIndex2);
+                lastTouchY2 = MotionEventCompat.getY(event, pointerIndex2);
+                activePointerId2 = MotionEventCompat.getPointerId(event, pointerIndex2);
+                theta1 = getAngle(lastTouchX1, lastTouchY1, lastTouchX2, lastTouchY2);
                 break;
             case MotionEvent.ACTION_MOVE:
-                pointerIndex = MotionEventCompat.findPointerIndex(event, activePointerId);
-                x = MotionEventCompat.getX(event, pointerIndex);
-                y = MotionEventCompat.getY(event, pointerIndex);
-                final float dx = x - lastTouchX;
-                final float dy = y - lastTouchY;
-                setLeft(Math.round(getLeft() + dx));
-                setTop(Math.round(getTop() + dy));
+                pointerIndex1 = MotionEventCompat.findPointerIndex(event, activePointerId1);
+                x1 = MotionEventCompat.getX(event, pointerIndex1);
+                y1 = MotionEventCompat.getY(event, pointerIndex1);
+
+                if (event.getPointerCount() == 1) {
+                    final float dx = x1 - lastTouchX1;
+                    final float dy = y1 - lastTouchY1;
+                    setLeft(Math.round(getLeft() + dx));
+                    setTop(Math.round(getTop() + dy));
+                } else if (event.getPointerCount() >= 2) {
+                    pointerIndex2 = MotionEventCompat.findPointerIndex(event, activePointerId2);
+                    x2 = MotionEventCompat.getX(event, pointerIndex2);
+                    y2 = MotionEventCompat.getY(event, pointerIndex2);
+                    lastTouchX2 = x2;
+                    lastTouchY2 = y2;
+                    theta2 = getAngle(x1, y1, x2, y2);
+                    setRotation(getRotation() + (theta2 - theta1));
+                }
+
                 invalidate();
-                lastTouchX = x;
-                lastTouchY = y;
+                lastTouchX1 = x1;
+                lastTouchY1 = y1;
+
                 break;
             case MotionEvent.ACTION_UP:
-                activePointerId = INVALID_POINTER_ID;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                activePointerId = INVALID_POINTER_ID;
+                activePointerId1 = INVALID_POINTER_ID;
                 break;
             case MotionEvent.ACTION_POINTER_UP:
-                pointerIndex = MotionEventCompat.getActionIndex(event);
-                final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
-                if (pointerId == activePointerId) {
-                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-                    lastTouchX = MotionEventCompat.getX(event, newPointerIndex);
-                    lastTouchY = MotionEventCompat.getY(event, newPointerIndex);
-                    activePointerId = MotionEventCompat.getPointerId(event, newPointerIndex);
-                }
+                activePointerId2 = INVALID_POINTER_ID;
                 break;
+            case MotionEvent.ACTION_CANCEL:
+                activePointerId1 = INVALID_POINTER_ID;
+                activePointerId2 = INVALID_POINTER_ID;
+                break;
+
         }
 
         return true;
