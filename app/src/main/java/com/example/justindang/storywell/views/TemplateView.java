@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.activities.StoryEditorActivity;
@@ -65,7 +66,7 @@ public class TemplateView extends FrameLayout {
         templateLayerConstraintLayout = new ConstraintLayout(context);
         templateLayerConstraintLayout.setId(generateViewId());
         stickerLayerFrameLayout = new FrameLayout(context);
-        stickerLayerFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(1080, 1920));
+        stickerLayerFrameLayout.setLayoutParams(new RelativeLayout.LayoutParams(1080, 1920));
         stickerLayerFrameLayout.setId(generateViewId());
         stickerLayerFrameLayout.setFocusable(false);
         this.addView(templateLayerConstraintLayout);

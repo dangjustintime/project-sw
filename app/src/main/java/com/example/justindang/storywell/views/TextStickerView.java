@@ -61,7 +61,6 @@ public class TextStickerView extends StickerView {
                 return true;
             }
         });
-
     }
 
     @Override

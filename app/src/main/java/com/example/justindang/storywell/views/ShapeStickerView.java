@@ -2,8 +2,10 @@ package com.example.justindang.storywell.views;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.support.annotation.IntDef;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -62,13 +64,16 @@ public class ShapeStickerView extends StickerView {
                     break;
             }
         }
+
         containerLinearLayout.addView(shapeImageView);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-        return true;
+    public void setSize(float scaleFactor) {
+        scaleFactor *= 0.33;
+        int newWidth = Math.round(shapeImageView.getWidth() + scaleFactor);
+        int newHeight = Math.round(shapeImageView.getHeight() + scaleFactor);
+        shapeImageView.setLayoutParams(new LayoutParams(newWidth, newHeight));
     }
 
     @Override

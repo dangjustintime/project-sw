@@ -22,7 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TextStickerEditorView extends ConstraintLayout {
-
     // views
     @BindView(R.id.constraint_layout_top_bar) ConstraintLayout topBarConstraintLayout;
     @BindView(R.id.linear_layout_bottom_bar) LinearLayout bottomBarLinearLayout;
@@ -39,7 +38,6 @@ public class TextStickerEditorView extends ConstraintLayout {
     @BindView(R.id.image_view_text_alignment) ImageView textAlignmentImageView;
 
     @TextStickerView.Alignment int alignment = TextStickerView.LEFT;
-
 
     public static final int HEIGHT = 0;
     public static final int SPACING = 1;

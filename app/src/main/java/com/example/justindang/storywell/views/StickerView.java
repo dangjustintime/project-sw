@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.justindang.storywell.R;
@@ -28,18 +29,14 @@ public class StickerView extends LinearLayout {
     public static final int INVALID_POINTER_ID = -1000;
     public static final String TOUCH_EVENT_TAG = "TOUCH EVENT";
     private float pointer1X, pointer1Y, pointer2X, pointer2Y, angle1, angle2;
-    private int pointerId;
-    private float scaleFactor = 1.5f;
     ViewConfiguration viewConfiguration;
     int touchSlop;
-
 
     @BindView(R.id.linear_layout_sticker_view_container) LinearLayout containerLinearLayout;
     @BindView(R.id.image_view_x_icon_sticker_view) ImageView xIconImageView;
 
-    int activePointerId = INVALID_POINTER_ID;
-
-    ScaleGestureDetector scaleGestureDetector;
+    private int activePointerId = INVALID_POINTER_ID;
+    private float lastTouchX, lastTouchY;
 
     public interface OnStickerListener {
         void sendStickerViewId(int id);
@@ -52,10 +49,9 @@ public class StickerView extends LinearLayout {
         ButterKnife.bind(this);
         this.setId(generateViewId());
 
-        this.setGravity(Gravity.CENTER_HORIZONTAL);
-
         viewConfiguration = ViewConfiguration.get(context);
         touchSlop = viewConfiguration.getScaledTouchSlop();
+        Toast.makeText(context, String.valueOf(touchSlop), Toast.LENGTH_SHORT).show();
 
         // clicklistener
         xIconImageView.setOnClickListener(new OnClickListener() {
@@ -73,76 +69,51 @@ public class StickerView extends LinearLayout {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        activePointerId = event.getPointerId(0);
-        int pointerIndex = event.findPointerIndex(activePointerId);
-        int action = event.getActionMasked();
-        float newPointer1X, newPointer1Y, newPointer2X, newPointer2Y, dX1, dY1,
-                dX2, dY2, distance1, distance2, centerX, centerY;
-
-        centerX = getLeft() + (getWidth() / 2);
-        centerY = getTop() + (getTop() / 2);
-        setPivotX(centerX);
-        setPivotY(centerY);
-
-        angle1 = getAngle(pointer1X, pointer1Y, pointer2X, pointer2Y);
-
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        final int action = MotionEventCompat.getActionMasked(event);
+        final int pointerIndex;
+        final float x, y;
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                pointer1X = event.getX();
-                pointer1Y = event.getY();
-                return true;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                pointer2X = event.getX(1);
-                pointer2Y = event.getY(1);
-                return true;
+                pointerIndex = MotionEventCompat.getActionIndex(event);
+                x = MotionEventCompat.getX(event, pointerIndex);
+                y = MotionEventCompat.getY(event, pointerIndex);
+                lastTouchX = x;
+                lastTouchY = y;
+                activePointerId = MotionEventCompat.getPointerId(event, 0);
+                break;
             case MotionEvent.ACTION_MOVE:
-                // drag view
-                if (event.getPointerCount() == 1) {
-                    newPointer1X = event.getX();
-                    newPointer1Y = event.getY();
-                    dX1 = newPointer1X - pointer1X;
-                    dY1 = newPointer1Y - pointer1Y;
-
-                    setLeft(Math.round(getLeft() + dX1));
-                    setTop(Math.round(getTop() + dY1));
-
-                    centerX = getLeft() + (getWidth() / 2);
-                    centerY = getTop() + (getTop() / 2);
-
-                // rotate view
-                } else if (event.getPointerCount() == 2) {
-                    newPointer1X = event.getX();
-                    newPointer1Y = event.getY();
-                    newPointer2X = event.getX(1);
-                    newPointer2Y = event.getY(1);
-                    angle2 = getAngle(newPointer1X, newPointer1Y, newPointer2X, newPointer2Y);
-                }
-                return true;
+                pointerIndex = MotionEventCompat.findPointerIndex(event, activePointerId);
+                x = MotionEventCompat.getX(event, pointerIndex);
+                y = MotionEventCompat.getY(event, pointerIndex);
+                final float dx = x - lastTouchX;
+                final float dy = y - lastTouchY;
+                setLeft(Math.round(getLeft() + dx));
+                setTop(Math.round(getTop() + dy));
+                invalidate();
+                lastTouchX = x;
+                lastTouchY = y;
+                break;
             case MotionEvent.ACTION_UP:
-                pointer1X = event.getX();
-                pointer1Y = event.getY();
-                return true;
+                activePointerId = INVALID_POINTER_ID;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                activePointerId = INVALID_POINTER_ID;
+                break;
             case MotionEvent.ACTION_POINTER_UP:
-                pointer2X = event.getX(1);
-                pointer2Y = event.getY(1);
-                float rotation = (angle2 - angle1) * -1;
-                this.setRotation(rotation);
-                return true;
-            default:
-                Log.i(TOUCH_EVENT_TAG, "action not found");
+                pointerIndex = MotionEventCompat.getActionIndex(event);
+                final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
+                if (pointerId == activePointerId) {
+                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+                    lastTouchX = MotionEventCompat.getX(event, newPointerIndex);
+                    lastTouchY = MotionEventCompat.getY(event, newPointerIndex);
+                    activePointerId = MotionEventCompat.getPointerId(event, newPointerIndex);
+                }
                 break;
         }
-        return true;
-    }
 
-    @Override
-    public void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.save();
-        canvas.scale(scaleFactor, scaleFactor);
-        canvas.restore();
+        return true;
     }
 
     public void hideUi() {
@@ -158,9 +129,16 @@ public class StickerView extends LinearLayout {
         // empty, must override
     }
 
+    public void setSize(float scaleFactor) {
+        // empty, must override
+    }
+
     public float getAngle(float x1, float y1, float x2, float y2) {
-        double theta = Math.atan2(y2 - y1, x2 - x1);
-        return (float) theta;
+        return (float) Math.toDegrees(Math.atan2(y2 - y1, x2 - x1));
+    }
+
+    public float getDistance(float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
 }
