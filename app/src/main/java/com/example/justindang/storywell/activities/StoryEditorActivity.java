@@ -476,7 +476,7 @@ public class StoryEditorActivity extends AppCompatActivity
 
     @Override
     public void sendTextSize(int size) {
-        selectedTextSticker.set
+        selectedTextSticker.setTextSize(size);
     }
 
     @Override
